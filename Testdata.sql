@@ -159,4 +159,13 @@ SELECT Name
 FROM folders
 WHERE user_ID=
 #someuser
+;
+
+#Get a certain folder's list of bookmarks
+SELECT books.Title, books.Star, books.Description, books.URL
+FROM books, folders, folder_has_books
+WHERE folders.folder_ID=
+#somefolderID
+AND folder_has_books.folder_ID=folders.folder_ID
+AND folder_has_books.book_ID=books.book_ID;
 
