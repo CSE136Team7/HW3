@@ -12,7 +12,7 @@ var list = module.exports.list = function(req, res) {
   db.query('SELECT * from bookmarks ORDER BY id', function(err, bookmarks) {
     if (err) throw err;
 
-    res.render('bookmarks/list', {bookmarks: bookmarks});
+    res.render('templates/index', {bookmarks: books});
   });
 };
 
