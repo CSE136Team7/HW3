@@ -1,8 +1,8 @@
 'use strict';
 var config = require('./config');
 var db = require('./db');
+var users = require('./users');
 var bookmarks = require('./bookmarks');
-// var users = require('./users');
 
 db.init();
 
@@ -25,13 +25,13 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 /* Routes - consider putting in routes.js */
-// app.get('/login', users.loginForm);
-// app.post('/login', users.login);
-// app.get('/logout', users.logout);
+app.get('/login', users.loginForm);
+app.post('/login', users.login);
+app.get('/logout', users.logout);
 
 /*  This must go between the users routes and the bookmarks routes */
-// app.use(users.auth);
-// app.get('/bookmarks', bookmarks.list);
+app.use(users.auth);
+app.get('/bookmarks',bookmarks.list);
 // console.log("I made it here1");
 // app.get('/bookmarks/add', bookmarks.add);
 // console.log("I made it here2");
