@@ -9,7 +9,6 @@ var db = require('./db');
  * renders the page to index.ejs
  */
 module.exports.homePage = function(req, res) {
-  console.log("this is fuck you in face.");
   res.render('index');
 };
 
