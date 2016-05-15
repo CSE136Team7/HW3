@@ -23,6 +23,7 @@ app.use(mySession);
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/static', express.static(__dirname + '/css'));
 
 /* Routes - consider putting in routes.js */
 app.get('/login', users.loginForm);
@@ -31,20 +32,15 @@ app.get('/logout', users.logout);
 
 /*  This must go between the users routes and the bookmarks routes */
 app.use(users.auth);
-app.get('/bookmarks',bookmarks.list);
-// console.log("I made it here1");
+console.log("redirect user2");
+app.get('/user1', bookmarks.homePage);
+console.log("redirect user3: "+ app.get('/user1', bookmarks.homePage));
 // app.get('/bookmarks/add', bookmarks.add);
-// console.log("I made it here2");
 // app.get('/bookmarks/edit/:bookmark_id(\\d+)', bookmarks.edit);
-// console.log("I made it here3");
 // app.get('/bookmarks/confirmdelete/:bookmark_id(\\d+)', bookmarks.confirmdelete);
-// console.log("I made it here4");
 // app.get('/bookmarks/delete/:bookmark_id(\\d+)', bookmarks.delete);
-// console.log("I made it here5");
 // app.post('/bookmarks/update/:bookmark_id(\\d+)', bookmarks.update);
-// console.log("I made it here6");
 // app.post('/bookmarks/insert', bookmarks.insert);
-// console.log("I made it here7");
 
 app.listen(config.PORT, function () {
   console.log('Example app listening on port ' + config.PORT + '!');

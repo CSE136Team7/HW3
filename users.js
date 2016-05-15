@@ -12,7 +12,8 @@ module.exports.login = function(req, res) {
   if (req.body.username === config.USERNAME && req.body.password === config.PASSWORD) {
     req.session.user = req.body.username;
     // Needs to be changed to be specific to the user that is logged in
-    res.redirect('/bookmarks');
+    console.log("redirect user1");
+    res.redirect('/user1');
   }
   else{
     res.redirect('/login');
@@ -25,6 +26,8 @@ module.exports.login = function(req, res) {
 module.exports.loginForm = function(req, res){
   res.render('users/login');
 };
+
+
 
 /**
  * Clear out the session to logout the user
