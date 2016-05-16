@@ -15,9 +15,16 @@ module.exports.homePage = function(req, res) {
 
 };
 
+module.exports.editPage = function(req, res) {
+  getBookmarks(function(bookmarks){
+    console.log({bookmarks: bookmarks});
+    return res.render('index', {bookmarks: bookmarks});
+  })
+
+};
+
 // Need to authorize user before accepting star / delete
-module.exports.starBookmark = function(req, res){
-  console.log(req.body);
+module.exports.star = function(req, res){
   var starred = req.body.starred ^ 1;
   var book_ID = req.body.book_ID;
   var user_ID = req.body.user_ID;
@@ -37,18 +44,27 @@ module.exports.starBookmark = function(req, res){
 }
 
 // Create
-module.exports.createBookmark = function(req, res) {
+module.exports.create = function(req, res) {
 
 
 }
 
 // update
-module.exports.updateBookmark = function(req, res) {
+module.exports.update = function(req, res) {
+  var id = req.params.bookmark_ID;
+  var title = db.escape(req.body.title);
+  var url = db.escape(req.body.url);
+  var title = db.escape(req.body.title);
 
+  var queryString = 'UPDATE bookmarks SET title = ' + title + ', url = ' + url + ', title = ' + title + ' WHERE id = ' + id;
+  db.query(queryString, function(err){
+    if (err) throw err;
+    res.redirect('/bookmarks');
+  });
 
 }
 // delete
-module.exports.deleteBookmark = function(req, res) {
+module.exports.delete = function(req, res) {
   // get userid and book_ID
   var book_ID = req.body.book_ID;
   var user_ID = req.body.user_ID;
@@ -73,9 +89,6 @@ var getBookmarks = function(callback) {
       throw err;
     }
     callback(bookmarks);
-    // console.log(JSON.stringify(bookmarks));
-    // res.end(JSON.stringify(bookmarks));
-    //res.redirect('/bookmarks');
   });
 
 }
@@ -143,30 +156,21 @@ var getBookmarks = function(callback) {
 //  * Adds a new bookmark to the database
 //  * Does a redirect to the list page
 //  */
-// module.exports.insert = function(req, res){
-//   var title = db.escape(req.body.title);
-//   var url = db.escape(req.body.url);
-//   var title = db.escape(req.body.title);
-//
-//   var queryString = 'INSERT INTO bookmarks (title, url, title) VALUES (' + title + ', ' + url + ', ' + title + ')';
-//   db.query(queryString, function(err){
-//     res.redirect('/bookmarks');
-//   });
-// };
+module.exports.insert = function(req, res){
+  var title = db.escape(req.body.title);
+  var url = db.escape(req.body.url);
+  var title = db.escape(req.body.title);
+
+  var queryString = 'INSERT INTO bookmarks (title, url, title) VALUES (' + title + ', ' + url + ', ' + title + ')';
+  db.query(queryString, function(err){
+    res.redirect('/bookmarks');
+  });
+};
 //
 // /**
 //  * Updates a bookmark in the database
 //  * Does a redirect to the list page
 //  */
-// module.exports.update = function(req, res){
-//   var id = req.params.bookmark_ID;
-//   var title = db.escape(req.body.title);
-//   var url = db.escape(req.body.url);
-//   var title = db.escape(req.body.title);
-//
-//   var queryString = 'UPDATE bookmarks SET title = ' + title + ', url = ' + url + ', title = ' + title + ' WHERE id = ' + id;
-//   db.query(queryString, function(err){
-//     if (err) throw err;
-//     res.redirect('/bookmarks');
-//   });
-// };
+module.exports.update = function(req, res){
+
+};

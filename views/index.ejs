@@ -112,14 +112,19 @@
 
 						<h2 class="card__title"><%= bookmarks[i].Title %></h2>
 						<div class="card__action-bar">
-							<form action="/starBookmark" method="post" class="card__button">
+							<form action="/bookmarks/star" method="post" class="card__button">
 								<input type="hidden" name="starred" value=<%= bookmarks[i].Star %>>
 								<input type="hidden" name="user_ID" value=<%= bookmarks[i].user_ID %>>
 								<input type="hidden" name="book_ID" value=<%= bookmarks[i].book_ID %>>
 							<button class="card__button"><i class="fa fa-star fa-lg"></i></button>
 							</form>
-							<a href="viewDescription.html" class="card__button"><i class="fa fa-info-circle fa-lg"></i></a>
-							<form action="/deleteBookmark" method="post" class="card__button">
+							<a href="/edit/" class="button"><i class="fa fa-edit fa-lg"></i></a>
+							<form action="/bookmarks/edit" method="get" class="card__button">
+								<input type="hidden" name="bookmark" value=<%= bookmarks[i] %>>
+								<button class="card__button"><i class="fa fa-trash-o fa-lg"></i></button>
+						</form>
+							<!-- <a href="viewDescription.html" class="card__button"><i class="fa fa-info-circle fa-lg"></i></a> -->
+							<form action="/bookmarks/delete" method="post" class="card__button">
 
 								<input type="hidden" name="user_ID" value=<%= bookmarks[i].user_ID %>>
 								<input type="hidden" name="book_ID" value=<%= bookmarks[i].book_ID %>>

@@ -34,8 +34,11 @@ app.use(users.auth);
 console.log("redirect user2");
 app.get('/home', bookmarks.homePage);
 
-app.post('/starBookmark', bookmarks.starBookmark);
-app.post('/deleteBookmark', bookmarks.deleteBookmark);
+app.post('/bookmarks/star', bookmarks.star);
+app.post('/bookmarks/delete', bookmarks.delete);
+app.post('/bookmarks/insert', bookmarks.insert);
+app.get('/bookmarks/edit', bookmarks.editPage);
+app.post('/bookmarks/update', bookmarks.update);
 //app.get('/test', bookmarks.getBookmarks);
 console.log("redirect user3: "+ app.get('/user1', bookmarks.homePage));
 // app.get('/bookmarks/add', bookmarks.add);
@@ -43,7 +46,7 @@ console.log("redirect user3: "+ app.get('/user1', bookmarks.homePage));
 // app.get('/bookmarks/confirmdelete/:bookmark_id(\\d+)', bookmarks.confirmdelete);
 // app.get('/bookmarks/delete/:bookmark_id(\\d+)', bookmarks.delete);
 // app.post('/bookmarks/update/:bookmark_id(\\d+)', bookmarks.update);
-// app.post('/bookmarks/insert', bookmarks.insert);
+
 
 app.listen(config.PORT, function () {
   console.log('Example app listening on port ' + config.PORT + '!');
