@@ -9,11 +9,14 @@ db.init();
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+//this is the options object for express-session
 var mySession = session({
-  secret: 'N0deJS1sAw3some',
+  secret: 'T34m7R0ckx',
   resave: true,
   saveUninitialized: true,
-  cookie: { secure: false }
+  cookie: { secure: false },
+  name: 'Team7cookiesession',
+  proxy: false
 });
 
 var app = express();
