@@ -2,7 +2,7 @@
 
  */
 var db = require('./db');
-
+var debug = require('./debug');
 /**
  *
  * renders the page to index.ejs
@@ -28,6 +28,7 @@ module.exports.editPage = function(req, res) {
 
 // Need to authorize user before accepting star / delete
 module.exports.star = function(req, res) {
+  debug.print("Received star bookmark request:\n" + JSON.stringify(req.body));
   var starred = req.body.starred ^ 1;
   var book_ID = req.body.book_ID;
   var user_ID = req.body.user_ID;
@@ -50,12 +51,13 @@ module.exports.star = function(req, res) {
  * Does a redirect to the list page
  */
 module.exports.insert = function(req, res) {
+  debug.print("Received insert bookmark request.\n" + JSON.stringify(req.body));
   var title = db.escape(req.body.title);
   var url = db.escape(req.body.url);
   var description = db.escape(req.body.description);
   var user_ID = db.escape(req.body.user_ID);
   var book_ID = db.escape(req.body.book_ID);
-  var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID, book_ID) VALUES (' + title + ',' + 0 + ', ' + url + ', ' + description + ', ' + 3 + ', ' + book_ID + ')';
+  var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID, book_ID) VALUES (' + title + ',' + 0 + ', ' + description + ', ' + url + ', ' + 3 + ', ' + book_ID + ')';
   db.query(queryString, function(err) {
     if (err) {}
     res.redirect('/home');
@@ -64,6 +66,7 @@ module.exports.insert = function(req, res) {
 
 // update
 module.exports.update = function(req, res) {
+    debug.print("Received update bookmark request.\n" + JSON.stringify(req.body));
     var id = req.params.bookmark_ID;
     var title = db.escape(req.body.title);
     var url = db.escape(req.body.url);
@@ -72,12 +75,13 @@ module.exports.update = function(req, res) {
     var queryString = 'UPDATE bookmarks SET title = ' + title + ', url = ' + url + ', title = ' + title + ' WHERE id = ' + id;
     db.query(queryString, function(err) {
       if (err) throw err;
-      res.redirect('/bookmarks');
+      res.redirect('/home');
     });
 
   }
   // delete
 module.exports.delete = function(req, res) {
+    debug.print("Received delete bookmark request.\n" + JSON.stringify(req.body));
     // get userid and book_ID
     var book_ID = req.body.book_ID;
     var user_ID = req.body.user_ID;
@@ -91,7 +95,7 @@ module.exports.delete = function(req, res) {
       res.redirect('/home');
     });
   }
-// Get list of bookmarks for user 3 for now until users are set up.
+  // Get list of bookmarks for user 3 for now until users are set up.
 var getBookmarks = function(callback) {
   var user_ID = 3;
 

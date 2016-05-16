@@ -23,9 +23,6 @@ var importBookmark = document.getElementById("import-bookmark");
 var addBookmarkForm = document.getElementById("add-bookmark-form");
 var importBookmarkForm = document.getElementById("import-bookmark-form");
 
-
-
-
 addBookmark.onclick = function() {
 	importBookmarkForm.style.display = 'none';
 	addBookmarkForm.style.display = 'block';
