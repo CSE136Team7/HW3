@@ -3,6 +3,7 @@ var config = require('./config');
 var db = require('./db');
 var users = require('./users');
 var bookmarks = require('./bookmarks');
+var md5 = require('js-md5');
 
 db.init();
 

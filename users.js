@@ -4,20 +4,48 @@
 
  var config = require('./config');
  var db = require('./db');
+ var md5 = require('js-md5');
 
 /**
  *
  * Attempt to login the user.  Redirect to /books on successful login and /login on unsuccessful attempt.
  */
  module.exports.login = function(req, res) {
-  if (req.body.username === config.USERNAME && req.body.password === config.PASSWORD) {
-    req.session.user = req.body.username;
-    // Needs to be changed to be specific to the user that is logged in
-    console.log("redirect user1");
-    res.redirect('/user1');
+  if (req.body.username!="" && req.body.password!=""){
+
+    //Fetch the login fields
+    var userInput = req.body.username;
+    var pwdInput = req.body.password;
+    var pwdInputCrypted = md5(pwdInput, userInput);
+    //Look into the data base if there is a login matching the input
+    var sql = 'SELECT username, passhash FROM users WHERE username = ' + db.escape(userInput);
+    db.query(sql, function(err, results) {
+      if(err){
+        throw(err);
+      }
+      else{
+          if(results.length>0){
+            console.log(results[0].username);
+            console.log(results[0].passhash);
+            console.log(userInput);
+            console.log(pwdInputCrypted);
+            if (userInput===results[0].username && pwdInputCrypted===results[0].passhash) {
+                req.session.user = userInput;
+                res.redirect('/user1');
+            }
+            else{
+              res.render('users/errorBadLogin');
+            }
+          }
+          else{
+            res.render('users/errorDB');
+          }
+      }
+    });
   }
   else{
-    res.redirect('/login');
+    //Alert message : all the fiels have not been filled up
+    res.render('users/errorBadForm');
   }
 };
 
@@ -42,7 +70,7 @@
  * Verify a user is logged in.  This middleware will be called before every request to the books directory.
  */
  module.exports.auth = function(req, res, next) {
-  if (req.session && req.session.user === config.USERNAME) {
+  if (req.session ) {
     return next();
   }
   else {
@@ -66,33 +94,36 @@ module.exports.newAccount = function(req, res){
     var user = req.body.username;
     var pwd = req.body.password;
 
-    //Look into the data base if there is a login matching the input
-    // var sql = 'SELECT username FROM users WHERE username = ' + user;
-    // db.query(sql, function(err, results) {
-    //   if(err){
-    //     throw(err);
-    //   }
-    //   else{
-    //       if (results.length==0){
+    
+    var sql = 'SELECT username FROM users WHERE username = ' + db.escape(user);
+    db.query(sql, function(err, results) {
+      if(err){
+        throw(err);
+      }
+      else{
+        if (results.length==0){
             //no existing username --> insert into the table
                //hashing of the password   
-               var queryString = "INSERT INTO users(username, passhash) VALUES ("+ db.escape(user) + "," + db.escape(pwd) +")";
-               db.query(queryString, function(err, result){ 
-                if (err) throw err;  
+               var pwdCrypted = md5(pwd, user);  
+               var queryString = "INSERT INTO users(username, passhash) VALUES ("+ db.escape(user) + "," + db.escape(pwdCrypted) +")";
+               db.query(queryString, function(err, result){
+                if (err){
+                   throw err;
+                }
                 else{
                     //render an alert message : the account have been created
                     res.render('users/success');
-                  }}
-                  );
-  //         }
-  //         else{
-  //           //already existing username --> alert message
-  //           res.render('users/errorNew');
-  //         }
-  //     }
-  //   });
-  // }
-  // else{
-  //   res.render('users/errorBadForm');
-}
-};
+                }
+              });
+          }
+          else{
+            //already existing username --> alert message
+            res.render('users/errorNew');
+          }
+      }
+    });
+  }
+  else{
+    res.render('users/errorBadForm');
+  }
+ };

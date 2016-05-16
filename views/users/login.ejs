@@ -115,65 +115,78 @@
                         </div>
 
                         <div class="buttonWrapper">
-                             <br></br>
-                            <input class= "logbutton" type='submit' value="LOG IN">
-                        </div>
-                    
-                    </div>
-                    </form>
+                           <br></br>
+                           <input class= "logbutton" type='submit' value="LOG IN">
+                       </div>
 
-                 <form method='post' action='/newAccount'>
+                   </div>
+               </form>
+
+               <form method='post' action='/newAccount' onsubmit="return validateForm()">
                 <div class="form" id="newuser-form">
-                    <input type="text" name="username" placeholder="Enter a username">
+                    <input type="text" name="username" placeholder="Enter a username" autocomplete="new-password">
                     <p></p>
                     <div class="textFieldWrapper">
-                        <input type="password" name="password" placeholder="Enter a password">
+                        <input type="password" name="password" placeholder="Enter a password" autocomplete="new-password">
                     </div>
 
                     <div class="buttonWrapper">
-                          <br></br>
-                        <input class= "logbutton" type='submit' value="SUBMIT">
-                    </div>
-                </div> 
-                </form> 
-                <script>
-var SignIn = document.getElementById("signin");
-var NewUser = document.getElementById("newuser");
-var SignInForm = document.getElementById("signin-form");
-var NewUserForm = document.getElementById("newuser-form");
+                      <br></br>
+                      <input class= "logbutton" type='submit' value="SUBMIT">
+                  </div>
+              </div> 
+          </form> 
+          <script>
 
 
-SignIn.onclick = function() {
-    console.log("hello");
-    NewUserForm.style.display = 'none';
-    SignInForm.style.display = 'block';
+        var SignIn = document.getElementById("signin");
+        var NewUser = document.getElementById("newuser");
+        var SignInForm = document.getElementById("signin-form");
+        var NewUserForm = document.getElementById("newuser-form");
 
-    NewUser.className = "";
 
-    SignIn.className = "";
-    SignIn.className = "is-active";
+        SignIn.onclick = function() {
+            console.log("hello");
+            NewUserForm.style.display = 'none';
+            SignInForm.style.display = 'block';
 
-}
+            NewUser.className = "";
 
-NewUser.onclick = function() {
-    SignInForm.style.display = 'none';
-    NewUserForm.style.display = 'block';
+            SignIn.className = "";
+            SignIn.className = "is-active";
 
-    SignIn.className = "";
+        }
 
-    NewUser.className = "";
-    NewUser.className = "is-active";
-}
+        NewUser.onclick = function() {
+            SignInForm.style.display = 'none';
+            NewUserForm.style.display = 'block';
+
+            SignIn.className = "";
+
+            NewUser.className = "";
+            NewUser.className = "is-active";
+        }
+
+        </script>
+        <script>
+    function validateForm(){
+        var x = document.getElementById('password').value;
+        if (x == null || x == "") {
+        alert("The password must be filled out");
+        return false;
+        }
+    }
 </script>
+<script src="js/md5.min.js"></script>
 
 
-            </div> 
-            </div>      
-           </div>
+    </div> 
+</div>      
+</div>
 
 
 
-       
+
 </body>
 
 </html>
