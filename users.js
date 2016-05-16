@@ -26,10 +26,10 @@
       }
       else{
           if(results.length>0){
-            console.log(results[0].username);
-            console.log(results[0].passhash);
-            console.log(userInput);
-            console.log(pwdInputCrypted);
+            //console.log(results[0].username);
+            //console.log(results[0].passhash);
+           // console.log(userInput);
+            //console.log(pwdInputCrypted);
             if (userInput===results[0].username && pwdInputCrypted===results[0].passhash) {
                 req.session.user = userInput;
                 res.redirect('/home');
