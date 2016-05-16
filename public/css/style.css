@@ -1,4 +1,4 @@
-/**
+user/**
 	blue-gray: #6C7A89;
 	light-gray: #CACACA;
   dark-gray: #474448;
@@ -96,6 +96,10 @@ h1 {
 	border-right: none;
 	border-left: none;
 	border-top: none;
+}
+
+#newuser-form {
+  display: none;
 }
 
 #sidebar a {

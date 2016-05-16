@@ -3,6 +3,7 @@ var config = require('./config');
 var db = require('./db');
 var users = require('./users');
 var bookmarks = require('./bookmarks');
+var md5 = require('js-md5');
 
 db.init();
 
@@ -31,6 +32,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/login', users.loginForm);
 app.post('/login', users.login);
 app.get('/logout', users.logout);
+
+
+app.post('/newAccount', users.newAccount);
 
 /*  This must go between the users routes and the bookmarks routes */
 app.use(users.auth);
