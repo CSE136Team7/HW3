@@ -23,7 +23,6 @@ app.use(mySession);
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use('/static', express.static(__dirname + '/css'));
 
 /* Routes - consider putting in routes.js */
 app.get('/login', users.loginForm);
