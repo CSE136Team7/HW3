@@ -9,12 +9,40 @@ var debug = require('./debug');
  */
 module.exports.homePage = function(req, res) {
   getBookmarks(function(bookmarks) {
+    bookmarks.sort(mostVisitedCompare);
+    bookmarks.reverse(); // Descending order
     return res.render('index', {
       bookmarks: bookmarks
     });
   })
 
 };
+
+// module.exports.mostVisitedPage = function(req, res) {
+//   getBookmarks(function(bookmarks) {
+//     bookmarks.sort(mostVisitedCompare);
+//     bookmarks.reverse(); // Descending order
+//     return res.render('index', {
+//       bookmarks:
+//     });
+//   })
+//
+// };
+
+module.exports.clicked = function(req, res){
+  debug.print("Received click bookmark request.\n" + JSON.stringify(req.body));
+  var book_ID = req.body.book_ID;
+  var user_ID = req.body.user_ID;
+  var url = req.body.URL;
+  var sql = 'UPDATE bookmarks SET Clicks = Clicks + 1 WHERE book_ID = ' + book_ID + ' AND user_ID = ' + user_ID;
+  db.query(sql, function(err) {
+    if (err) throw err;
+    res.writeHead(301,
+      {Location: url}
+    );
+    res.end();
+  });
+}
 
 module.exports.editPage = function(req, res) {
   getBookmarks(function(bookmarks) {
@@ -108,4 +136,8 @@ var getBookmarks = function(callback) {
     callback(bookmarks);
   });
 
+}
+
+var mostVisitedCompare = function(bookmark1, bookmark2){
+  return bookmark1.Clicks - bookmark2.Clicks;
 }
