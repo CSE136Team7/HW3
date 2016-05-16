@@ -8,12 +8,12 @@ menuButton.onclick = function() {
 	var right = document.getElementById("right");
 	if(sidebar.style.display !== 'none'){
 		sidebar.style.display = 'none';
-		right.style.width = '100%'; 
+		right.style.width = '100%';
 		menuButton.style.color = "#FFF";
 	}
 	else {
 		sidebar.style.display = 'block';
-		right.style.width = '82%'; 
+		right.style.width = '82%';
 		menuButton.style.color = "#FF9EAE";
 	}
 };
@@ -22,6 +22,7 @@ var addBookmark = document.getElementById("add-bookmark");
 var importBookmark = document.getElementById("import-bookmark");
 var addBookmarkForm = document.getElementById("add-bookmark-form");
 var importBookmarkForm = document.getElementById("import-bookmark-form");
+
 
 var SignIn = document.getElementById("signin");
 var NewUser = document.getElementById("newuser");
@@ -49,6 +50,7 @@ NewUser.onclick = function() {
 	NewUser.className = "";
 	NewUser.className = "is-active";
 }
+
 
 addBookmark.onclick = function() {
 	importBookmarkForm.style.display = 'none';

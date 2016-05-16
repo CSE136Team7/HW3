@@ -35,16 +35,16 @@ app.post('/newAccount', users.newAccount);
 
 /*  This must go between the users routes and the bookmarks routes */
 app.use(users.auth);
-console.log("redirect user2");
-app.get('/user1', bookmarks.homePage);
-console.log("redirect user3: "+ app.get('/user1', bookmarks.homePage));
-// app.get('/bookmarks/add', bookmarks.add);
-// app.get('/bookmarks/edit/:bookmark_id(\\d+)', bookmarks.edit);
-// app.get('/bookmarks/confirmdelete/:bookmark_id(\\d+)', bookmarks.confirmdelete);
-// app.get('/bookmarks/delete/:bookmark_id(\\d+)', bookmarks.delete);
-// app.post('/bookmarks/update/:bookmark_id(\\d+)', bookmarks.update);
-// app.post('/bookmarks/insert', bookmarks.insert);
+
+app.get('/home', bookmarks.homePage);
+
+app.post('/bookmarks/star', bookmarks.star);
+app.post('/bookmarks/delete', bookmarks.delete);
+app.post('/bookmarks/insert', bookmarks.insert);
+app.get('/bookmarks/edit', bookmarks.editPage);
+app.post('/bookmarks/update', bookmarks.update);
+app.post('/bookmarks/clicked', bookmarks.clicked);
 
 app.listen(config.PORT, function () {
-  console.log('Example app listening on port ' + config.PORT + '!');
+  console.log('Team 7 Bookmarx app listening on port ' + config.PORT + '!');
 });

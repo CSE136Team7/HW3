@@ -10,6 +10,7 @@
  *
  * Attempt to login the user.  Redirect to /books on successful login and /login on unsuccessful attempt.
  */
+
  module.exports.login = function(req, res) {
   if (req.body.username!="" && req.body.password!=""){
 
@@ -31,7 +32,7 @@
             console.log(pwdInputCrypted);
             if (userInput===results[0].username && pwdInputCrypted===results[0].passhash) {
                 req.session.user = userInput;
-                res.redirect('/user1');
+                res.redirect('/home');
             }
             else{
               res.render('users/errorBadLogin');
@@ -42,6 +43,7 @@
           }
       }
     });
+
   }
   else{
     //Alert message : all the fiels have not been filled up
@@ -112,7 +114,7 @@ module.exports.newAccount = function(req, res){
                 }
                 else{
                     //render an alert message : the account have been created
-                    res.render('users/success');
+                    res.render('users/login');
                 }
               });
           }
