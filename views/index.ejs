@@ -42,8 +42,8 @@
 						  </ul>
 						</div>
 
-						<form  method='post' action='/insert'>
-				    <div id="add-bookmark-form" >
+						<form  method='post' action='/insert' id="add-bookmark-form" >
+				    <div class="form" id="add-bookmark-form" >
 						    <input type="text" name="title" placeholder="Title">
 						    <div class="textFieldWrapper">
 						      <input type="url" name="url" placeholder="URL">
@@ -54,18 +54,12 @@
 						    </div>
 
 							    <div class="buttonWrapper">
-										<input type="submit" value="Save">
-							      	<!-- <div><i class="fa fa-check-circle fa-lg" type="Submit">Save</i></div> -->
+										<input type="submit"  id ="hide-submit-btn" style="visibility:hidden" value="Save">
+							      	<div><i class="fa fa-check-circle fa-lg" id="trigger-submit">Save</i></div>
 							      	<div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
 								 </div>
 						</div>
 					</form>
-
-
-
-
-
-
 
 						<div class="form" id="import-bookmark-form">
 							<div class="textFieldWrapper">

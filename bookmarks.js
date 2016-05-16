@@ -82,11 +82,9 @@ module.exports.insert = function(req, res){
   var description = db.escape(req.body.description);
   var user_ID = db.escape(req.body.user_ID);
   var book_ID = db.escape(req.body.book_ID);
-  console.log("title: "+title+"url: "+url+"description: "+description);
   var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID, book_ID) VALUES (' + title + ',' + 0 + ', ' + url + ', ' + description + ', ' + 3 + ', ' + book_ID + ')';
   db.query(queryString, function(err){
     if(err){
-      console.log("fuck you"+err);
     }
     res.redirect('/home');
   });
