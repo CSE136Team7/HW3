@@ -5,7 +5,7 @@ var debug = require('./debug');
 
 // Return a new session or
 module.exports.create = function(user_ID) {
-    debug.print("Received delete session request.\n");
+    debug.print("Received create session request.\n");
 
 }
 
@@ -23,6 +23,6 @@ module.exports.validate = function(sessionID){
 
 // delete
 module.exports.invalidate = function(sessionID) {
-    debug.print("Received delete session request.\n");
+    debug.print("Received invalidate session request.\n");
 
 }
