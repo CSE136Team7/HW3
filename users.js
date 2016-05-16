@@ -3,6 +3,7 @@
  */
 
 var config = require('./config');
+var db = require('./bookmarks');
 
 /**
  *
@@ -48,3 +49,61 @@ module.exports.auth = function(req, res, next) {
     res.redirect('/login');
   }
 };
+
+
+
+
+
+
+
+
+/*
+ * Render the form to create a new account
+ */
+module.exports.newAccountForm = function(req, res){
+  res.render('users/new');
+};
+
+
+
+module.exports.newAccount = function(req, res){
+  
+  if (req.body.username.trim() != "" && req.body.password.trim() != "" && req.body.name.trim() != "" && req.body.lastname != ""){
+    var user = req.body.username;
+    var pwd = req.body.password;
+    var name = req.body.name;
+    var lastname = req.body.lastname;
+
+    //Look into the data base if there is a login matching the input
+    var sql = 'SELECT username FROM users WHERE username = ' + db.escape(user);
+    db.query(sql, function(err, results) {
+      if(err){
+        throw(err);
+      }
+      else{
+          if (results.length==0){
+            //no existing username --> insert into the table
+               //hashing of the password
+              var pwdCrypted = md5(pwd, user);     
+              var queryString = "INSERT INTO users (username, password) VALUES (" + db.escape(user) +','+ db.escape(pwd)  + ")";
+              db.query(queryString, function(err, result){
+                if (err){
+                   throw err;
+                }
+                else{
+                    //render an alert message : the account have been created
+                    res.render('users/success');
+                }
+              });
+          }
+          else{
+            //already existing username --> alert message
+            res.render('users/errorNew');
+          }
+      }
+    });
+  }
+  else{
+    res.render('users/errorBadForm');
+  }
+ };

@@ -23,6 +23,33 @@ var importBookmark = document.getElementById("import-bookmark");
 var addBookmarkForm = document.getElementById("add-bookmark-form");
 var importBookmarkForm = document.getElementById("import-bookmark-form");
 
+var SignIn = document.getElementById("SignIn");
+var NewUser = document.getElementById("NewUser");
+var SignInForm = document.getElementById("SignIn-form");
+var NewUserForm = document.getElementById("NewUser-form");
+
+
+SignIn.onclick = function() {
+	NewUserForm.style.display = 'none';
+	SignInForm.style.display = 'block';
+
+	NewUser.className = "";
+
+	SignIn.className = "";
+	SignIn.className = "is-active";
+
+}
+
+NewUser.onclick = function() {
+	SignInForm.style.display = 'none';
+	NewUserForm.style.display = 'block';
+
+	SignIn.className = "";
+
+	NewUser.className = "";
+	NewUser.className = "is-active";
+}
+
 
 addBookmark.onclick = function() {
 	importBookmarkForm.style.display = 'none';
