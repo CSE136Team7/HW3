@@ -67,12 +67,12 @@ module.exports.insert = function(req, res) {
 // update
 module.exports.update = function(req, res) {
     debug.print("Received update bookmark request.\n" + JSON.stringify(req.body));
-    var id = req.params.bookmark_ID;
+    var book_ID = req.body.book_ID;
+    var user_ID = req.body.user_ID;
     var title = db.escape(req.body.title);
     var url = db.escape(req.body.url);
-    var title = db.escape(req.body.title);
 
-    var queryString = 'UPDATE bookmarks SET title = ' + title + ', url = ' + url + ', title = ' + title + ' WHERE id = ' + id;
+    var queryString = 'UPDATE books SET title = ' + title + ', url = ' + url + ', WHERE book_ID = ' + book_ID + 'AND user_ID = ' + user_ID;
     db.query(queryString, function(err) {
       if (err) throw err;
       res.redirect('/home');
