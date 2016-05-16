@@ -29,9 +29,9 @@
 </form>
 </body>
 </html>
- -->
+-->
 
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -41,6 +41,8 @@
     <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="index.js"></script>
+
     <style>
     body {
         background-color:#6C7A89;
@@ -59,6 +61,15 @@
         font-family: 'Montserrat', sans-serif;
         font-size: 100px;
     }
+    .logbutton {
+        text-align: center;
+        border:2px solid #ECECEC;
+        background-color:#6C7A89;
+        color:#FF9EAE;
+        width: 15%;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 20px;
+    }
     #outer {
         display: table;
         position: absolute;
@@ -73,6 +84,9 @@
     .button:hover {
         color: #fff;
     }
+    .FormField {
+        width: 50%;
+    }
     </style>
 
 </head>
@@ -83,46 +97,83 @@
                 <i class="fa fa-bookmark-o fa-1x"></i> Bookmarx
             </a>
             
-
             <div class="grid grid-pad">
                 <div class="tabs is-centered">
                     <ul>
-                        <li id="SignIn" class="is-active"><a>Sign in</a></li>
-                        <li id="NewUser"><a>New user?</a></li>
+                        <li id="signin" class="is-active"><a>Sign in</a></li>
+                        <li id="newuser"><a>New User</a></li>
                     </ul>
                 </div>
 
-                <div class="form" id="SignIn-form">
-                    <input type="username" name="username" placeholder="Username">
+                <form method='post' action='/login'>
+
+                    <div class="form" id="signin-form">
+                        <input type="text" name="username" placeholder="Username">
+                        <p></p>
+                        <div class="textFieldWrapper">
+                            <input type="password" name="password" placeholder="Password">
+                        </div>
+
+                        <div class="buttonWrapper">
+                             <br></br>
+                            <input class= "logbutton" type='submit' value="LOGIN">
+                        </div>
+                    
+                    </div>
+                    </form>
+
+                 <form method='post' action='/newAccount'>
+                <div class="form" id="newuser-form">
+                    <input type="text" name="username" placeholder="Enter a username">
                     <p></p>
                     <div class="textFieldWrapper">
-                        <input type="password" name="password" placeholder="Password">
+                        <input type="password" name="password" placeholder="Enter a password">
                     </div>
 
                     <div class="buttonWrapper">
-                        <div><i class="tabs is-centered"></i>Log in</div>
+                          <br></br>
+                        <input class= "logbutton" type='submit' value="SUBMIT">
                     </div>
-
-                </div>  
-                <div class="form" id="NewUser-form">
-                    <input type="username" name="username" placeholder="Username">
-                    <p></p>
-                    <div class="textFieldWrapper">
-                        <input type="password" name="password" placeholder="Password">
-                    </div>
-
-                    <div class="buttonWrapper">
-                        <div><i class="btn btn-primary dropdown-toggle"></i>Submit</div>
-                    </div>
-                </div>  
-                        
-            </div>
+                </div> 
+                </form> 
+                <script>
+var SignIn = document.getElementById("signin");
+var NewUser = document.getElementById("newuser");
+var SignInForm = document.getElementById("signin-form");
+var NewUserForm = document.getElementById("newuser-form");
 
 
+SignIn.onclick = function() {
+    console.log("hello");
+    NewUserForm.style.display = 'none';
+    SignInForm.style.display = 'block';
 
-</div>
+    NewUser.className = "";
 
-</div>
+    SignIn.className = "";
+    SignIn.className = "is-active";
+
+}
+
+NewUser.onclick = function() {
+    SignInForm.style.display = 'none';
+    NewUserForm.style.display = 'block';
+
+    SignIn.className = "";
+
+    NewUser.className = "";
+    NewUser.className = "is-active";
+}
+</script>
+
+
+            </div> 
+            </div>      
+           </div>
+
+
+
+       
 </body>
 
 </html>

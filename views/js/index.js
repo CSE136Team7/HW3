@@ -23,10 +23,10 @@ var importBookmark = document.getElementById("import-bookmark");
 var addBookmarkForm = document.getElementById("add-bookmark-form");
 var importBookmarkForm = document.getElementById("import-bookmark-form");
 
-var SignIn = document.getElementById("SignIn");
-var NewUser = document.getElementById("NewUser");
-var SignInForm = document.getElementById("SignIn-form");
-var NewUserForm = document.getElementById("NewUser-form");
+var SignIn = document.getElementById("signin");
+var NewUser = document.getElementById("newuser");
+var SignInForm = document.getElementById("signin-form");
+var NewUserForm = document.getElementById("newuser-form");
 
 
 SignIn.onclick = function() {
@@ -49,7 +49,6 @@ NewUser.onclick = function() {
 	NewUser.className = "";
 	NewUser.className = "is-active";
 }
-
 
 addBookmark.onclick = function() {
 	importBookmarkForm.style.display = 'none';
