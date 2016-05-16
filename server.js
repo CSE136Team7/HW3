@@ -31,15 +31,13 @@ app.get('/logout', users.logout);
 
 /*  This must go between the users routes and the bookmarks routes */
 app.use(users.auth);
-console.log("redirect user2");
-app.get('/user1', bookmarks.homePage);
-console.log("redirect user3: "+ app.get('/user1', bookmarks.homePage));
+app.get('/home', bookmarks.homePage);
 // app.get('/bookmarks/add', bookmarks.add);
 // app.get('/bookmarks/edit/:bookmark_id(\\d+)', bookmarks.edit);
 // app.get('/bookmarks/confirmdelete/:bookmark_id(\\d+)', bookmarks.confirmdelete);
 // app.get('/bookmarks/delete/:bookmark_id(\\d+)', bookmarks.delete);
 // app.post('/bookmarks/update/:bookmark_id(\\d+)', bookmarks.update);
-// app.post('/bookmarks/insert', bookmarks.insert);
+ app.post('/insert', bookmarks.insert);
 
 app.listen(config.PORT, function () {
   console.log('Example app listening on port ' + config.PORT + '!');

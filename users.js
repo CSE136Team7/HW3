@@ -13,7 +13,7 @@ module.exports.login = function(req, res) {
     req.session.user = req.body.username;
     // Needs to be changed to be specific to the user that is logged in
     console.log("redirect user1");
-    res.redirect('/user1');
+    res.redirect('/home');
   }
   else{
     res.redirect('/login');
