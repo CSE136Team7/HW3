@@ -1,7 +1,6 @@
 /*  TODO: Add Function Blocks
 
  */
-
 var db = require('./db');
 
 /**
@@ -9,9 +8,77 @@ var db = require('./db');
  * renders the page to index.ejs
  */
 module.exports.homePage = function(req, res) {
-  res.render('index');
+  getBookmarks(function(bookmarks){
+    console.log({bookmarks: bookmarks});
+    return res.render('index', {bookmarks: bookmarks});
+  })
+
 };
 
+// Need to authorize user before accepting star / delete
+module.exports.starBookmark = function(req, res){
+  console.log(req.body);
+  var starred = req.body.starred ^ 1;
+  var book_ID = req.body.book_ID;
+  var user_ID = req.body.user_ID;
+
+  // Do validation on book_ID && user_ID
+  var sql = "UPDATE BOOKS SET Star=" + starred + " WHERE user_ID=" + user_ID +
+                " AND book_ID=" + book_ID + ";";
+
+  console.log(sql);
+  db.query(sql,function(err){
+    if(err){
+      throw err;
+    }
+    res.redirect('/home');
+  });
+
+}
+
+// Create
+module.exports.createBookmark = function(req, res) {
+
+
+}
+
+// update
+module.exports.updateBookmark = function(req, res) {
+
+
+}
+// delete
+module.exports.deleteBookmark = function(req, res) {
+  // get userid and book_ID
+  var book_ID = req.body.book_ID;
+  var user_ID = req.body.user_ID;
+  // Do validation on book_ID && user_ID
+  var sql = "DELETE FROM BOOKS WHERE user_ID=" + user_ID +
+                " AND book_ID=" + book_ID + ";";
+  db.query(sql,function(err){
+    if(err){
+      throw err;
+    }
+    res.redirect('/home');
+  });
+}
+// Get
+var getBookmarks = function(callback) {
+  var user_ID = 3;
+
+  var sql = "SELECT * FROM BOOKS WHERE user_ID=" + user_ID + ";";
+
+  db.query(sql,function(err,bookmarks){
+    if(err){
+      throw err;
+    }
+    callback(bookmarks);
+    // console.log(JSON.stringify(bookmarks));
+    // res.end(JSON.stringify(bookmarks));
+    //res.redirect('/bookmarks');
+  });
+
+}
 
 // /**
 //  *
@@ -31,7 +98,7 @@ module.exports.homePage = function(req, res) {
 //  * renders the delete confirmation page with the delete.ejs template
 //  */
 // module.exports.confirmdelete = function(req, res){
-//   var id = req.params.bookmark_id;
+//   var id = req.params.bookmark_ID;
 //   db.query('SELECT * from bookmarks WHERE id =  ' + id, function(err, bookmark) {
 //     if (err) throw err;
 //     res.render('bookmarks/delete', {bookmark: bookmark[0]});
@@ -52,7 +119,7 @@ module.exports.homePage = function(req, res) {
 //  * renders the edit confirmation page with the edit.ejs template
 //  */
 // module.exports.edit = function(req, res) {
-//   var id = req.params.bookmark_id;
+//   var id = req.params.bookmark_ID;
 //   db.query('SELECT * from bookmarks WHERE id =  ' + id, function(err, bookmark) {
 //     if (err) throw err;
 //
@@ -65,7 +132,7 @@ module.exports.homePage = function(req, res) {
 //  * Does a redirect to the list page
 //  */
 // module.exports.delete = function(req, res) {
-//   var id = req.params.bookmark_id;
+//   var id = req.params.bookmark_ID;
 //   db.query('DELETE from bookmarks where id = ' + id, function(err){
 //     if (err) throw err;
 //     res.redirect('/bookmarks');
@@ -92,7 +159,7 @@ module.exports.homePage = function(req, res) {
 //  * Does a redirect to the list page
 //  */
 // module.exports.update = function(req, res){
-//   var id = req.params.bookmark_id;
+//   var id = req.params.bookmark_ID;
 //   var title = db.escape(req.body.title);
 //   var url = db.escape(req.body.url);
 //   var title = db.escape(req.body.title);

@@ -15,6 +15,7 @@ CREATE TABLE `books` (
 `Star` boolean NOT NULL,
 `Description` varchar(180),
 `URL` varchar(256) NOT NULL,
+`Clicks` int DEFAULT 0,
 `user_ID` int NOT NULL,
 `book_ID` int NOT NULL AUTO_INCREMENT,
 PRIMARY KEY (`book_ID`),

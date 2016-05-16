@@ -32,7 +32,11 @@ app.get('/logout', users.logout);
 /*  This must go between the users routes and the bookmarks routes */
 app.use(users.auth);
 console.log("redirect user2");
-app.get('/user1', bookmarks.homePage);
+app.get('/home', bookmarks.homePage);
+
+app.post('/starBookmark', bookmarks.starBookmark);
+app.post('/deleteBookmark', bookmarks.deleteBookmark);
+//app.get('/test', bookmarks.getBookmarks);
 console.log("redirect user3: "+ app.get('/user1', bookmarks.homePage));
 // app.get('/bookmarks/add', bookmarks.add);
 // app.get('/bookmarks/edit/:bookmark_id(\\d+)', bookmarks.edit);
