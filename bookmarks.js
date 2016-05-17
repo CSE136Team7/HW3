@@ -11,7 +11,6 @@ var xlsx = require('node-xlsx');
 
  module.exports.homePage = function(req, res) {
     renderHomePage(getBookmarks,getFolders,"Most Visited", "",function(obj){
-
       res.render('index',obj);
     })
 // =======
@@ -44,7 +43,7 @@ var xlsx = require('node-xlsx');
 //    }
 //  });
 // >>>>>>> 19a23ca6a805a82ef44348539417a9d2ef672ba0
- };
+ }
 
  var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, done){
 
@@ -92,7 +91,7 @@ var getFoldersBookmarks = function(callback) { db.query('SELECT * FROM folder_ha
 //      });
 //  });
 
- };
+ }
 
 
 
@@ -124,7 +123,7 @@ module.exports.editPage = function(req, res) {
     });
   })
 
-};
+}
 
 // Need to authorize user before accepting star / delete
 module.exports.star = function(req, res) {
@@ -193,7 +192,7 @@ module.exports.insert = function(req, res) {
  		res.redirect('/home?error=The form was not filled properly');
  	}
  }
-};
+}
 
 // update
 module.exports.update = function(req, res) {
@@ -233,7 +232,7 @@ else{
     	res.redirect('/home?error=The form was not filled properly');
     }
 }
-  };
+  }
   // delete
 module.exports.delete = function(req, res) {
     debug.print("Received delete bookmark request.\n" + JSON.stringify(req.body));
