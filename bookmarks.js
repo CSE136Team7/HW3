@@ -115,7 +115,7 @@ module.exports.star = function(req, res) {
 
   //Need to do validation on book_ID && user_ID
   var sql = "UPDATE books SET Star=" + starred + " WHERE user_ID=" + user_ID +
-    " AND book_ID=" + book_ID + ";";
+    " AND book_ID=" + book_ID;
 
   db.query(sql, function(err) {
     if (err) {
@@ -160,7 +160,8 @@ module.exports.insert = function(req, res) {
       //var user_ID = db.escape(req.body.user_ID);
       var book_ID = db.escape(req.body.book_ID);
 
-      var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID, book_ID) VALUES (' + title + ',' + 0 + ', ' + description + ', ' + url + ', ' + user_ID + ', ' + book_ID + ')';
+      var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID, book_ID) VALUES ('
+          + title + ',' + 0 + ', ' + description + ', ' + url + ', ' + user_ID + ', ' + book_ID + ')';
 
       db.query(queryString, function(err) {
           if (err) {

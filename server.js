@@ -41,7 +41,8 @@ var mySession = session({
   proxy: false
 });
 
-
+//filesystem to write to file for logging
+var fs = require('fs');
 
 var app = express();
 
@@ -96,7 +97,9 @@ app.get('/', function sendPageWithCounter(req, res) {
 
 /* Stop the annoying cannot GET / */
 app.get('/', function (req, res) {
-  res.send('<h1>404 Not Found</h1><br><p>Please navigate to <a href="login">/login</a></p>');
+  res.redirect('/login');
+  res.send('<h1>404 Not Found</h1><br><p>You are being redirected to <a href="login">/login</a></p>');
+
   debug.print('404 Error: user tried to access /');
 
 });
@@ -124,3 +127,42 @@ app.post('/bookmarks/clicked', bookmarks.clicked);
 app.listen(config.PORT, function () {
   console.log('Team 7 Bookmarx app listening on port ' + config.PORT + '!');
 });
+
+app.get('/admin', function (req, res, next) {
+  var user = req.session.user_ID;
+  if (user === 'undefined')
+    user = 'unsub';
+  debug.print('404 Error: user '+user+' tried to access admin');
+  req.session.destroy();
+  res.redirect('/login');
+  return next();
+});
+app.get('/robot', function (req, res, next) {
+  var user = req.session.user_ID;
+  if (user === 'undefined')
+    user = 'unsub';
+  debug.print('404 Error: user '+user+' tried to access robot');
+  req.session.destroy();
+  res.redirect('/login');
+  return next();
+});
+app.get('/root', function (req, res, next) {
+  var user = req.session.user_ID;
+  if (user === 'undefined')
+  user = 'unsub';
+  debug.print('404 Error: user '+user+' tried to access root');
+  req.session.destroy();
+  res.redirect('/login');
+  return next();
+});
+app.get('/root', function (req, res, next) {
+  var user = req.session.user_ID;
+  if (user === 'undefined')
+    user = 'unsub';
+  debug.print('404 Error: user '+user+' tried to access unknown path');
+  req.session.destroy();
+  res.redirect('/login');
+  return next();
+});
+
+
