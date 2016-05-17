@@ -107,9 +107,9 @@ var getStarred = function(callback,user_ID){
 // >>>>>>> 19a23ca6a805a82ef44348539417a9d2ef672ba0
 //}
 
- var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_ID, done){
+ var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_ID, done, searchstring){
 
-   async.parallel([function(callback){bookmarkFunc(callback,user_ID)},function(callback){folderFunc(callback,user_ID)}],
+   async.parallel([function(callback){bookmarkFunc(callback,user_ID,searchstring)},function(callback){folderFunc(callback,user_ID)}],
       function(err, results){
 
         var bookmarks = results[0];
@@ -300,7 +300,7 @@ module.exports.update = function(req, res) {
 		&& req.body.user_ID != ""
 		&& req.body.book_ID != ""){
 
-		var book_ID = db.escape(req.body.book_ID);
+	var book_ID = db.escape(req.body.book_ID);
 	//var user_ID = db.escape(req.body.user_ID);
 	var title = db.escape(req.body.title);
 	var url = db.escape(req.body.url);
@@ -401,15 +401,34 @@ var mostVisitedCompare = function(bookmark1, bookmark2){
 
 module.exports.find = function (req, res) {
   debug.print ("Search title \n" + JSON.stringify(req.body));
+  var user;
+  if (typeof req.session.user_ID === 'undefined') {
+      //throw err
+    // go to login
+    debug.print('Warning: user went to homePage without a user_ID');
+    req.session.destroy();
+    res.redirect('/login');
+  }
+  user = req.session.user_ID;
   var searchstring = req.query.searchbox;
 
   if (searchstring == null || searchstring.length === 0 ){
     return res.redirect('/home');
   }
   searchstring = searchstring.toLowerCase();
-  var results = [];
 
-  getBookmarks(function(bookmarks){
+  renderHomePage(matchBookmarks,getFolders,"Search Results","",user,
+    function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
+      res.render('index',obj);
+    }, searchstring
+  );
+}
+var getStarred = function(callback,user_ID){
+
+}
+var matchBookmarks = function(callback, user_ID, searchstring){
+  getBookmarks(function(err,bookmarks) {
+    var results = [];
     for (var i= 0; i < bookmarks.length ;i++)  {
 
       var s = bookmarks[i].Title.toLowerCase();
@@ -418,11 +437,8 @@ module.exports.find = function (req, res) {
         results.push(bookmarks[i]);
       }
     };
-
-    return res.render('index', {
-      bookmarks: results
-    });
-  });
+    callback(err,results);
+  },user_ID);
 }
 
 module.exports.createFolder=function(req, res) {
