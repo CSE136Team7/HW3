@@ -5,6 +5,7 @@ var users = require('./users');
 var bookmarks = require('./bookmarks');
 var md5 = require('js-md5');
 
+
 db.init();
 
 var express = require('express');
@@ -21,6 +22,7 @@ var mySession = session({
 });
 
 var app = express();
+app.disable('x-powered-by');
 app.use(mySession);
 
 /*  Not overwriting default views directory of 'views' */
@@ -47,7 +49,11 @@ app.post('/bookmarks/insert', bookmarks.insert);
 app.get('/bookmarks/edit', bookmarks.editPage);
 app.post('/bookmarks/update', bookmarks.update);
 app.post('/bookmarks/clicked', bookmarks.clicked);
+<<<<<<< HEAD
+app.post('/folders', bookmarks.folders);
+=======
 app.get('/find', bookmarks.find);
+>>>>>>> 98a9235cac653a948aa2409954982256662fe3fe
 
 app.listen(config.PORT, function () {
   console.log('Team 7 Bookmarx app listening on port ' + config.PORT + '!');
