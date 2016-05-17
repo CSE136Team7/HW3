@@ -24,8 +24,10 @@
 				<a class="button" id="menu"><i id="menu-icon" class="fa fa-bookmark-o fa-lg"></i> Bookmarx</a>
 			</li>
 			<li class="navbar-left search">
-				<input type="text" placeholder="Search Bookmarks" />
+				<form action="/find" method="get">
+				<input type="text" name = "searchbox" placeholder="Search Bookmarks" />
 				<button><i class="fa fa-search fa-lg"></i></button>
+			</form>
 			</li>
 			<li class="navbar-right">
 				<a class="button" href="#"><i class="fa fa-sort-alpha-asc fa-lg"></i></a>
@@ -101,10 +103,34 @@
 
 		</ul>
 		<div class="buttonWrapper">
-			<div><i class="fa fa-plus-circle fa-lg"></i> Folder</div>
+			<div>
+				<a href="#folderModal" class="button"><i class="fa fa-plus-circle fa-lg"></i> </a> Folder
+			</div>
+
 			<div><i class="fa fa-download fa-lg"></i> Export</div>
 		</div>
 	</div>
+
+	<div id="folderModal" class="modalDialog">
+		<div class="grid grid-pad">
+			<a href="#close" title="Close" class="close x-button">x</a>
+				<div class="tabs is-centered">
+					<ul>
+						<li id="add-folder" class="is-active"><a>Add Folder</a></li>
+					</ul>
+				</div>
+
+				<div class="form" id="add-folder-form">
+						<input type="text" name="folder" placeholder="Folder Name" border-left-width: 2px; margin-left: 40px;>
+
+						<div class="buttonWrapper">
+					<div><i class="fa fa-check-circle fa-lg"></i> Save</div>
+					<div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div id="right">
 		<div class="main grid grid-pad">
 			<div id="title" class="col-1-1">

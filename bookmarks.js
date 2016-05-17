@@ -236,3 +236,31 @@ var getBookmarks = function(callback) {
 var mostVisitedCompare = function(bookmark1, bookmark2){
   return bookmark1.Clicks - bookmark2.Clicks;
 }
+
+
+module.exports.find = function (req, res) {
+  debug.print ("Search title \n" + JSON.stringify(req.body));
+  var searchstring = req.query.searchbox;
+
+  if (searchstring == null || searchstring.length === 0 ){
+    return res.redirect('/home');
+  }
+  searchstring = searchstring.toLowerCase();
+  var results = [];
+
+  getBookmarks(function(bookmarks){
+    console.log(bookmarks);
+    for (var i= 0; i < bookmarks.length ;i++)  {
+
+      var s = bookmarks[i].Title.toLowerCase();
+
+      if (s.indexOf(searchstring) >= 0 ){
+        results.push(bookmarks[i]);
+      }
+    };
+
+    return res.render('index', {
+      bookmarks: results
+    });
+  });
+}
