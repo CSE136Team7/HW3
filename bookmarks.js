@@ -3,31 +3,35 @@
  */
 var db = require('./db');
 var debug = require('./debug');
+var async = require('async');
 /**
  *
  * renders the page to index.ejs
  */
-module.exports.homePage = function(req, res) {
-  getBookmarks(function(bookmarks) {
-    bookmarks.sort(mostVisitedCompare);
-    bookmarks.reverse(); // Descending order
-    return res.render('index', {
-      bookmarks: bookmarks
-    });
-  })
 
+ module.exports.homePage = function(req, res) {
+   var user_ID = 3
+   async.parallel([
+   function(callback) { db.query("SELECT * FROM books WHERE user_ID=" + user_ID, callback) },
+   function(callback) { db.query("SELECT * FROM folders WHERE user_ID=" + user_ID, callback) }
+   ], function(err, results) {
+   if(err) throw err;
+   //console.log("Hello: "+ JSON.stringify(results, null, 4));
+   res.render('index', { bookmarks : results[0][0], folders : results[1][0] })
+ });
 };
 
-// module.exports.mostVisitedPage = function(req, res) {
-//   getBookmarks(function(bookmarks) {
-//     bookmarks.sort(mostVisitedCompare);
-//     bookmarks.reverse(); // Descending order
-//     return res.render('index', {
-//       bookmarks:
-//     });
-//   })
-//
-// };
+ module.exports.folders = function(req, res){
+   var folder_ID = req.body.folder_ID;
+   console.log("folder_ID: "+folder_ID+"hi");
+   var sql = 'SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID = ' + folder_ID + ' AND folder_has_books.book_ID = books.book_ID';
+   db.query(sql, function(err,bookmarks) {
+     if (err) {
+       throw err;
+     }
+     res.render('index',{ bookmarks : bookmarks});
+   });
+ }
 
 module.exports.clicked = function(req, res){
   debug.print("Received click bookmark request.\n" + JSON.stringify(req.body));
