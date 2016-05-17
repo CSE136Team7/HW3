@@ -4,6 +4,7 @@ module.exports = {
   DATABASE_PASSWORD: '',
   DATABASE_NAME: 'bookmarks',
   PORT: 8000,
+  SECRET: 'T34m7R0ckx'
 };
 /*
 DATABASE_HOST: '104.131.110.183',

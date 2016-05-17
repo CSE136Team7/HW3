@@ -4,6 +4,7 @@ var db = require('./db');
 var users = require('./users');
 var bookmarks = require('./bookmarks');
 var md5 = require('js-md5');
+var debug = require('./debug');
 
 
 db.init();
@@ -11,24 +12,98 @@ db.init();
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var MySQLStore = require('express-mysql-session')(session);
+
+//this is the object for express-mysql-session
+var sessionStore = new MySQLStore ({
+  checkExpirationInterval: 15 * 60 * 1000, //15 minutes (900000 milliseconds)
+  expiration: 24 * 60 * 60 * 1000, //24 hours (86400000 milliseconds)
+  createDatabaseTable: true,
+  schema: {
+    tableName: 'sessions',
+    columNames: {
+      session_id: 'session_id',
+      expires: 'expires',
+      data: 'data'
+    }
+  }
+},
+    db.connection
+);
+
 //this is the options object for express-session
 var mySession = session({
-  secret: 'T34m7R0ckx',
+  secret: config.SECRET,
   resave: true,
+  sessionStore: MySQLStore, //uses above store object
   saveUninitialized: true,
   cookie: { secure: false },
-  name: 'Team7cookiesession',
+  name: 'BookmarxTeam7',
   proxy: false
 });
 
+//filesystem to write to file for logging
+var fs = require('fs');
+
 var app = express();
-app.disable('x-powered-by');
+
+/* turn off header */
+//app.disable('x-powered-by');
+/* alternatively: */
+function customHeaders( req, res, next ){
+  // Switch off the default 'X-Powered-By: Express' header
+  app.disable( 'x-powered-by' );
+  // OR set your own header here
+  res.setHeader( 'App-Powered-By', 'Blood, sweat, and tears' );
+  // .. other headers here
+  next()
+}
+app.use( customHeaders );
+
+/* Sessioning (express-session) */
 app.use(mySession);
 
 /*  Not overwriting default views directory of 'views' */
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
+
+/* Set up cookie information */
+//cookie test
+/*app.get('/', function initViewsCount(req, res, next) {
+  if (typeof req.session.views === 'undefined') {
+    req.session.views = 1;
+    return res.end('Welcome to the file session demo. Refresh page!');
+  }
+  return next();
+});
+app.get('/', function incrementViewsCount(req, res, next) {
+  console.assert(typeof req.session.views === 'number',
+      'missing views count in the session', req.session);
+  req.session.views++;
+  return next();
+});*/
+app.use(function printSession(req, res, next) {
+  debug.print2('req.session: ', req.session);
+  return next();
+});
+/*
+app.get('/', function sendPageWithCounter(req, res) {
+  res.setHeader('Content-Type', 'text/html');
+  res.write('<p>views: ' + req.session.views + '</p>\n');
+  res.end();
+});*/
+//Try it yo'self
+//app.get('login')
+
+/* Stop the annoying cannot GET / */
+app.get('/', function (req, res) {
+  res.redirect('/login');
+  res.send('<h1>404 Not Found</h1><br><p>You are being redirected to <a href="login">/login</a></p>');
+
+  debug.print('404 Error: user tried to access /');
+
+});
 
 /* Routes - consider putting in routes.js */
 app.get('/login', users.loginForm);
@@ -49,7 +124,7 @@ app.post('/bookmarks/insert', bookmarks.insert);
 app.get('/bookmarks/edit', bookmarks.editPage);
 app.post('/bookmarks/update', bookmarks.update);
 app.post('/bookmarks/clicked', bookmarks.clicked);
-
+app.get('/folder/starred', bookmarks.starredPage);
 app.post('/createFolder', bookmarks.createFolder);
 
 app.post('/bookmarks/import', bookmarks.import);
@@ -59,4 +134,41 @@ app.get('/find', bookmarks.find);
 
 app.listen(config.PORT, function () {
   console.log('Team 7 Bookmarx app listening on port ' + config.PORT + '!');
+});
+
+app.get('/admin', function (req, res, next) {
+  var user = req.session.user_ID;
+  if (user === 'undefined')
+    user = 'unsub';
+  debug.print('404 Error: user '+user+' tried to access admin');
+  req.session.destroy();
+  res.redirect('/login');
+  return next();
+});
+app.get('/robot', function (req, res, next) {
+  var user = req.session.user_ID;
+  if (user === 'undefined')
+    user = 'unsub';
+  debug.print('404 Error: user '+user+' tried to access robot');
+  req.session.destroy();
+  res.redirect('/login');
+  return next();
+});
+app.get('/root', function (req, res, next) {
+  var user = req.session.user_ID;
+  if (user === 'undefined')
+  user = 'unsub';
+  debug.print('404 Error: user '+user+' tried to access root');
+  req.session.destroy();
+  res.redirect('/login');
+  return next();
+});
+app.get('/root', function (req, res, next) {
+  var user = req.session.user_ID;
+  if (user === 'undefined')
+    user = 'unsub';
+  debug.print('404 Error: user '+user+' tried to access unknown path');
+  req.session.destroy();
+  res.redirect('/login');
+  return next();
 });
