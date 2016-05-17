@@ -23,6 +23,7 @@ var utility = require('./utility');
        return res.render('index', {
          bookmarks: bookmarks,
          folders : results[1][0],
+         dropdown_books:results[0][0],
          filter: 'Most Visited',
          errormsg: req.query.error
        });
@@ -30,6 +31,7 @@ var utility = require('./utility');
      return res.render('index', {
        folders : results[1][0],
        bookmarks: bookmarks,
+       dropdown_books:results[0][0],
        filter: 'Most Visited',
 
        errormsg: ""

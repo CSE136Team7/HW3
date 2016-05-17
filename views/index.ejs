@@ -120,14 +120,24 @@
 					</ul>
 				</div>
 
+
+				<form action="/add_books" method="post">
 				<div class="form" id="add-folder-form">
 						<input type="text" name="folder" placeholder="Folder Name" border-left-width: 2px; margin-left: 40px;>
+						<select>
+							<option ></option>
+							<% bookmarks.forEach(function(drop) { %>
+							<option ><%= drop.Title%></option>
+							<% }); %>
+						</select>
 
 						<div class="buttonWrapper">
 					<div><i class="fa fa-check-circle fa-lg"></i> Save</div>
 					<div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
 				</div>
 			</div>
+		</form>
+
 		</div>
 	</div>
 
