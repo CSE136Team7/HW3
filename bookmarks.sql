@@ -37,48 +37,6 @@ FOREIGN KEY (`folder_ID`) REFERENCES `folders` (`folder_ID`) ON DELETE CASCADE,
 FOREIGN KEY (`book_ID`) REFERENCES `books` (`book_ID`) ON DELETE CASCADE
 );
 
-
-INSERT INTO `users` SET `username`='test_username', `passhash`='RBX123';
-INSERT INTO `books` SET `Title`='test_books', `Star`=0, `Description`='optional', `URL`='www.google.com', `user_ID`=1;
-INSERT INTO `folders` SET `Name`='test_folders', `user_ID`='1';
-INSERT INTO `folder_has_books` SET `folder_ID`='1',`book_ID` ='1';
-
-#INSERT INTO users SET username='', passhash='';
-#user_ID = 2
-INSERT INTO `users` SET `username`='bob', `passhash`='IAE123';
-#user_ID = 3
-INSERT INTO `users` SET `username`='joe', `passhash`='OKD123';
-#user_ID = 4
-INSERT INTO `users` SET `username`='mark', `passhash`='PVQ123';
-#user_ID = 5
-INSERT INTO `users` SET `username`='jane', `passhash`='MDX123';
-#user_ID = 6
-INSERT INTO `users` SET `username`='sally', `passhash`='IJV123';
-
-#INSERT INTO books SET Title='', Star=, Description='', URL='', user_ID=;
-#bob
-INSERT INTO `books` SET `Title`='Bookmark1', `Star`=1, `Description`='generic1', `URL`='foo.com', `user_ID`=2;
-INSERT INTO `books` SET `Title`='Bookmark2', `Star`=0, `Description`='generic2', `URL`='bar.com', `user_ID`=2;
-INSERT INTO `books` SET `Title`='Bookmark3', `Star`=0, `Description`='generic3', `URL`='example.com', `user_ID`=2;
-#joe
-INSERT INTO `books` SET `Title`='Gooooooogle', `Star`=0, `Description`='search', `URL`='google.com', `user_ID`=3;
-INSERT INTO `books` SET `Title`='Reddit', `Star`=1, `Description`='Gossip', `URL`='reddit.com', `user_ID`=3;
-INSERT INTO `books` SET `Title`='Shopping', `Star`=1, `Description`='Amazon', `URL`='amazon.com', `user_ID`=3;
-#mark
-INSERT INTO `books` SET `Title`='ex1', `Star`=0, `Description`='gen1', `URL`='a.com', `user_ID`=4;
-INSERT INTO `books` SET `Title`='ex2', `Star`=0, `Description`='gen2', `URL`='b.com', `user_ID`=4;
-INSERT INTO `books` SET `Title`='ex3', `Star`=0, `Description`='gen3', `URL`='c.com', `user_ID`=4;
-#jane
-INSERT INTO `books` SET `Title`='ex4', `Star`=1, `Description`='notblank', `URL`='d.com', `user_ID`=5;
-INSERT INTO `books` SET `Title`='ex5', `Star`=1, `Description`='', `URL`='e.com', `user_ID`=5;
-INSERT INTO `books` SET `Title`='ex6', `Star`=1, `Description`='notblank', `URL`='f.com', `user_ID`=5;
-#sally
-INSERT INTO `books` SET `Title`='ex7', `Star`=0, `Description`='notblank', `URL`='g.com', `user_ID`=6;
-INSERT INTO `books` SET `Title`='ex8', `Star`=1, `Description`='', `URL`='h.com', `user_ID`=6;
-INSERT INTO `books` SET `Title`='ex9', `Star`=1, `Description`='', `URL`='i.com', `user_ID`=6;
-
-#INSERT INTO folders SET Name='', user_ID='';
-#joe
 INSERT INTO `folders` SET `Name`='Fun', `user_ID`='3';
 INSERT INTO `folders` SET `Name`='Shop', `user_ID`='3';
 INSERT INTO `folders` SET `Name`='Search', `user_ID`='3';
