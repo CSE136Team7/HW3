@@ -94,18 +94,47 @@ module.exports.star = function(req, res) {
  */
 module.exports.insert = function(req, res) {
   debug.print("Received insert bookmark request.\n" + JSON.stringify(req.body));
-  var title = db.escape(req.body.title);
-  var url = db.escape(req.body.url);
-  var description = db.escape(req.body.description);
-  var user_ID = db.escape(req.body.user_ID);
-  var book_ID = db.escape(req.body.book_ID);
-  var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID, book_ID) VALUES (' + title + ',' + 0 + ', ' + description + ', ' + url + ', ' + 3 + ', ' + book_ID + ')';
-  db.query(queryString, function(err) {
-    if (err) {
-      debug.print("Query failed err:" + err);
-    }
-    res.redirect('/home');
-  });
+
+ 	if (req.body.title != "" 
+ 		&& req.body.url != "" 
+ 		&& req.body.user_ID != ""
+ 		&& req.body.book_ID != ""){
+
+
+ 		var title = db.escape(req.body.title);
+ 	var url = db.escape(req.body.url);
+ 	var description = db.escape(req.body.description);
+ 	var user_ID = db.escape(req.body.user_ID);
+ 	var book_ID = db.escape(req.body.book_ID);
+
+ 	var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID, book_ID) VALUES (' + title + ',' + 0 + ', ' + description + ', ' + url + ', ' + 3 + ', ' + book_ID + ')';
+
+ 	db.query(queryString, function(err) {
+ 		if (err) {
+ 			debug.print("Query failed err:" + err);
+ 			throw(err);
+ 		}
+ 		else {
+ 			res.redirect('/home');
+
+ 		}
+ 	});
+ }
+
+ else{
+ 	if (req.body.title == "" && req.body.url == "" ) {
+ 		res.redirect('/home?error=Please specify a title and a URL for your bookmark');
+ 	}
+ 	if (req.body.title == "" ) {
+ 		res.redirect('/home?error=Please specify a title for your bookmark');
+ 	}
+ 	if (req.body.url == "" ) {
+ 		res.redirect('/home?error=Error, ou forgot to enter the URL');
+ 	}
+ 	else {
+ 		res.redirect('/home?error=The form was not filled properly');
+ 	}
+ }
 };
 
 // update
