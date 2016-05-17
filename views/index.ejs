@@ -42,7 +42,7 @@
 						<div class="tabs is-centered">
 							<ul>
 								<li id="add-bookmark" class="is-active"><a>Add Bookmark</a></li>
-								<li id="import-bookmark"><a>Import Bookmarks</a></li>
+								<li id="import-bookmark"><a href="#importBookmark">Import Bookmarks</a></li>
 							</ul>
 						</div>
 
@@ -67,15 +67,41 @@
 							</div>
 						</form>
 
-						<div class="form" id="import-bookmark-form">
-							<div class="textFieldWrapper">
-								<input type="url" name="url" placeholder="File Path">
-							</div>
-							<div class="buttonWrapper">
-								<div><i class="fa fa-folder-open fa-lg"></i> Browse</div>
-								<div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
-							</div>
+
+					</div>
+				</div>
+				<a href="#importBookmark" class="button">Import Bookmark</i></a>
+				<div id="importBookmark" class="modalDialog">
+
+					<div class="grid grid-pad">
+						<a href="#close" title="Close" class="close x-button">x</a>
+						<div class="tabs is-centered">
+							<ul>
+								<li id="add-bookmark" ><a href="#addModal">Add Bookmark</a></li>
+								<li id="import-bookmark" class="is-active"><a href="#import-bookmark-form">Import Bookmarks</a></li>
+							</ul>
 						</div>
+
+						<form method='post' action='/bookmarks/import' enctype="multipart/form-data">
+							<input type="file" name="file" accept=".csv" />
+
+								<div class="buttonWrapper">
+									<!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
+									<button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Import</i></button>
+									<div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
+								</div>
+						</form>
+
+
+					</div>
+				</div>
+				<div class="form" id="import-bookmark-form">
+					<div class="textFieldWrapper">
+						<input type="url" name="url" placeholder="File Path">
+					</div>
+					<div class="buttonWrapper">
+						<div><i class="fa fa-folder-open fa-lg"></i> Browse</div>
+						<div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
 					</div>
 				</div>
 			</li>

@@ -48,7 +48,7 @@ app.post('/bookmarks/insert', bookmarks.insert);
 app.get('/bookmarks/edit', bookmarks.editPage);
 app.post('/bookmarks/update', bookmarks.update);
 app.post('/bookmarks/clicked', bookmarks.clicked);
-
+app.post('/bookmarks/import', bookmarks.import);
 app.listen(config.PORT, function () {
   console.log('Team 7 Bookmarx app listening on port ' + config.PORT + '!');
 });

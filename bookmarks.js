@@ -1,9 +1,8 @@
-/*  TODO: Add Function Blocks
-
- */
 var db = require('./db');
 var debug = require('./debug');
 var utility = require('./utility');
+var xlsx = require('node-xlsx');
+// import xlsx from 'node-xlsx';
 /**
  *
  * renders the page to index.ejs
@@ -140,6 +139,10 @@ module.exports.delete = function(req, res) {
       res.redirect('/home');
     });
   }
+
+module.exports.import = function (req, res) {
+  var file = req.body.file;
+}
   // Get list of bookmarks for user 3 for now until users are set up.
 var getBookmarks = function(callback) {
   var user_ID = 3;
