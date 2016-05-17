@@ -87,7 +87,9 @@ module.exports.insert = function(req, res) {
   var book_ID = db.escape(req.body.book_ID);
   var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID, book_ID) VALUES (' + title + ',' + 0 + ', ' + description + ', ' + url + ', ' + 3 + ', ' + book_ID + ')';
   db.query(queryString, function(err) {
-    if (err) {}
+    if (err) {
+      debug.print("Query failed err:" + err);
+    }
     res.redirect('/home');
   });
 };
