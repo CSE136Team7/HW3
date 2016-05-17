@@ -23,6 +23,7 @@ var xlsx = require('node-xlsx');
        return res.render('index', {
          bookmarks: bookmarks,
          folders : results[1][0],
+         dropdown_books:results[0][0],
          filter: 'Most Visited',
          errormsg: req.query.error
        });
@@ -30,6 +31,7 @@ var xlsx = require('node-xlsx');
      return res.render('index', {
        folders : results[1][0],
        bookmarks: bookmarks,
+       dropdown_books:results[0][0],
        filter: 'Most Visited',
 
        errormsg: ""
@@ -46,7 +48,6 @@ var xlsx = require('node-xlsx');
    function(callback) { db.query('SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID = ' + folder_ID + ' AND folder_has_books.book_ID = books.book_ID', callback) },
    function(callback) { db.query("SELECT * FROM folders WHERE user_ID=" + user_ID, callback) }
    ], function(err, results) {
-     console.log("hello: \n"+ JSON.stringify(results,null,4));
      if(err){
        throw err;
      }
@@ -272,4 +273,8 @@ module.exports.find = function (req, res) {
       bookmarks: results
     });
   });
+}
+
+module.exports.createFolder=function(req, res) {
+  console.log("req.body: "+JSON.stringify(req.body,null,4));
 }
