@@ -11,12 +11,13 @@ var utility = require('./utility');
  */
 
  module.exports.homePage = function(req, res) {
-   var user_ID = 3
+   var user_ID = 1;
    async.parallel([
    function(callback) { db.query("SELECT * FROM books WHERE user_ID=" + user_ID, callback) },
    function(callback) { db.query("SELECT * FROM folders WHERE user_ID=" + user_ID, callback) }
    ], function(err, results) {
      var bookmarks = results[0][0];
+     console.log(bookmarks);
      bookmarks.sort(mostVisitedCompare);
      bookmarks.reverse();
      if(req.query.error){
@@ -41,7 +42,7 @@ var utility = require('./utility');
  module.exports.folders = function(req, res){
    var folder_ID = req.body.folder_ID;
    console.log("req.body: "+req.body );
-   var user_ID = 3;
+   var user_ID = 1;
    async.parallel([
    function(callback) { db.query('SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID = ' + folder_ID + ' AND folder_has_books.book_ID = books.book_ID', callback) },
    function(callback) { db.query("SELECT * FROM folders WHERE user_ID=" + user_ID, callback) }
@@ -106,8 +107,7 @@ module.exports.star = function(req, res) {
     if (err) {
       throw err;
     }
-    res.redirect('/home?error=Invalid form entry');
-    //res.redirect('/home');
+    res.redirect('/home');
   });
 
 }
@@ -131,7 +131,7 @@ module.exports.insert = function(req, res) {
  	var user_ID = db.escape(req.body.user_ID);
  	var book_ID = db.escape(req.body.book_ID);
 
- 	var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID, book_ID) VALUES (' + title + ',' + 0 + ', ' + description + ', ' + url + ', ' + 3 + ', ' + book_ID + ')';
+ 	var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID, book_ID) VALUES (' + title + ',' + 0 + ', ' + description + ', ' + url + ', ' + 1 + ', ' + book_ID + ')';
 
  	db.query(queryString, function(err) {
  		if (err) {
@@ -166,6 +166,7 @@ module.exports.update = function(req, res) {
 
 	if (req.body.title != ""
 		&& req.body.url != ""
+    && req.body.description != ""
 		&& req.body.user_ID != ""
 		&& req.body.book_ID != ""){
 
@@ -173,8 +174,9 @@ module.exports.update = function(req, res) {
 	var user_ID = db.escape(req.body.user_ID);
 	var title = db.escape(req.body.title);
 	var url = db.escape(req.body.url);
+  var description = db.escape(req.body.description);
 
-	var queryString = 'UPDATE books SET Title = ' + title + ', URL = ' + url + ' WHERE book_ID=' + book_ID + ' AND user_ID=' + user_ID + ';';
+	var queryString = 'UPDATE books SET Title = ' + title + ', URL = ' + url + ', Description = ' + description + ' WHERE book_ID=' + book_ID + ' AND user_ID=' + user_ID + ';';
 	debug.print(queryString);
 	db.query(queryString, function(err) {
 		if (err) throw err;
@@ -188,6 +190,9 @@ else{
     }
     if (req.body.url == "" ) {
     	res.redirect('/home?error=Error, you entered an empty url');
+    }
+    if (req.body.description == "") {
+      res.redirect('/home?error=Error, please provide a description.');
     }
     else {
     	res.redirect('/home?error=The form was not filled properly');
@@ -218,9 +223,9 @@ module.exports.delete = function(req, res) {
       }
     });
   }
-  // Get list of bookmarks for user 3 for now until users are set up.
+  // Get list of bookmarks for user 1 for now until users are set up.
 var getBookmarks = function(callback) {
-  var user_ID = 3;
+  var user_ID = 1;
 
   var sql = "SELECT * FROM BOOKS WHERE user_ID=" + user_ID + ";";
 
