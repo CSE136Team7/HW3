@@ -36,9 +36,8 @@ module.exports.homePage = function(req, res) {
       bookmarks: bookmarks,
       errormsg: ""
     });
-  },
-      user
-  )
+  }}, user
+    )
 };
 
 // module.exports.mostVisitedPage = function(req, res) {
@@ -53,19 +52,21 @@ module.exports.homePage = function(req, res) {
 // };
 
 module.exports.clicked = function(req, res){
+
+  debug.print("Received click bookmark request.\n" + JSON.stringify(req.body));
+
   var user_ID;
   if (typeof req.session.user_ID === 'undefined') {
     //throw err
-    debug.print('bad user got to homePage without a user_ID');
-
+    debug.print('Warning: user tried to click a bookmark without a user_ID');
     req.session.destroy();
     // go to login
-    res.redirect('/login');
+    res.redirect('/login?error=You are not logged in');
   }
   else {
     user_ID = req.session.user_ID;
   }
-  debug.print("Received click bookmark request.\n" + JSON.stringify(req.body));
+
   var book_ID = req.body.book_ID;
   var url = req.body.URL;
   var sql = 'UPDATE bookmarks SET Clicks = Clicks + 1 WHERE book_ID = ' + book_ID + ' AND user_ID = ' + user_ID;
@@ -95,9 +96,21 @@ module.exports.editPage = function(req, res) {
 module.exports.star = function(req, res) {
   debug.print("Received star bookmark request:\n" + JSON.stringify(req.body));
 
+  var user_ID;
+  if (typeof req.session.user_ID === 'undefined') {
+    //throw err
+    debug.print('Warning: user tried to star a bookmark without a user_ID');
+    req.session.destroy();
+    // go to login
+    res.redirect('/login?error=You are not logged in');
+  }
+  else {
+    user_ID = req.session.user_ID;
+  }
+
   var starred = req.body.starred ^ 1;
   var book_ID = req.body.book_ID;
-  var user_ID = req.body.user_ID;
+  //var user_ID = req.body.user_ID;
 
   //Need to do validation on book_ID && user_ID
   var sql = "UPDATE BOOKS SET Star=" + starred + " WHERE user_ID=" + user_ID +
@@ -124,9 +137,9 @@ module.exports.insert = function(req, res) {
   if (typeof req.session.user_ID === 'undefined') {
     //throw err
     // go to login
-    debug.print('bad user got to homePage without a user_ID');
+    debug.print('Warning: user tried to insert a bookmark without a user_ID');
     req.session.destroy();
-    res.redirect('/login');
+    res.redirect('/login?error=You are not logged in');
   }
   //else
   user = req.session.user_ID;
@@ -137,24 +150,24 @@ module.exports.insert = function(req, res) {
  		&& req.body.book_ID != ""){
 
 
- 		var title = db.escape(req.body.title);
- 	var url = db.escape(req.body.url);
- 	var description = db.escape(req.body.description);
- 	//var user_ID = db.escape(req.body.user_ID);
- 	var book_ID = db.escape(req.body.book_ID);
+      var title = db.escape(req.body.title);
+ 	  var url = db.escape(req.body.url);
+      var description = db.escape(req.body.description);
+      //var user_ID = db.escape(req.body.user_ID);
+      var book_ID = db.escape(req.body.book_ID);
 
- 	var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID, book_ID) VALUES (' + title + ',' + 0 + ', ' + description + ', ' + url + ', ' + 3 + ', ' + book_ID + ')';
+      var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID, book_ID) VALUES (' + title + ',' + 0 + ', ' + description + ', ' + url + ', ' + 3 + ', ' + book_ID + ')';
 
- 	db.query(queryString, function(err) {
- 		if (err) {
- 			debug.print("Query failed err:" + err);
- 			throw(err);
- 		}
- 		else {
- 			res.redirect('/home');
- 		}
- 	});
- }
+      db.query(queryString, function(err) {
+          if (err) {
+              debug.print("Query failed err:" + err);
+              throw(err);
+          }
+          else {
+              res.redirect('/home');
+          }
+      });
+    }
 
  else{
  	if (req.body.title == "" && req.body.url == "" ) {
