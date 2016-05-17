@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,14 +7,185 @@
 <body>
 <h1>Login</h1>
 <form method='post' action='/login'>
-    <!--  Use CSS to be modern -->
+    
     <table>
         <tr>
-            <td>Username: </td><td><input type="text" name="username"  value="" placeholder="Use 'cse136User'" ></td></tr>
-            <tr><td>Password: </td><td><input type="password" name="password" value="" placeholder="Use 'cse136PW'"></td></tr>
-            <tr><td colspan="2"><input type='submit' value="LOGIN"></td>
+            <td>Username: </td><td><input type="text" name="username"  value="" placeholder="Use 'cse136User'" ></td>
+        </tr>
+        <tr>
+            <td>Password: </td><td><input type="password" name="password" value="" placeholder="Use 'cse136PW'"></td>
+        </tr>
+        <tr>
+            <td><input type='submit' value="LOGIN"></td>
+        </tr>
+    </table>
+</form>
+<form method="post" action="/newAccountForm">
+    <table>
+        <tr>
+            <td><input type="submit" value="New member ?"></td>
         </tr>
     </table>
 </form>
 </body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Bookmarx</title>
+    <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="index.js"></script>
+
+    <style>
+    body {
+        background-color:#6C7A89;
+    }
+
+    a {
+        text-decoration: none;
+    }
+    .button {
+        left:0px;
+        border:2px solid #ECECEC;
+        border:none;
+        background-color:#6C7A89;
+        color:#FF9EAE;
+        width: 25%;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 100px;
+    }
+    .logbutton {
+        text-align: center;
+        border:2px solid #ECECEC;
+        background-color:#6C7A89;
+        color:#FF9EAE;
+        width: 15%;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 20px;
+    }
+    #outer {
+        display: table;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+    }
+    #middle {
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .button:hover {
+        color: #fff;
+    }
+    .FormField {
+        width: 50%;
+    }
+    </style>
+
+</head>
+<body>
+    <div id="outer">
+        <div id="middle">
+            <a class="button" href="index.html">
+                <i class="fa fa-bookmark-o fa-1x"></i> Bookmarx
+            </a>
+            
+            <div class="grid grid-pad">
+                <div class="tabs is-centered">
+                    <ul>
+                        <li id="signin" class="is-active"><a>Sign in</a></li>
+                        <li id="newuser"><a>New User</a></li>
+                    </ul>
+                </div>
+
+                <form method='post' action='/login'>
+
+                    <div class="form" id="signin-form">
+                        <input type="text" name="username" placeholder="Username">
+                        <p></p>
+                        <div class="textFieldWrapper">
+                            <input type="password" name="password" placeholder="Password">
+                        </div>
+
+                        <div class="buttonWrapper">
+                           <br></br>
+                           <input class= "logbutton" type='submit' value="LOG IN">
+                       </div>
+
+                   </div>
+               </form>
+
+               <form method='post' action='/newAccount' onsubmit="return validateForm()">
+                <div class="form" id="newuser-form">
+                    <input type="text" name="username" placeholder="Enter a username" autocomplete="new-password">
+                    <p></p>
+                    <div class="textFieldWrapper">
+                        <input type="password" name="password" placeholder="Enter a password" autocomplete="new-password">
+                    </div>
+
+                    <div class="buttonWrapper">
+                      <br></br>
+                      <input class= "logbutton" type='submit' value="SUBMIT">
+                  </div>
+              </div> 
+          </form> 
+          <script>
+
+
+        var SignIn = document.getElementById("signin");
+        var NewUser = document.getElementById("newuser");
+        var SignInForm = document.getElementById("signin-form");
+        var NewUserForm = document.getElementById("newuser-form");
+
+
+        SignIn.onclick = function() {
+            console.log("hello");
+            NewUserForm.style.display = 'none';
+            SignInForm.style.display = 'block';
+
+            NewUser.className = "";
+
+            SignIn.className = "";
+            SignIn.className = "is-active";
+
+        }
+
+        NewUser.onclick = function() {
+            SignInForm.style.display = 'none';
+            NewUserForm.style.display = 'block';
+
+            SignIn.className = "";
+
+            NewUser.className = "";
+            NewUser.className = "is-active";
+        }
+
+        </script>
+        <script>
+    function validateForm(){
+        var x = document.getElementById('password').value;
+        if (x == null || x == "") {
+        alert("The password must be filled out");
+        return false;
+        }
+    }
+</script>
+
+
+    </div> 
+</div>      
+</div>
+
+
+
+
+</body>
+
 </html>

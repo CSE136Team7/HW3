@@ -1,45 +1,47 @@
 <!DOCTYPE html>
-<html>
+<!-- Landing page with Login and Signup options -->
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<title>Bookmarx</title>
+
 	<link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<!-- can we download this resource instead of linking to it? -->
 	<link href='https://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
 	<style>
-		body {
-			background-color:#6C7A89;
-		}
+	body {
+		background-color:#6C7A89;
+	}
 
-		a {
-			text-decoration: none;
-		}
-		.button {
-			left:0px;
-		    border:2px solid #ECECEC;
-		    border:none;
-		    background-color:#6C7A89;
-		    color:#FF9EAE;
-		    width: 25%;
-		    font-family: 'Montserrat', sans-serif;
-		    font-size: 100px;
-		}
-		#outer {
-		    display: table;
-		    position: absolute;
-		    height: 100%;
-		    width: 100%;
-		}
-		#middle {
-    		text-align: center;
-    		display: table-cell;
-    		vertical-align: middle;
-		}
-		.button:hover {
-			color: #fff;
-		}
+	a {
+		text-decoration: none;
+	}
+	.button {
+		left:0px;
+		border:2px solid #ECECEC;
+		border:none;
+		background-color:#6C7A89;
+		color:#FF9EAE;
+		width: 25%;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 100px;
+	}
+	#outer {
+		display: table;
+		position: absolute;
+		height: 100%;
+		width: 100%;
+	}
+	#middle {
+		text-align: center;
+		display: table-cell;
+		vertical-align: middle;
+	}
+	.button:hover {
+		color: #fff;
+	}
 	</style>
 
 </head>
@@ -49,8 +51,47 @@
 			<a class="button" href="index.html">
 				<i class="fa fa-bookmark-o fa-1x"></i> Bookmarx
 			</a>
-		</div>
-	</div>
+			
+
+			<div class="grid grid-pad">
+				<div class="tabs is-centered">
+					<ul>
+						<li id="SignIn" class="is-active"><a>Sign in</a></li>
+						<li id="NewUser"><a>New user?</a></li>
+					</ul>
+				</div>
+
+				<div class="form" id="SignIn-form">
+					<input type="username" name="username" placeholder="Username">
+					<p></p>
+					<div class="textFieldWrapper">
+						<input type="password" name="password" placeholder="Password">
+					</div>
+
+					<div class="buttonWrapper">
+						<div><i class="tabs is-centered"></i>Log in</div>
+					</div>
+
+				</div>	
+				<div class="form" id="NewUser-form">
+					<input type="username" name="username" placeholder="Username">
+					<p></p>
+					<div class="textFieldWrapper">
+						<input type="password" name="password" placeholder="Password">
+					</div>
+
+					<div class="buttonWrapper">
+						<div><i class="btn btn-primary dropdown-toggle"></i>Submit</div>
+					</div>
+				</div>	
+					    
+			</div>
+
+
+
+</div>
+
+</div>
 </body>
 
 </html>

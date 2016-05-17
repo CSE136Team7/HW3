@@ -3,20 +3,25 @@ var config = require('./config');
 var db = require('./db');
 var users = require('./users');
 var bookmarks = require('./bookmarks');
+var md5 = require('js-md5');
 
 db.init();
 
 var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+//this is the options object for express-session
 var mySession = session({
-  secret: 'N0deJS1sAw3some',
+  secret: 'T34m7R0ckx',
   resave: true,
   saveUninitialized: true,
-  cookie: { secure: false }
+  cookie: { secure: false },
+  name: 'Team7cookiesession',
+  proxy: false
 });
 
 var app = express();
+app.disable('x-powered-by');
 app.use(mySession);
 
 /*  Not overwriting default views directory of 'views' */
@@ -28,6 +33,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/login', users.loginForm);
 app.post('/login', users.login);
 app.get('/logout', users.logout);
+
+
+app.post('/newAccount', users.newAccount);
 
 /*  This must go between the users routes and the bookmarks routes */
 app.use(users.auth);
