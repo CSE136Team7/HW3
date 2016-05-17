@@ -1,5 +1,6 @@
 var db = require('./db');
 var debug = require('./debug');
+var async = require('async');
 var utility = require('./utility');
 var xlsx = require('node-xlsx');
 // import xlsx from 'node-xlsx';
@@ -7,35 +8,58 @@ var xlsx = require('node-xlsx');
  *
  * renders the page to index.ejs
  */
-module.exports.homePage = function(req, res) {
-  debug.print(req.query);
-  getBookmarks(function(bookmarks) {
-    bookmarks.sort(mostVisitedCompare);
-    bookmarks.reverse(); // Descending order
-    if(req.query.error){
-      return res.render('index', {
-        bookmarks: bookmarks,
-        errormsg: req.query.error
-      });
-    } else{
-    return res.render('index', {
-      bookmarks: bookmarks,
-      errormsg: ""
-    });
-  }
-  })
-};
 
-// module.exports.mostVisitedPage = function(req, res) {
-//   getBookmarks(function(bookmarks) {
-//     bookmarks.sort(mostVisitedCompare);
-//     bookmarks.reverse(); // Descending order
-//     return res.render('index', {
-//       bookmarks:
-//     });
-//   })
-//
-// };
+ module.exports.homePage = function(req, res) {
+   var user_ID = 3
+   async.parallel([
+   function(callback) { db.query("SELECT * FROM books WHERE user_ID=" + user_ID, callback) },
+   function(callback) { db.query("SELECT * FROM folders WHERE user_ID=" + user_ID, callback) }
+   ], function(err, results) {
+     var bookmarks = results[0][0];
+     bookmarks.sort(mostVisitedCompare);
+     bookmarks.reverse();
+     if(req.query.error){
+       return res.render('index', {
+         bookmarks: bookmarks,
+         folders : results[1][0],
+         filter: 'Most Visited',
+         errormsg: req.query.error
+       });
+     } else{
+     return res.render('index', {
+       folders : results[1][0],
+       bookmarks: bookmarks,
+       filter: 'Most Visited',
+
+       errormsg: ""
+     });
+   }
+ });
+ };
+
+ module.exports.folders = function(req, res){
+   var folder_ID = req.body.folder_ID;
+   console.log("req.body: "+req.body );
+   var user_ID = 3;
+   async.parallel([
+   function(callback) { db.query('SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID = ' + folder_ID + ' AND folder_has_books.book_ID = books.book_ID', callback) },
+   function(callback) { db.query("SELECT * FROM folders WHERE user_ID=" + user_ID, callback) }
+   ], function(err, results) {
+     console.log("hello: \n"+ JSON.stringify(results,null,4));
+     if(err){
+       throw err;
+     }
+     return res.render('index', {
+       folders : results[1][0],
+       bookmarks: results[0][0],
+       errormsg: ""
+     });
+ });
+ };
+
+
+
+
 
 module.exports.clicked = function(req, res){
   debug.print("Received click bookmark request.\n" + JSON.stringify(req.body));
@@ -94,8 +118,8 @@ module.exports.star = function(req, res) {
 module.exports.insert = function(req, res) {
   debug.print("Received insert bookmark request.\n" + JSON.stringify(req.body));
 
- 	if (req.body.title != "" 
- 		&& req.body.url != "" 
+ 	if (req.body.title != ""
+ 		&& req.body.url != ""
  		&& req.body.user_ID != ""
  		&& req.body.book_ID != ""){
 
@@ -139,8 +163,8 @@ module.exports.insert = function(req, res) {
 module.exports.update = function(req, res) {
     debug.print("Received update bookmark request.\n" + JSON.stringify(req.body));
 
-	if (req.body.title != "" 
-		&& req.body.url != "" 
+	if (req.body.title != ""
+		&& req.body.url != ""
 		&& req.body.user_ID != ""
 		&& req.body.book_ID != ""){
 
@@ -214,4 +238,32 @@ var getBookmarks = function(callback) {
 
 var mostVisitedCompare = function(bookmark1, bookmark2){
   return bookmark1.Clicks - bookmark2.Clicks;
+}
+
+
+module.exports.find = function (req, res) {
+  debug.print ("Search title \n" + JSON.stringify(req.body));
+  var searchstring = req.query.searchbox;
+
+  if (searchstring == null || searchstring.length === 0 ){
+    return res.redirect('/home');
+  }
+  searchstring = searchstring.toLowerCase();
+  var results = [];
+
+  getBookmarks(function(bookmarks){
+    console.log(bookmarks);
+    for (var i= 0; i < bookmarks.length ;i++)  {
+
+      var s = bookmarks[i].Title.toLowerCase();
+
+      if (s.indexOf(searchstring) >= 0 ){
+        results.push(bookmarks[i]);
+      }
+    };
+
+    return res.render('index', {
+      bookmarks: results
+    });
+  });
 }
