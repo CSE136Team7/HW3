@@ -140,19 +140,37 @@ module.exports.insert = function(req, res) {
 // update
 module.exports.update = function(req, res) {
     debug.print("Received update bookmark request.\n" + JSON.stringify(req.body));
-    var book_ID = req.body.book_ID;
-    var user_ID = req.body.user_ID;
-    var title = db.escape(req.body.title);
-    var url = db.escape(req.body.url);
 
-    var queryString = 'UPDATE books SET Title = ' + title + ', URL = ' + url + ' WHERE book_ID=' + book_ID + ' AND user_ID=' + user_ID + ';';
-    debug.print(queryString);
-    db.query(queryString, function(err) {
-      if (err) throw err;
-      res.redirect('/home');
-    });
+	if (req.body.title != "" 
+		&& req.body.url != "" 
+		&& req.body.user_ID != ""
+		&& req.body.book_ID != ""){
 
-  }
+		var book_ID = db.escape(req.body.book_ID);
+	var user_ID = db.escape(req.body.user_ID);
+	var title = db.escape(req.body.title);
+	var url = db.escape(req.body.url);
+
+	var queryString = 'UPDATE books SET Title = ' + title + ', URL = ' + url + ' WHERE book_ID=' + book_ID + ' AND user_ID=' + user_ID + ';';
+	debug.print(queryString);
+	db.query(queryString, function(err) {
+		if (err) throw err;
+		res.redirect('/home');
+	});
+}
+else{
+    //Alert message : all the fiels have not been filled up
+    if (req.body.title == "" ) {
+    	res.redirect('/home?error=Error, Please specify a title for your bookmark');
+    }
+    if (req.body.url == "" ) {
+    	res.redirect('/home?error=Error, you entered an empty url');
+    }
+    else {
+    	res.redirect('/home?error=The form was not filled properly');
+    }
+}
+  };
   // delete
 module.exports.delete = function(req, res) {
     debug.print("Received delete bookmark request.\n" + JSON.stringify(req.body));
