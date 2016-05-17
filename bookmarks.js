@@ -1,20 +1,36 @@
 /*  TODO: Add Function Blocks
 
  */
+var config = require('./config');
 var db = require('./db');
 var debug = require('./debug');
+
 /**
  *
  * renders the page to index.ejs
  */
 module.exports.homePage = function(req, res) {
+
+  debug.print('inside home page user id is: '+req.session.user_ID);
+  var user;
+  if (typeof req.session.user_ID === 'undefined') {
+      //throw err
+    // go to login
+    debug.print('bad user got to homePage without a user_ID');
+    res.redirect('/login');
+  }
+  user = req.session.user_ID;
+
+
   getBookmarks(function(bookmarks) {
     bookmarks.sort(mostVisitedCompare);
     bookmarks.reverse(); // Descending order
     return res.render('index', {
       bookmarks: bookmarks
     });
-  })
+  },
+      user
+  )
 
 };
 
@@ -30,9 +46,21 @@ module.exports.homePage = function(req, res) {
 // };
 
 module.exports.clicked = function(req, res){
+  var user_ID;
+  if (typeof req.session.user_ID === 'undefined') {
+    //throw err
+    debug.print('bad user got to homePage without a user_ID');
+
+    req.session.destroy();
+    // go to login
+    res.redirect('/login');
+  }
+  else {
+    user_ID = req.session.user_ID;
+  }
   debug.print("Received click bookmark request.\n" + JSON.stringify(req.body));
   var book_ID = req.body.book_ID;
-  var user_ID = req.body.user_ID;
+
   var url = req.body.URL;
   var sql = 'UPDATE bookmarks SET Clicks = Clicks + 1 WHERE book_ID = ' + book_ID + ' AND user_ID = ' + user_ID;
   db.query(sql, function(err) {
@@ -83,9 +111,16 @@ module.exports.insert = function(req, res) {
   var title = db.escape(req.body.title);
   var url = db.escape(req.body.url);
   var description = db.escape(req.body.description);
-  var user_ID = db.escape(req.body.user_ID);
+  var user_ID;
+  //if (req.session.user_ID === 'undefined'){
+    //debug.print('req.session did not have a user_ID');
+    user_ID = db.escape(req.body.user_ID);
+ // }
+  //else {
+    //user_ID = db.escape(req.session.user_ID);
+  //}
   var book_ID = db.escape(req.body.book_ID);
-  var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID, book_ID) VALUES (' + title + ',' + 0 + ', ' + description + ', ' + url + ', ' + 3 + ', ' + book_ID + ')';
+  var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID, book_ID) VALUES (' + title + ',' + 0 + ', ' + description + ', ' + url + ', ' + user_ID + ', ' + book_ID + ')';
   db.query(queryString, function(err) {
     if (err) {
       debug.print("Query failed err:" + err);
@@ -126,8 +161,9 @@ module.exports.delete = function(req, res) {
     });
   }
   // Get list of bookmarks for user 3 for now until users are set up.
-var getBookmarks = function(callback) {
-  var user_ID = 3;
+var getBookmarks = function(callback, user) {
+  var user_ID = user;
+
 
   var sql = "SELECT * FROM BOOKS WHERE user_ID=" + user_ID + ";";
 

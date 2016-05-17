@@ -8,3 +8,8 @@ module.exports.print = function(stmt){
     console.log(stmt);
   }
 }
+module.exports.print2 = function(stmt, unpack){
+  if(debug){
+    console.log(stmt, unpack);
+  }
+}

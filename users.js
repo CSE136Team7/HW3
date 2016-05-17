@@ -5,6 +5,7 @@
  var config = require('./config');
  var db = require('./db');
  var md5 = require('js-md5');
+ var debug = require('./debug');
 
 /**
  *
@@ -13,26 +14,38 @@
 
  module.exports.login = function(req, res) {
   if (req.body.username!="" && req.body.password!=""){
+      if (typeof req.session.user_ID === 'undefined') {
 
+      }
     //Fetch the login fields
     var userInput = req.body.username;
     var pwdInput = req.body.password;
     var pwdInputCrypted = md5(pwdInput, userInput);
     //Look into the data base if there is a login matching the input
-    var sql = 'SELECT username, passhash FROM users WHERE username = ' + db.escape(userInput);
+    var sql = 'SELECT username, passhash, user_ID FROM users WHERE username = ' + db.escape(userInput);
     db.query(sql, function(err, results) {
       if(err){
         throw(err);
       }
       else{
           if(results.length>0){
-            //console.log(results[0].username);
-            //console.log(results[0].passhash);
-            //console.log(userInput);
-            //console.log(pwdInputCrypted);
+
+            //debug.print(results[0].username);
+            //debug.print(results[0].passhash);
+            //debug.print(userInput);
+            //debug.print(pwdInputCrypted);
+              debug.print(results[0].user_ID);
             if (userInput===results[0].username && pwdInputCrypted===results[0].passhash) {
-                req.session.user = userInput;
-                res.redirect('/home');
+                if (typeof req.session.user_ID === 'undefined') {
+                    req.session.user_ID = results[0].user_ID;
+                    res.redirect('/home');
+                }
+                else {
+                    debug.print('There was already a user field in cookie session, they were not logged out properly');
+                    debug.print('Logging them in anyway');
+                    req.session.user_ID = results[0].user_ID;
+                    res.redirect('/home');
+                }
             }
             else{
               res.render('users/errorBadLogin');
@@ -46,7 +59,7 @@
 
   }
   else{
-    //Alert message : all the fiels have not been filled up
+    //Alert message : all the fields have not been filled
     res.render('users/errorBadForm');
   }
 };
@@ -55,7 +68,11 @@
  * Render the login form
  */
  module.exports.loginForm = function(req, res){
-  res.render('users/login');
+     /*if (typeof req.session.user === 'undefined') {}
+     else {
+         req.session.destroy();
+     }*/
+     res.render('users/login');
 };
 
 

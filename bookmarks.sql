@@ -118,3 +118,15 @@ INSERT INTO `folders` SET `Name`='Secret', `user_ID`='6';
 INSERT INTO `folders` SET `Name`='Social', `user_ID`='6';
 INSERT INTO `folders` SET `Name`='Imp', `user_ID`='6';
 INSERT INTO `folders` SET `Name`='Secret2', `user_ID`='6';
+
+# books 25 - 27
+# folders 8 - 13
+
+INSERT INTO `folder_has_books` SET `folder_ID`=8, `book_ID`=25;
+INSERT INTO `folder_has_books` SET `folder_ID`=10, `book_ID`=26;
+INSERT INTO `folder_has_books` SET `folder_ID`=11, `book_ID`=26;
+INSERT INTO `folder_has_books` SET `folder_ID`=13, `book_ID`=25;
+INSERT INTO `folder_has_books` SET `folder_ID`=8, `book_ID`=26;
+INSERT INTO `folder_has_books` SET `folder_ID`=9, `book_ID`=25;
+INSERT INTO `folder_has_books` SET `folder_ID`=8, `book_ID`=27;
+
