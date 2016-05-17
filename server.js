@@ -22,6 +22,7 @@ var mySession = session({
 });
 
 var app = express();
+app.disable('x-powered-by');
 app.use(mySession);
 
 /*  Not overwriting default views directory of 'views' */

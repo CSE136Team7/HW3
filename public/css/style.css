@@ -19,7 +19,7 @@ header, footer {
 	display: block;
 }
 
-h1 {
+h1,h3 {
 	text-align: center;
 	letter-spacing: 1px;
   font-weight: 700;
@@ -155,7 +155,7 @@ input {
 
 input:focus {
 	outline: none;
-	border:2px solid #FF9EAE;
+	/*border:2px solid #FF9EAE;*/
 }
 
 .button,
@@ -326,6 +326,7 @@ li.navbar-left {
           user-select: none;
   font-size: 25px;
   color: #FFF;
+  background-color: #FFF;
   margin: 0;
   position: absolute;
   left: 0;
@@ -334,7 +335,7 @@ li.navbar-left {
   font-weight: 400;
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow: hidden;
+  /*overflow: hidden;*/
   -webkit-transition: all 200ms cubic-bezier(0.075, 0.82, 0.165, 1);
   transition: all 200ms cubic-bezier(0.075, 0.82, 0.165, 1);
   text-align: center;
