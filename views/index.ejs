@@ -112,7 +112,11 @@
 	<div id="sidebar" style="display:block">
 		<ul>
 			<li class="pinned"><a style="color:#FF9EAE;" href="#"><i class="fa fa-bar-chart fa-lg"></i> Most Visited</a></li>
-			<li class="pinned"><a href="starred.html"><i class="fa fa-star fa-lg"></i> Starred</a></li>
+			<li class="pinned">
+				<form class="resetme" action="/folder/starred" method="get">
+					<button><i class="fa fa-star fa-lg"></i> Starred</button>
+				</form>
+			</li>
 			<li class="pinned"><a href="all.html"><i class="fa fa-th fa-lg"></i> All</a></li>
 
 			<!-- TODO: Pull list from folders table -->

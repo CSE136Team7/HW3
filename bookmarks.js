@@ -15,9 +15,7 @@ var xlsx = require('node-xlsx');
  */
 /* //COULD NOT RESOLVE TODO: Merge this back in
 module.exports.homePage = function(req, res) {
-    renderHomePage(getBookmarks,getFolders,"Most Visited", "",function(obj){
-        res.render('index',obj);
-    })
+
     */
 module.exports.homePage = function(req, res) {
   debug.print('inside home page user id is: '+req.session.user_ID);
@@ -31,33 +29,55 @@ module.exports.homePage = function(req, res) {
   }
   user = req.session.user_ID;
 
-  debug.print(req.query);
+  renderHomePage(getBookmarks,getFolders,"Most Visited", "",user,function(obj){
+      res.render('index',obj);
+  })
+};
+
+module.exports.mostVisitedPage = function(req, res) {
+  var user;
+  if (typeof req.session.user_ID === 'undefined') {
+      //throw err
+    // go to login
+    debug.print('Warning: user went to homePage without a user_ID');
+    req.session.destroy();
+    res.redirect('/login');
+  }
+  user = req.session.user_ID;
   getBookmarks(function(bookmarks) {
     bookmarks.sort(mostVisitedCompare);
     bookmarks.reverse(); // Descending order
-    if(req.query.error){
-      return res.render('index', {
-        bookmarks: bookmarks,
-        errormsg: req.query.error
-      });
-    } else{
-      return res.render('index', {
-        bookmarks: bookmarks,
-        errormsg: ""
-      });
-    }
-  }, user
-  )
-};
+    renderHomePage(function(callback){callback(bookmarks)},getFolders,"Starred","",user_ID,
+      function(obj){
+        res.render('index',obj);
+      }
+    );
+  });
+}
 
-// module.exports.mostVisitedPage = function(req, res) {
-//   getBookmarks(function(bookmarks) {
-//     bookmarks.sort(mostVisitedCompare);
-//     bookmarks.reverse(); // Descending order
-//     return res.render('index', {
-//       bookmarks:
-//     });
-//   })
+module.exports.starredPage = function(req, res) {
+  var user;
+  if (typeof req.session.user_ID === 'undefined') {
+      //throw err
+    // go to login
+    debug.print('Warning: user went to homePage without a user_ID');
+    req.session.destroy();
+    res.redirect('/login');
+  }
+  user = req.session.user_ID;
+  getBookmarks(function(bookmarks) {
+    var results = [];
+    bookmarks.forEach(function(bookmark){
+      if(bookmark.Star == 1)
+        results.push(bookmark);
+    })
+    renderHomePage(function(callback){callback(results)},getFolders,"Starred","",user_ID,
+      function(obj){
+        res.render('index',obj);
+      }
+    );
+  },user);
+}
 
 
 // =======
@@ -93,9 +113,9 @@ module.exports.homePage = function(req, res) {
 // >>>>>>> 19a23ca6a805a82ef44348539417a9d2ef672ba0
 //}
 
- var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, done){
+ var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_ID, done){
 
-   async.parallel([function(callback){bookmarkFunc(callback)},function(callback){folderFunc(callback)}],
+   async.parallel([function(callback){bookmarkFunc(callback,user_ID)},function(callback){folderFunc(callback,user_ID)}],
       function(err, results){
 
         var bookmarks = results[0];
@@ -241,7 +261,7 @@ module.exports.insert = function(req, res) {
   //else
   user_ID = db.escape(req.session.user_ID);
 
- 	if (req.body.title != "" 
+ 	if (req.body.title != ""
  		&& req.body.url != ""
  		&& req.body.user_ID != ""
  		&& req.body.book_ID != ""){
@@ -389,10 +409,9 @@ var getBookmarks = function(callback, user) {
 
 }
 
-var getFolders = function(callback) {
-  var user_ID = 3;
+var getFolders = function(callback, user) {
 
-  var sql = "SELECT * FROM folders WHERE user_ID=" + user_ID
+  var sql = "SELECT * FROM folders WHERE user_ID=" + user + ";";
 
   db.query(sql, function(err, folders) {
     if (err) {

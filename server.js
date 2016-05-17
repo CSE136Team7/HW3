@@ -124,7 +124,7 @@ app.post('/bookmarks/insert', bookmarks.insert);
 app.get('/bookmarks/edit', bookmarks.editPage);
 app.post('/bookmarks/update', bookmarks.update);
 app.post('/bookmarks/clicked', bookmarks.clicked);
-
+app.get('/folder/starred', bookmarks.starredPage);
 app.post('/createFolder', bookmarks.createFolder);
 
 app.post('/bookmarks/import', bookmarks.import);
@@ -172,5 +172,3 @@ app.get('/root', function (req, res, next) {
   res.redirect('/login');
   return next();
 });
-
-
