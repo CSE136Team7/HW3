@@ -3,6 +3,7 @@
  */
 var db = require('./db');
 var debug = require('./debug');
+var utility = require('./utility');
 /**
  *
  * renders the page to index.ejs
@@ -33,13 +34,16 @@ module.exports.clicked = function(req, res){
   debug.print("Received click bookmark request.\n" + JSON.stringify(req.body));
   var book_ID = req.body.book_ID;
   var user_ID = req.body.user_ID;
-  var url = req.body.URL;
-  var sql = 'UPDATE bookmarks SET Clicks = Clicks + 1 WHERE book_ID = ' + book_ID + ' AND user_ID = ' + user_ID;
+  var url = req.body.url;
+  var sql = 'UPDATE books SET Clicks = Clicks + 1 WHERE book_ID = ' + book_ID + ' AND user_ID = ' + user_ID;
+
+  if(!utility.isURL(url)) {
+    throw new Error('invalid URL');
+  }
+
   db.query(sql, function(err) {
     if (err) throw err;
-    res.writeHead(301,
-      {Location: url}
-    );
+    res.redirect(url);
     res.end();
   });
 }
@@ -100,7 +104,8 @@ module.exports.update = function(req, res) {
     var title = db.escape(req.body.title);
     var url = db.escape(req.body.url);
 
-    var queryString = 'UPDATE books SET title = ' + title + ', url = ' + url + ', WHERE book_ID = ' + book_ID + 'AND user_ID = ' + user_ID;
+    var queryString = 'UPDATE books SET Title = ' + title + ', URL = ' + url + ' WHERE book_ID=' + book_ID + ' AND user_ID=' + user_ID + ';';
+    debug.print(queryString);
     db.query(queryString, function(err) {
       if (err) throw err;
       res.redirect('/home');
