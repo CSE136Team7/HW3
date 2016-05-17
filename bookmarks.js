@@ -48,7 +48,6 @@ var utility = require('./utility');
    function(callback) { db.query('SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID = ' + folder_ID + ' AND folder_has_books.book_ID = books.book_ID', callback) },
    function(callback) { db.query("SELECT * FROM folders WHERE user_ID=" + user_ID, callback) }
    ], function(err, results) {
-     console.log("hello: \n"+ JSON.stringify(results,null,4));
      if(err){
        throw err;
      }
@@ -265,4 +264,8 @@ module.exports.find = function (req, res) {
       bookmarks: results
     });
   });
+}
+
+module.exports.createFolder=function(req, res) {
+  console.log("req.body: "+JSON.stringify(req.body,null,4));
 }
