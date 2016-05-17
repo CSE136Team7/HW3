@@ -38,6 +38,7 @@ FOREIGN KEY (`folder_ID`) REFERENCES `folders` (`folder_ID`) ON DELETE CASCADE,
 FOREIGN KEY (`book_ID`) REFERENCES `books` (`book_ID`) ON DELETE CASCADE
 );
 
+
 CREATE TABLE `sessions` (
 `session` varchar(128),
 `session_ID` int UNIQUE NOT NULL AUTO_INCREMENT,
@@ -101,6 +102,7 @@ INSERT INTO `books` SET `Title`='ex9', `Star`=1, `Description`='', `URL`='i.com'
 
 #INSERT INTO folders SET Name='', user_ID='';
 #joe
+
 INSERT INTO `folders` SET `Name`='Fun', `user_ID`='3';
 INSERT INTO `folders` SET `Name`='Shop', `user_ID`='3';
 INSERT INTO `folders` SET `Name`='Search', `user_ID`='3';
