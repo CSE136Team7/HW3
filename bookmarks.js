@@ -9,14 +9,22 @@ var utility = require('./utility');
  * renders the page to index.ejs
  */
 module.exports.homePage = function(req, res) {
+  debug.print(req.query);
   getBookmarks(function(bookmarks) {
     bookmarks.sort(mostVisitedCompare);
     bookmarks.reverse(); // Descending order
+    if(req.query.error){
+      return res.render('index', {
+        bookmarks: bookmarks,
+        errormsg: req.query.error
+      });
+    } else{
     return res.render('index', {
-      bookmarks: bookmarks
+      bookmarks: bookmarks,
+      errormsg: ""
     });
+  }
   })
-
 };
 
 // module.exports.mostVisitedPage = function(req, res) {
@@ -61,6 +69,7 @@ module.exports.editPage = function(req, res) {
 // Need to authorize user before accepting star / delete
 module.exports.star = function(req, res) {
   debug.print("Received star bookmark request:\n" + JSON.stringify(req.body));
+
   var starred = req.body.starred ^ 1;
   var book_ID = req.body.book_ID;
   var user_ID = req.body.user_ID;
@@ -73,7 +82,8 @@ module.exports.star = function(req, res) {
     if (err) {
       throw err;
     }
-    res.redirect('/home');
+    res.redirect('/home?error=Invalid form entry');
+    //res.redirect('/home');
   });
 
 }
