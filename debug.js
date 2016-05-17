@@ -1,5 +1,5 @@
 // Debug Module for printing debug statements
-var debug = 0;
+var debug = 1;
 
 module.exports.print = function(stmt){
   if(debug){
