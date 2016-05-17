@@ -128,8 +128,8 @@ module.exports.update = function(req, res) {
 module.exports.delete = function(req, res) {
     debug.print("Received delete bookmark request.\n" + JSON.stringify(req.body));
     // get userid and book_ID
-    var book_ID = req.body.book_ID;
-    var user_ID = req.body.user_ID;
+    var book_ID = db.escape(req.body.book_ID);
+    var user_ID = db.escape(req.body.user_ID);
     // Do validation on book_ID && user_ID
     var sql = "DELETE FROM BOOKS WHERE user_ID=" + user_ID +
       " AND book_ID=" + book_ID + ";";
