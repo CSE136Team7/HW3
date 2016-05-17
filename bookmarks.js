@@ -128,7 +128,7 @@ module.exports.insert = function(req, res) {
  		res.redirect('/home?error=Please specify a title for your bookmark');
  	}
  	if (req.body.url == "" ) {
- 		res.redirect('/home?error=Error, ou forgot to enter the URL');
+ 		res.redirect('/home?error=Error, you forgot to enter the URL');
  	}
  	else {
  		res.redirect('/home?error=The form was not filled properly');
