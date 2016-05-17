@@ -139,7 +139,6 @@ var getStarred = function(callback,user_ID){
 
 
 module.exports.clicked = function(req, res){
-
   debug.print("Received click bookmark request.\n" + JSON.stringify(req.body));
 
   var user_ID;
@@ -155,7 +154,7 @@ module.exports.clicked = function(req, res){
   }
 
   var book_ID = db.escape(req.body.book_ID);
-  var url = db.escape(req.body.URL);
+  var url = req.body.url;
   var sql = 'UPDATE books SET Clicks = Clicks + 1 WHERE book_ID = ' + book_ID + ' AND user_ID = ' + user_ID;
 
   if(!utility.isURL(url)) {
