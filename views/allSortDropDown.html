@@ -98,7 +98,52 @@
             <li><a href="#">Fonts</a></li>
       </ul>
       <div class="buttonWrapper">
-      	<div><i class="fa fa-plus-circle fa-lg"></i> Folder</div>
+      	<div><a href="#folderModal" class="button"><i class="fa fa-plus-circle fa-lg"></i></a> Folder
+		<div id="folderModal" class="modalDialog">
+
+				    <div class="grid grid-pad">
+				    	<a href="#close" title="Close" class="close x-button">x</a>
+				    	<div class="tabs is-centered">
+						  <ul>
+						    <li id="add-bookmark" class="is-active"><a>Add Bookmark</a></li>
+						    <li id="import-bookmark"><a>Import Bookmarks</a></li>
+						  </ul>
+						</div>
+
+				        <div class="form" id="add-bookmark-form">
+						    <input type="text" name="title" placeholder="Title">
+						    <div class="textFieldWrapper">
+						      <input type="url" name="url" placeholder="URL">
+						    </div>
+
+						    <div class="textFieldWrapper">
+						      <input type="text" name="description" placeholder="Description">
+						    </div>
+
+						    <div class="textFieldWrapper">
+						      <input type="text" name="keywords" placeholder="Keywords">
+						    </div>
+							    <div class="buttonWrapper">
+							      	<div><i class="fa fa-check-circle fa-lg"></i> Save</div>
+							      	<div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
+								 </div>
+
+						</div>
+						<div class="form" id="import-bookmark-form">
+							<div class="textFieldWrapper">
+						      <input type="url" name="url" placeholder="File Path">
+						    </div>
+						    <div class="buttonWrapper">
+							      	<div><i class="fa fa-folder-open fa-lg"></i> Browse</div>
+							      	<div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
+							</div>
+						</div>
+					</div>
+				</div>
+</div>
+
+
+
       	<div><i class="fa fa-download fa-lg"></i> Export</div>
 	  </div>
     </div>
