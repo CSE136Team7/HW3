@@ -6,6 +6,7 @@ var bookmarks = require('./bookmarks');
 var md5 = require('js-md5');
 var debug = require('./debug');
 
+
 db.init();
 
 var express = require('express');
@@ -123,6 +124,13 @@ app.post('/bookmarks/insert', bookmarks.insert);
 app.get('/bookmarks/edit', bookmarks.editPage);
 app.post('/bookmarks/update', bookmarks.update);
 app.post('/bookmarks/clicked', bookmarks.clicked);
+
+app.post('/createFolder', bookmarks.createFolder);
+
+app.post('/bookmarks/import', bookmarks.import);
+
+app.post('/folders', bookmarks.folders);
+app.get('/find', bookmarks.find);
 
 app.listen(config.PORT, function () {
   console.log('Team 7 Bookmarx app listening on port ' + config.PORT + '!');
