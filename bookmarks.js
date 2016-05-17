@@ -23,29 +23,44 @@ var utility = require('./utility');
        return res.render('index', {
          bookmarks: bookmarks,
          folders : results[1][0],
+         filter: 'Most Visited',
          errormsg: req.query.error
        });
      } else{
      return res.render('index', {
-       bookmarks: bookmarks,
        folders : results[1][0],
+       bookmarks: bookmarks,
+       filter: 'Most Visited',
+
        errormsg: ""
      });
    }
  });
-
+ };
 
  module.exports.folders = function(req, res){
    var folder_ID = req.body.folder_ID;
-   console.log("folder_ID: "+folder_ID+"hi");
-   var sql = 'SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID = ' + folder_ID + ' AND folder_has_books.book_ID = books.book_ID';
-   db.query(sql, function(err,bookmarks) {
-     if (err) {
+   console.log("req.body: "+req.body );
+   var user_ID = 3;
+   async.parallel([
+   function(callback) { db.query('SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID = ' + folder_ID + ' AND folder_has_books.book_ID = books.book_ID', callback) },
+   function(callback) { db.query("SELECT * FROM folders WHERE user_ID=" + user_ID, callback) }
+   ], function(err, results) {
+     console.log("hello: \n"+ JSON.stringify(results,null,4));
+     if(err){
        throw err;
      }
-     res.render('index',{ bookmarks : bookmarks});
-   });
- }
+     return res.render('index', {
+       folders : results[1][0],
+       bookmarks: results[0][0],
+       errormsg: ""
+     });
+ });
+ };
+
+
+
+
 
 module.exports.clicked = function(req, res){
   debug.print("Received click bookmark request.\n" + JSON.stringify(req.body));
