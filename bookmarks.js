@@ -18,13 +18,16 @@ module.exports.homePage = function(req, res) {
 
     */
 module.exports.homePage = function(req, res) {
-  debug.print('Received request for home page user id is: '+req.session.user_ID);
+  debug.print('Received request for home page');
   var user;
   if (typeof req.session.user_ID === 'undefined') {
       //throw err
     // go to login
     debug.print('Warning: user went to homePage without a user_ID');
-    req.session.destroy();
+      if (typeof req === 'undefined' || typeof req.session === 'undefined') {
+          res.redirect('/login');
+      }
+      req.session.destroy();
     res.redirect('/login');
   }
   user = req.session.user_ID;
