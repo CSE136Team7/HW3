@@ -1,25 +1,24 @@
-<<<<<<< HEAD
+
 /*  TODO: Add Function Blocks
 
  */
 var config = require('./config');
-=======
->>>>>>> 95b0761a266a940569884200a001c2f8d3256c10
 var db = require('./db');
 var debug = require('./debug');
 var async = require('async');
 var utility = require('./utility');
-<<<<<<< HEAD
-
-=======
 var xlsx = require('node-xlsx');
 // import xlsx from 'node-xlsx';
->>>>>>> 95b0761a266a940569884200a001c2f8d3256c10
 /**
  *
  * renders the page to index.ejs
  */
-<<<<<<< HEAD
+/* //COULD NOT RESOLVE TODO: Merge this back in
+module.exports.homePage = function(req, res) {
+    renderHomePage(getBookmarks,getFolders,"Most Visited", "",function(obj){
+        res.render('index',obj);
+    })
+    */
 module.exports.homePage = function(req, res) {
   debug.print('inside home page user id is: '+req.session.user_ID);
   var user;
@@ -59,12 +58,8 @@ module.exports.homePage = function(req, res) {
 //       bookmarks:
 //     });
 //   })
-=======
 
- module.exports.homePage = function(req, res) {
-    renderHomePage(getBookmarks,getFolders,"Most Visited", "",function(obj){
-      res.render('index',obj);
-    })
+
 // =======
 //    var user_ID = 1;
 //    async.parallel([
@@ -89,14 +84,14 @@ module.exports.homePage = function(req, res) {
 //        bookmarks: bookmarks,
 //        dropdown_books:results[0][0],
 //        filter: 'Most Visited',
->>>>>>> 95b0761a266a940569884200a001c2f8d3256c10
+
 //
 //        errormsg: ""
 //      });
 //    }
 //  });
 // >>>>>>> 19a23ca6a805a82ef44348539417a9d2ef672ba0
- }
+//}
 
  var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, done){
 
