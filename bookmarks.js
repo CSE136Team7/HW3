@@ -127,17 +127,25 @@ module.exports.update = function(req, res) {
   // delete
 module.exports.delete = function(req, res) {
     debug.print("Received delete bookmark request.\n" + JSON.stringify(req.body));
-    // get userid and book_ID
-    var book_ID = db.escape(req.body.book_ID);
-    var user_ID = db.escape(req.body.user_ID);
+
     // Do validation on book_ID && user_ID
+    if (req.body.book_ID && req.body.user_ID) {
+      // get userid and book_ID
+      var book_ID = db.escape(req.body.book_ID);
+      var user_ID = db.escape(req.body.user_ID);
+    } else {
+      throw new Error('book_ID or user_ID is null/invalid.');
+    }
+
     var sql = "DELETE FROM BOOKS WHERE user_ID=" + user_ID +
       " AND book_ID=" + book_ID + ";";
+
     db.query(sql, function(err) {
       if (err) {
-        throw err;
+        res.redirect('/home?error=Could not delete bookmark.');
+      } else {
+        res.redirect('/home');
       }
-      res.redirect('/home');
     });
   }
   // Get list of bookmarks for user 3 for now until users are set up.
