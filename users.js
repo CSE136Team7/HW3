@@ -101,8 +101,9 @@
 
 
 
-
-
+module.exports.signup = function(req, res){
+  res.render('users/signup');
+}
 
 
 

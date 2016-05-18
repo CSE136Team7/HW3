@@ -116,6 +116,8 @@ app.get('/logout', users.logout);
 
 app.post('/newAccount', users.newAccount);
 
+app.get('/signup', users.signup);
+
 /*  This must go between the users routes and the bookmarks routes */
 app.use(users.auth);
 
