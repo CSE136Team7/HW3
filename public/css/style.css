@@ -148,7 +148,7 @@ h1,h3 {
 input {
     border:2px solid #FFF;
     background-color: #6C7A89;
-    width: 90%;
+    width: 50%;
     color: #fff;
     font-size: 15px;
 }
@@ -402,8 +402,8 @@ button.card__button:hover {
 }
 .card--small .card__title {
   color: #474448;
-  left: 75px;
-  top: 25px;
+  left: 55px;
+  top: 12px;
 }
 .card--small .card__subtitle {
   opacity: 1;
@@ -430,7 +430,7 @@ button.card__button:hover {
 }
 
 .card--small:hover .card__title {
-  top: 8px;
+  top: 5px;
 }
 
 /*** DROPDOWN ***/

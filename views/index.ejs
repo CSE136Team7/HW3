@@ -122,22 +122,21 @@
 				</form>
 			</li>
 			<li class="pinned"><a href="all.html"><i class="fa fa-th fa-lg"></i> All</a></li>
+			<li class="pinned">
+				<ul>
+					<% if(folders){ folders.forEach(function(folder) { %>
+						<li><a href="/list/<%= folder.id%>"><%= folder.name%></a>
+							<a class="pad-trash-icon" href="/folders/delete/<%= folder.id%>"><i class="fa fa-edit fa-lg"></i></a>
 
-			<!-- TODO: Pull list from folders table -->
-
-				<%if(folders){ folders.forEach(function(folder) { %>
-					<form action="/folders" method="post" >
-						<input type="hidden" name="folder_ID" value=<%=folder.folder_ID %>>
-						<button><%=folder.Name%></button>
-						</form>
-				<% });} %>
-
-
-
-
+							<a class="pad-trash-icon" href="/folders/delete/<%= folder.id%>"><i class="fa fa-trash-o fa-lg"></i></a>
+			      </li>
+			    <% }); }%>
+			  </ul>
+			</li>
 		</ul>
 		<div class="buttonWrapper">
 			<div>
+				<!-- <div><i class="fa fa-plus-circle fa-lg"></i> Folder</div> -->
 				<a href="#folderModal" class="button"><i class="fa fa-plus-circle fa-lg"></i> </a> Folder
 			</div>
 
@@ -201,7 +200,7 @@
 									<input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
 									<button class="card__button"><i class="fa fa-star fa-lg"></i></button>
 								</form>
-								<a href=<%= '#updateModal'+bookmarks[i].book_ID %> class="button"><i class="fa fa-pencil-square-o fa-lg"></i></a>
+								<a href=<%= '#updateModal'+bookmarks[i].book_ID %> class ="button"><i class="fa fa-edit fa-lg"></i></a>
 								<form action="/bookmarks/delete" method="post" class="card__button">
 									<input type="hidden" name="user_ID" value=<%=bookmarks[i].user_ID %>>
 									<input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
