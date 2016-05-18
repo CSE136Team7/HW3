@@ -57,14 +57,9 @@
 								<div class="textFieldWrapper">
 									<input type="text" name="description" placeholder="Description">
 								</div>
-
-								<div class="textFieldWrapper">
-									<input type="text" name="keywords" placeholder="Keywords">
-								</div>
-								<div class="buttonWrapper">
+								<div class="buttonWrapper" style="margin-bottom:15px">
 									<!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
 									<button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Save</i></button>
-									<div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
 								</div>
 							</div>
 						</form>
@@ -85,12 +80,11 @@
 						</div>
 
 						<form method='post' action='/bookmarks/import' enctype="multipart/form-data">
-							<input type="file" name="file" accept=".csv" />
+							<input type="file" name="file" accept=".csv" style="margin-bottom:15px; width:100%">
 
-								<div class="buttonWrapper">
+								<div class="buttonWrapper"  style="margin-bottom:15px">
 									<!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
 									<button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Import</i></button>
-									<div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
 								</div>
 						</form>
 
@@ -113,12 +107,12 @@
 		<ul>
 			<li class="pinned">
 				<form class="resetme" action="/home" method="get">
-					<button><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
+					<button style="background-color:#474448"><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
 				</form>
 			</li>
 			<li class="pinned">
 				<form class="resetme" action="/folder/starred" method="get">
-					<button><i class="fa fa-star fa-lg"></i> Starred</button>
+					<button style="background-color:#474448"><i class="fa fa-star fa-lg"></i> Starred</button>
 				</form>
 			</li>
 			<li class="pinned"><a href="all.html"><i class="fa fa-th fa-lg"></i> All</a></li>
@@ -137,7 +131,7 @@
 		<div class="buttonWrapper">
 			<div>
 				<!-- <div><i class="fa fa-plus-circle fa-lg"></i> Folder</div> -->
-				<a href="#folderModal" class="button"><i class="fa fa-plus-circle fa-lg"></i> </a> Folder
+				<a href="#folderModal" class="button" style="background-color:#474448"><i class="fa fa-plus-circle fa-lg"></i> Folder</a> 
 			</div>
 
 			<div><i class="fa fa-download fa-lg"></i> Export</div>
@@ -154,18 +148,9 @@
 				</div>
 				<form action="/createFolder" method="post">
 				<div class="form" id="add-folder-form">
-						<input type="text" name="folder" placeholder="Folder Name">
-						<select>
-							<option ></option>
-
-							<%if(bookmarks){ bookmarks.forEach(function(drop) { %>
-							<option value=<%drop.user_ID%>><%= drop.Title%></option>
-							<% });} %>
-						</select>
-
-						<div class="buttonWrapper">
-					<button><i class="fa fa-check-circle fa-lg"></i> Save</button>
-					<div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
+					<input type="text" name="folder" placeholder="Folder Name" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px">
+					<div class="buttonWrapper" style="margin-bottom:20px; ">
+						<button><i class="fa fa-check-circle fa-lg" ></i> Save</button>
 				</div>
 			</div>
 		</form>
