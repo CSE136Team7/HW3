@@ -22,9 +22,9 @@ module.exports.createFolder=function(req, res) {
     var queryString = 'INSERT INTO folders (Name, user_ID) VALUES ('
         + folderName + ',' + user + ')';
     db.query(queryString, function(err) {
-  		if (err) {throw err;}
-  		res.redirect('/home');
-  	});
+      if (err) {throw err;}
+      res.redirect('/home');
+    });
   } else{
     res.redirect('/home?error=The form was not filled properly');
   }

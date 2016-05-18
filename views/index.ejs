@@ -122,8 +122,10 @@
 						<li >
 									<a href="/list/<%= folder.id%>"><%= folder.Name%> </a>
 									<div style="float:right">
-									<a class="pad-trash-icon" href="/folders/edit/<%= folder.id%>" ><i class="fa fa-edit fa-lg" style=""></i></a>
-									<a class="pad-trash-icon" href="/folders/delete/<%= folder.id%>" style=""><i class="fa fa-trash-o fa-lg"></i></a>
+										<form action="/folders/" method="get">
+											<a class="pad-trash-icon" href="/folders/edit/<%= folder.id%>" ><i class="fa fa-edit fa-lg" style=""></i></a>
+											<a class="pad-trash-icon" href="/folders/delete/<%= folder.id%>" style=""><i class="fa fa-trash-o fa-lg"></i></a>
+										</form>
 									<div>
 
 						</li>
@@ -165,7 +167,7 @@
 			<div id="title" class="col-1-1">
 				<div class="content">
 					<h1><%= filter %></h1>
-					<h3><%= errormsg %></h3>
+					<h3 style="color:red"><%= errormsg %></h3>
 				</div>
 			</div>
 
