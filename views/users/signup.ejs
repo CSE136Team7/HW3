@@ -54,9 +54,9 @@
     .FormField {
         width: 50%;
     }
-   
+
 }
-    </style>
+</style>
 
 </head>
 <body>
@@ -66,44 +66,37 @@
             <a class="button" href="#">
                 <i class="fa fa-bookmark-o fa-1x"></i> Bookmarx
             </a>
-
-            <div id="signin">
-
+            <div id="newuser">
                 <div class="grid grid-pad">
                     <div class="tabs is-centered">
                         <ul>
-                            <li id="signin" class="is-active"><a href="/">Sign in</a></li>
-                            <li id="newuser"><a href="/signup">New User</a></li>
+                            <li id="signin"><a href="/">Sign in</a></li>
+                            <li id="newuser"class="is-active"><a href="/signup">New User</a></li>
                         </ul>
                     </div>
 
-                    <form method='post' action='/login' id="sign-in-form">
 
+                    <form method='post' action='/newAccount' id="sign-in-form">
                         <div class="form">
-                            <input type="text" name="username" placeholder="Username">
+                            <input type="text" name="username" placeholder="Enter a username" autocomplete="new-password">
                             <p></p>
                             <div class="textFieldWrapper">
-                                <input type="password" name="password" placeholder="Password">
+                                <input type="password" name="password" placeholder="Enter a password" autocomplete="new-password">
                             </div>
 
                             <div class="buttonWrapper">
-                             <br></br>
-                             <input class= "logbutton" type='submit' value="LOG IN">
-                         </div>
-
-                     </div>
-                 </form>
-
-             </div>
-
-         </div>
-
-         </div>
+                              <br></br>
+                              <input class= "logbutton" type='submit' value="SUBMIT">
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
 
 
   </div>
-</div>
-</div>
+
 
 
 
