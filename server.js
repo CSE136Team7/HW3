@@ -98,10 +98,13 @@ app.get('/', function sendPageWithCounter(req, res) {
 
 /* Stop the annoying cannot GET / */
 app.get('/', function (req, res) {
-  res.redirect('/login');
   res.send('<h1>404 Not Found</h1><br><p>You are being redirected to <a href="login">/login</a></p>');
 
   debug.print('404 Error: user tried to access /');
+  res.redirect('/login');
+  // res.send('<h1>404 Not Found</h1><br><p>You are being redirected to <a href="login">/login</a></p>');
+  //
+  // debug.print('404 Error: user tried to access /');
 
 });
 
