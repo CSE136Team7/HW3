@@ -107,43 +107,88 @@ module.exports.signup = function(req, res){
 
 
 
+// 
+// module.exports.newAccount = function(req, res){
+//
+//   if (req.body.username != "" && req.body.password != "" ){
+//     var user = req.body.username;
+//     var pwd = req.body.password;
+//
+//
+//     var sql = 'SELECT username FROM users WHERE username = ' + db.escape(user);
+//     db.query(sql, function(err, results) {
+//       if(err){
+//         throw(err);
+//       }
+//       else{
+//         if (results.length==0){
+//             //no existing username --> insert into the table
+//                //hashing of the password
+//                var pwdCrypted = md5(pwd, user);
+//                var queryString = "INSERT INTO users(username, passhash) VALUES ("+ db.escape(user) + "," + db.escape(pwdCrypted) +")";
+//                db.query(queryString, function(err, result){
+//                 if (err){
+//                    throw err;
+//                 }
+//                 else{
+//                     //render an alert message : the account have been created
+//                     res.render('users/login');
+//                 }
+//               });
+//           }
+//           else{
+//             //already existing username --> alert message
+//             res.render('users/errorNew');
+//           }
+//       }
+//     });
+//   }
+//   else{
+//     res.render('users/errorBadForm');
+//   }
+//  };
 
-module.exports.newAccount = function(req, res){
 
-  if (req.body.username != "" && req.body.password != "" ){
-    var user = req.body.username;
-    var pwd = req.body.password;
-
-    
-    var sql = 'SELECT username FROM users WHERE username = ' + db.escape(user);
-    db.query(sql, function(err, results) {
-      if(err){
-        throw(err);
-      }
-      else{
-        if (results.length==0){
-            //no existing username --> insert into the table
-               //hashing of the password   
-               var pwdCrypted = md5(pwd, user);  
-               var queryString = "INSERT INTO users(username, passhash) VALUES ("+ db.escape(user) + "," + db.escape(pwdCrypted) +")";
-               db.query(queryString, function(err, result){
-                if (err){
-                   throw err;
-                }
-                else{
-                    //render an alert message : the account have been created
-                    res.render('users/login');
-                }
-              });
-          }
-          else{
-            //already existing username --> alert message
-            res.render('users/errorNew');
-          }
-      }
-    });
-  }
-  else{
-    res.render('users/errorBadForm');
-  }
- };
+ module.exports.newAccount = function(req, res){
+   console.log("book_ID:----> "+JSON.stringify(req.body,null,4));
+  //  var user_ID;
+  //  if (typeof req.session.user_ID === 'undefined') {
+  //    //throw err
+  //    // go to login
+  //    debug.print('Warning: user tried to insert a bookmark without a user_ID');
+  //    req.session.destroy();
+  //    res.redirect('/login?error=You are not logged in');
+  //  }
+  //  //else
+  //  user_ID = db.escape(req.session.user_ID);
+  //
+  //   if (req.body.user_ID != ""
+  //    && req.body.folder != ""
+  //     && req.body.folder_ID != ""
+  //    && req.body.book_ID != ""){
+  //
+  //
+  //       var folder_ID = db.escape(req.body.folder_ID);
+  //      var book_ID = db.escape(req.body.book_ID);
+  //
+  //      var queryString = 'INSERT INTO folder_has_books (folder_ID, book_ID) VALUES ('
+  //          + folder_ID + ','  + book_ID + ')';
+  //
+  //
+  //      db.query(queryString, function(err) {
+  //          if (err) {
+  //              debug.print("Query failed err:" + err);
+  //              throw(err);
+  //          }
+  //          else {
+  //              res.redirect('/home');
+  //          }
+  //      });
+  //    }
+  //
+  // else{
+  //   if (req.body.folder == "" && req.body.folder_ID == "" ) {
+  //     res.redirect('/home?error=Please specify a folder name');
+  //   }
+  // }
+ }
