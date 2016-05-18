@@ -5,7 +5,7 @@ var users = require('./users');
 var bookmarks = require('./bookmarks');
 var md5 = require('js-md5');
 var debug = require('./debug');
-
+var folders = require('./folders');
 
 db.init();
 
@@ -125,7 +125,7 @@ app.get('/bookmarks/edit', bookmarks.editPage);
 app.post('/bookmarks/update', bookmarks.update);
 app.post('/bookmarks/clicked', bookmarks.clicked);
 app.get('/folder/starred', bookmarks.starredPage);
-app.post('/createFolder', bookmarks.createFolder);
+app.post('/createFolder', folders.createFolder);
 
 app.post('/bookmarks/import', bookmarks.import);
 

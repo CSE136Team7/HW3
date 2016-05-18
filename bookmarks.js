@@ -401,7 +401,3 @@ var matchBookmarks = function(callback, user_ID, searchstring){
     callback(err,results);
   },user_ID);
 }
-
-module.exports.createFolder=function(req, res) {
-  // console.log("req.body: "+JSON.stringify(req.body,null,4));
-}

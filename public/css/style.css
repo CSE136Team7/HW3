@@ -145,15 +145,6 @@ h1,h3 {
 	padding-right: 0;
   background-color: #FFF;
 }
-#folder_input{
-  border: 2px solid #FF9EAE;
-  background-color: #6C7A89;
-  color: #FFFFFF;
-  width: 100%;
-  font-weight: 700;
-  letter-spacing: 1px;
-  font-size: 20px;
-}
 
 
 input {
