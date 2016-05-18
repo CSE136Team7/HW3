@@ -1,36 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
-<h1>Login</h1>
-<form method='post' action='/login'>
-
-    <table>
-        <tr>
-            <td>Username: </td><td><input type="text" name="username"  value="" placeholder="Use 'cse136User'" ></td>
-        </tr>
-        <tr>
-            <td>Password: </td><td><input type="password" name="password" value="" placeholder="Use 'cse136PW'"></td>
-        </tr>
-        <tr>
-            <td><input type='submit' value="LOGIN"></td>
-        </tr>
-    </table>
-</form>
-<form method="post" action="/newAccountForm">
-    <table>
-        <tr>
-            <td><input type="submit" value="New member ?"></td>
-        </tr>
-    </table>
-</form>
-</body>
-</html>
--->
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,7 +60,7 @@
 <body>
     <div id="outer">
         <div id="middle">
-            <a class="button" href="index.html">
+            <a class="button" href="#">
                 <i class="fa fa-bookmark-o fa-1x"></i> Bookmarx
             </a>
 
@@ -136,46 +103,6 @@
                   </div>
               </div>
           </form>
-          <script>
-
-
-        var SignIn = document.getElementById("signin");
-        var NewUser = document.getElementById("newuser");
-        var SignInForm = document.getElementById("signin-form");
-        var NewUserForm = document.getElementById("newuser-form");
-
-
-        SignIn.onclick = function() {
-            NewUserForm.style.display = 'none';
-            SignInForm.style.display = 'block';
-
-            NewUser.className = "";
-
-            SignIn.className = "";
-            SignIn.className = "is-active";
-
-        }
-
-        NewUser.onclick = function() {
-            SignInForm.style.display = 'none';
-            NewUserForm.style.display = 'block';
-
-            SignIn.className = "";
-
-            NewUser.className = "";
-            NewUser.className = "is-active";
-        }
-
-        </script>
-        <script>
-    function validateForm(){
-        var x = document.getElementById('password').value;
-        if (x == null || x == "") {
-        alert("The password must be filled out");
-        return false;
-        }
-    }
-</script>
 
 
     </div>
