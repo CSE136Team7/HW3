@@ -30,7 +30,7 @@ To Do list:
 -export and import?
 -implement sorting
 -set up a home button (when click on logo)
--error in login and signup on the page 
+-error in login and signup on the page
 -link the bookmark to the URL
 -star
 -password reset/forgot password
