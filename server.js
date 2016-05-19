@@ -86,12 +86,7 @@ app.get('/', function (req, res) {
   // debug.print('404 Error: user tried to access /');
 
 });
-/* Stop the annoying cannot GET / */
-app.get('/*', function (req, res) {
-  debug.print('404 Error: user tried to access unknown URL');
-  res.redirect('/login');
 
-});
 
 /* Routes - consider putting in routes.js */
 app.get('/login', users.loginForm);
@@ -154,7 +149,7 @@ app.get('/root', function (req, res, next) {
   res.redirect('/login');
   return next();
 });
-app.get('/root', function (req, res, next) {
+app.get('/*', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
     user = 'unsub';
