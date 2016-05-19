@@ -86,6 +86,12 @@ app.get('/', function (req, res) {
   // debug.print('404 Error: user tried to access /');
 
 });
+/* Stop the annoying cannot GET / */
+app.get('/*', function (req, res) {
+  debug.print('404 Error: user tried to access unknown URL');
+  res.redirect('/login');
+
+});
 
 /* Routes - consider putting in routes.js */
 app.get('/login', users.loginForm);
