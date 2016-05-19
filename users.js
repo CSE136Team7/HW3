@@ -101,8 +101,9 @@
 
 
 
-
-
+module.exports.signup = function(req, res){
+  res.render('users/signup');
+}
 
 
 
@@ -131,7 +132,9 @@ module.exports.newAccount = function(req, res){
                 }
                 else{
                     //render an alert message : the account have been created
-                    res.render('users/login');
+                    //res.render('users/login');
+                    res.redirect('/login');
+                    
                 }
               });
           }

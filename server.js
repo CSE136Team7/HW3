@@ -5,7 +5,7 @@ var users = require('./users');
 var bookmarks = require('./bookmarks');
 var md5 = require('js-md5');
 var debug = require('./debug');
-
+var folders = require('./folders');
 
 db.init();
 
@@ -77,11 +77,13 @@ app.use(function printSession(req, res, next) {
 
 /* Stop the annoying cannot GET / */
 app.get('/', function (req, res) {
+  //res.send('<h1>404 Not Found</h1><br><p>You are being redirected to <a href="login">/login</a></p>');
+
   debug.print('404 Error: user tried to access /');
   res.redirect('/login');
-  res.send('<h1>404 Not Found</h1><br><p>You are being redirected to <a href="login">/login</a></p>');
-
-
+  // res.send('<h1>404 Not Found</h1><br><p>You are being redirected to <a href="login">/login</a></p>');
+  //
+  // debug.print('404 Error: user tried to access /');
 
 });
 
@@ -92,6 +94,8 @@ app.get('/logout', users.logout);
 
 
 app.post('/newAccount', users.newAccount);
+
+app.get('/signup', users.signup);
 
 /*  This must go between the users routes and the bookmarks routes */
 app.use(users.auth);
@@ -105,8 +109,9 @@ app.get('/bookmarks/edit', bookmarks.editPage);
 app.post('/bookmarks/update', bookmarks.update);
 app.post('/bookmarks/clicked', bookmarks.clicked);
 app.get('/folder/starred', bookmarks.starredPage);
-app.post('/createFolder', bookmarks.createFolder);
-
+app.post('/createFolder', folders.createFolder);
+app.post('/deleteFolder', folders.deleteFolder);
+app.post('/addBookToFolder', folders.addBookToFolder);
 app.post('/bookmarks/import', bookmarks.import);
 
 app.post('/folders', bookmarks.folders);

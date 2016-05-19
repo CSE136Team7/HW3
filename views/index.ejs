@@ -57,14 +57,9 @@
 								<div class="textFieldWrapper">
 									<input type="text" name="description" placeholder="Description">
 								</div>
-
-								<div class="textFieldWrapper">
-									<input type="text" name="keywords" placeholder="Keywords">
-								</div>
-								<div class="buttonWrapper">
+								<div class="buttonWrapper" style="margin-bottom:15px">
 									<!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
 									<button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Save</i></button>
-									<div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
 								</div>
 							</div>
 						</form>
@@ -85,12 +80,11 @@
 						</div>
 
 						<form method='post' action='/bookmarks/import' enctype="multipart/form-data">
-							<input type="file" name="file" accept=".csv" />
+							<input type="file" name="file" accept=".csv" style="margin-bottom:15px; width:100%">
 
-								<div class="buttonWrapper">
+								<div class="buttonWrapper"  style="margin-bottom:15px">
 									<!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
 									<button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Import</i></button>
-									<div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
 								</div>
 						</form>
 
@@ -113,38 +107,76 @@
 		<ul>
 			<li class="pinned">
 				<form class="resetme" action="/home" method="get">
-					<button><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
+					<button style="background-color:#474448"><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
 				</form>
 			</li>
 			<li class="pinned">
 				<form class="resetme" action="/folder/starred" method="get">
-					<button><i class="fa fa-star fa-lg"></i> Starred</button>
+					<button style="background-color:#474448"><i class="fa fa-star fa-lg"></i> Starred</button>
 				</form>
 			</li>
 			<li class="pinned"><a href="all.html"><i class="fa fa-th fa-lg"></i> All</a></li>
+			<li class="pinned">
 
-			<!-- TODO: Pull list from folders table -->
+					<% if(folders){ folders.forEach(function(folder) { %>
+						<li >
+									<a href="#" style=""><%= folder.Name%> </a>
+									<div>
 
-				<%if(folders){ folders.forEach(function(folder) { %>
-					<form action="/folders" method="post" >
-						<input type="hidden" name="folder_ID" value=<%=folder.folder_ID %>>
-						<button><%=folder.Name%></button>
-						</form>
-				<% });} %>
+											<a href="#folderModaledit"class="pad-trash-icon button" style="background-color:#474448;display:inline-block"><i class="fa fa-edit fa-lg" ></i></a>
 
+											<!-- Modal for folder update -->
+												<div id="folderModaledit" class="modalDialog">
+													<div class="grid grid-pad">
+														<a href="#close" title="Close" class="close x-button">x</a>
+															<div class="tabs is-centered">
+																<ul>
+																	<li id="add-folder" class="is-active"><a>Add Bookmarks in Folder</a></li>
+																</ul>
+															</div>
+															<form action="/addBookToFolder" method="post">
+															<div class="form" id="add-folder-form">
+																<input type="text" name="folder" value=<%=folder.Name%> id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px">
+																<input type="hidden" name="folder_ID" style="display:none"value=<%=folder.folder_ID%>>
 
+																<select name="book_ID"style="width:100%;margin-bottom: 15px;height: 32px;border: 2px solid #FFF;background-color: #6C7A89; font-size: 15px;color:#fff">
+																	<% if(bookmarks){ bookmarks.forEach(function(book) { %>
 
+																		<option name="book_ID"value=<%= book.book_ID%> > <%=book.Title %></option>
+																		<% }); }%>
+																</select>
+																<!-- <div class="buttonWrapper" style="margin-bottom:20px; "> -->
+																	<button><i class="fa fa-check-circle fa-lg" ></i> Save</button>
+														</div>
+													</form>
+													</div>
+												</div>
 
+											<form action="/deleteFolder" method="post">
+												<input type="hidden" name="folder_ID" value=<%= folder.folder_ID%> >
+												<button style="background-color:#474448"><i class="fa fa-trash-o fa-lg"></i></button>
+										</form>
+									</div>
+
+						</li>
+			    <% }); }%>
+
+			</li>
 		</ul>
 		<div class="buttonWrapper">
 			<div>
-				<a href="#folderModal" class="button"><i class="fa fa-plus-circle fa-lg"></i> </a> Folder
+				<!-- <div><i class="fa fa-plus-circle fa-lg"></i> Folder</div> -->
+				<a href="#folderModal" class="button" style="background-color:#474448"><i class="fa fa-plus-circle fa-lg"></i> Folder</a>
 			</div>
 
 			<div><i class="fa fa-download fa-lg"></i> Export</div>
 		</div>
 	</div>
 
+
+
+
+<!--  Modal for folder create-->
 	<div id="folderModal" class="modalDialog">
 		<div class="grid grid-pad">
 			<a href="#close" title="Close" class="close x-button">x</a>
@@ -155,29 +187,24 @@
 				</div>
 				<form action="/createFolder" method="post">
 				<div class="form" id="add-folder-form">
-						<input type="text" name="folder" placeholder="Folder Name">
-						<select>
-							<option ></option>
-							<%if(bookmarks){ bookmarks.forEach(function(drop) { %>
-							<option value=<%drop.user_ID%>><%= drop.Title%></option>
-							<% });} %>
-						</select>
-
-						<div class="buttonWrapper">
-					<button><i class="fa fa-check-circle fa-lg"></i> Save</button>
-					<div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
+					<input type="text" name="folder" placeholder="Folder Name" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px">
+					<div class="buttonWrapper" style="margin-bottom:20px; ">
+						<button><i class="fa fa-check-circle fa-lg" ></i> Save</button>
 				</div>
 			</div>
 		</form>
 		</div>
 	</div>
 
+
+
+
 	<div id="right">
 		<div class="main grid grid-pad">
 			<div id="title" class="col-1-1">
 				<div class="content">
 					<h1><%= filter %></h1>
-					<h3><%= errormsg %></h3>
+					<h3 style="color:red"><%= errormsg %></h3>
 				</div>
 			</div>
 
@@ -200,7 +227,7 @@
 									<input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
 									<button class="card__button"><i class="fa fa-star fa-lg"></i></button>
 								</form>
-								<a href=<%= '#updateModal'+bookmarks[i].book_ID %> class="button"><i class="fa fa-pencil-square-o fa-lg"></i></a>
+								<a href=<%= '#updateModal'+bookmarks[i].book_ID %> class ="button"><i class="fa fa-edit fa-lg"></i></a>
 								<form action="/bookmarks/delete" method="post" class="card__button">
 									<input type="hidden" name="user_ID" value=<%=bookmarks[i].user_ID %>>
 									<input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
