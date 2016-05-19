@@ -83,7 +83,8 @@ module.exports.deleteFolder = function(req, res) {
    	if (req.body.user_ID != ""
       && req.body.folder != ""
    		&& req.body.folder_ID != ""
-      && req.body.book_ID != ""){
+      && req.body.book_ID != ""
+      && typeof(req.body.book_ID) != 'undefined'){
 
 
    	    var folder_ID = db.escape(req.body.folder_ID);
@@ -107,6 +108,7 @@ module.exports.deleteFolder = function(req, res) {
    else{
    	if (req.body.folder == "" || req.body.folder_ID == ""  ||req.body.book_ID=="") {
    		res.redirect('/home?error=Form is not filled correctly');
+
    	}
    }
   }
