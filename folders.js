@@ -105,8 +105,8 @@ module.exports.deleteFolder = function(req, res) {
       }
 
    else{
-   	if (req.body.folder == "" && req.body.folder_ID == "" ) {
-   		res.redirect('/home?error=Please specify a folder name');
+   	if (req.body.folder == "" || req.body.folder_ID == ""  ||req.body.book_ID=="") {
+   		res.redirect('/home?error=Form is not filled correctly');
    	}
    }
   }
