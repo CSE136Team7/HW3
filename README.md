@@ -29,8 +29,8 @@ To Do list:
 -list bookmarks in a specific folder
 -export and import?
 -implement sorting
--set up a home button (when click on logo)
--error in login and signup on the page
+-set up a home button (when click on logo)  Constance
+-error in login and signup on the page      Constance
 -link the bookmark to the URL
 -star
 -password reset/forgot password
