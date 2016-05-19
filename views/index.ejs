@@ -136,7 +136,7 @@
 															</div>
 															<form action="/addBookToFolder" method="post">
 															<div class="form" id="add-folder-form">
-																<input type="text" name="folder" value=<%=folder.Name%> id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px">
+																<input type="text" name="folder" value=<%= folder.Name%> id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px">
 																<input type="hidden" name="folder_ID" style="display:none"value=<%=folder.folder_ID%>>
 
 																<select name="book_ID"style="width:100%;margin-bottom: 15px;height: 32px;border: 2px solid #FFF;background-color: #6C7A89; font-size: 15px;color:#fff">
@@ -248,3 +248,42 @@
 </body>
 
 </html>
+
+<!--
+<% if(folders){ folders.forEach(function(folder) { %>
+	<li>
+		<form action="/populateBooks" method="post" style="display:inline-block">
+			<button style="background-color:#474448; "><%= folder.Name%> </button>
+		</form>
+		<a href="#folderModaledit"class="pad-trash-icon button" style="background-color:#474448;margin-left:55px;"><i class="fa fa-edit fa-lg" ></i></a>
+
+	<div id="folderModaledit" class="modalDialog">
+		<div class="grid grid-pad">
+			<a href="#close" title="Close" class="close x-button">x</a>
+				<div class="tabs is-centered">
+					<ul>
+						<li id="add-folder" class="is-active"><a>Add Bookmarks in Folder</a></li>
+					</ul>
+				</div>
+				<form action="/addBookToFolder" method="post">
+				<div class="form" id="add-folder-form">
+					<input type="text" name="folder" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" value=<%= folder.Name%> >
+					<input type="hidden" name="folder_ID" style="display:none"value=<%=folder.folder_ID%>>
+
+					<select name="book_ID"style="width:100%;margin-bottom: 15px;height: 32px;border: 2px solid #FFF;background-color: #6C7A89; font-size: 15px;color:#fff">
+						<% if(bookmarks){ bookmarks.forEach(function(book) { %>
+							<option name="book_ID"value=<%= book.book_ID%> > <%=book.Title %></option>
+							<% }); }%>
+					</select>
+						<button ><i class="fa fa-check-circle fa-lg" ></i> Save</button>
+			</div>
+		</form>
+		</div>
+	</div>
+	<form action="/deleteFolder" method="post" style="display:inline-block">
+		<input type="hidden" name="folder_ID" value=<%= folder.folder_ID%> >
+		<button style="background-color:#474448;"><i class="fa fa-trash-o fa-lg"></i></button>
+	</form>
+</li>
+<% }); }%>
+ -->
