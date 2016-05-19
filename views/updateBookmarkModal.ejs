@@ -13,7 +13,7 @@
         <input type="hidden" name="book_ID" value=<%= bookmarks[i].book_ID %>>
         <input type="text" name="title" placeholder="Title" value=<%= bookmark.Title %>>
         <div class="textFieldWrapper">
-          <input type="url" name="url" placeholder="URL" value=<%= bookmark.URL %>>
+          <input type="url" name="url" required pattern="https?://.+" placeholder="http://www.example.com" value=<%= bookmark.URL %>>
         </div>
         <div class="textFieldWrapper">
           <input type="text" name="description" placeholder="Description" value=<%= bookmark.Description %>>
