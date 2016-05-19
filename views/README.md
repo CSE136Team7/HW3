@@ -17,3 +17,17 @@ To see a preview of our design, feel free to try any of these links:
  * **Courses** (http://www.wolfpacksd.xyz/pa2/courses.html)
  * **Recipes**  (http://www.wolfpacksd.xyz/pa2/recipes.html)
  * **Beauty**  (http://www.wolfpacksd.xyz/pa2/beauty.html)
+
+
+
+ To Do list
+
+ * implement "all" button
+ * list bookmarks in a specific folder
+ * logout button
+ * export and import?
+ * implement sorting
+ * set up a home button (when click on logo)
+ * error in login and signup on the page 
+ * link the bookmark to the URL
+ * star 
