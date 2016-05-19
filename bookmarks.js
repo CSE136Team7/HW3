@@ -121,7 +121,8 @@ module.exports.clicked = function(req, res){
   var sql = 'UPDATE books SET Clicks = Clicks + 1 WHERE book_ID = ' + book_ID + ' AND user_ID = ' + user_ID;
 
   if(!utility.isURL(url)) {
-    throw new Error('invalid URL');
+    //throw new Error('invalid URL');
+    res.redirect('/home?error=URL is invalid.');
   }
 
   db.query(sql, function(err) {
