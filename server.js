@@ -70,38 +70,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 /* Set up cookie information */
 //cookie test
-/*app.get('/', function initViewsCount(req, res, next) {
-  if (typeof req.session.views === 'undefined') {
-    req.session.views = 1;
-    return res.end('Welcome to the file session demo. Refresh page!');
-  }
-  return next();
-});
-app.get('/', function incrementViewsCount(req, res, next) {
-  console.assert(typeof req.session.views === 'number',
-      'missing views count in the session', req.session);
-  req.session.views++;
-  return next();
-});*/
 app.use(function printSession(req, res, next) {
   debug.print2('req.session: ', req.session);
   return next();
 });
-/*
-app.get('/', function sendPageWithCounter(req, res) {
-  res.setHeader('Content-Type', 'text/html');
-  res.write('<p>views: ' + req.session.views + '</p>\n');
-  res.end();
-});*/
-//Try it yo'self
-//app.get('login')
 
 /* Stop the annoying cannot GET / */
 app.get('/', function (req, res) {
+  debug.print('404 Error: user tried to access /');
   res.redirect('/login');
   res.send('<h1>404 Not Found</h1><br><p>You are being redirected to <a href="login">/login</a></p>');
 
-  debug.print('404 Error: user tried to access /');
+
 
 });
 

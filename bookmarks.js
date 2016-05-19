@@ -13,10 +13,6 @@ var xlsx = require('node-xlsx');
  *
  * renders the page to index.ejs
  */
-/* //COULD NOT RESOLVE TODO: Merge this back in
-module.exports.homePage = function(req, res) {
-
-    */
 module.exports.homePage = function(req, res) {
   debug.print('Received request for home page');
   var user;
@@ -62,6 +58,7 @@ module.exports.starredPage = function(req, res) {
 }
 
 var getStarred = function(callback,user_ID){
+    debug.print()
   getBookmarks(function(err,bookmarks) {
     var results = [];
     if(bookmarks){
