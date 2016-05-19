@@ -26,7 +26,7 @@ To see a preview of our design, feel free to try any of these links:
  * list bookmarks in a specific folder
  * logout button
  * export and import?
- * implement sorting
+ * implement sorting -M
  * set up a home button (when click on logo)
  * error in login and signup on the page 
  * link the bookmark to the URL
