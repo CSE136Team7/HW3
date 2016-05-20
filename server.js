@@ -115,7 +115,7 @@ app.post('/deleteFolder', folders.deleteFolder);
 app.post('/addBookToFolder', folders.addBookToFolder);
 app.post('/bookmarks/import', bookmarks.import);
 
-app.post('/folders', bookmarks.folders);
+app.get('/folders', bookmarks.folders);
 app.get('/find', bookmarks.find);
 
 app.listen(config.PORT, function () {

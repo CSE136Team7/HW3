@@ -109,15 +109,11 @@
 				</li>
 				<li class="pinned"><a href="all.html"><i class="fa fa-th fa-lg"></i> All</a></li>
 				<li class="pinned">
-					<select>
-						<% if(folders){ folders.forEach(function(folder) { %>
-							<option  > <%=folder.Name %></option>
-							<% }); }%>
-						</select>
 						<% if(folders){ folders.forEach(function(folder) { %>
 							<li>
-								<form action="/folders" method="post" style="display:inline-block">
-									<button style="background-color:#474448; "><%= folder.Name%> </button>
+								<form action="/folders" method="get" style="display:inline-block">
+									<input type="hidden" name="folderName" value=<%= folder.Name%> >
+									<button style="background-color:#474448;"name="folder_ID"value=<%= folder.folder_ID%> ><%= folder.Name%> </button>
 								</form>
 								<a href="#folderModaledit"class="pad-trash-icon button" style="background-color:#474448;margin-left:55px;"><i class="fa fa-edit fa-lg" ></i></a>
 								<form action="/deleteFolder" method="post" style="display:inline-block">
@@ -134,7 +130,7 @@
 										</div>
 										<form action="/addBookToFolder" method="post">
 											<div class="form" id="add-folder-form">
-												<input type="text" name="folder" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" value=<%= folder.Name%> >
+												<!-- <input type="text" name="folder" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" value=<%= folder.Name%> > -->
 												<input type="hidden" name="folder_ID" style="display:none"value=<%=folder.folder_ID%>>
 
 												<select name="book_ID"style="width:100%;margin-bottom: 15px;height: 32px;border: 2px solid #FFF;background-color: #6C7A89; font-size: 15px;color:#fff">
@@ -207,14 +203,16 @@
 													<input type="submit" class="card__title" value=<%=bookmarks[i].Title %>>
 												</form>
 												<div style=<%= randomBackgroundColor() %> class="card__image"></div>
-												<div class="card__action-bar">
+												<div class="card__action-bar" >
 													<form action="/bookmarks/star" method="post" class="card__button">
 														<input type="hidden" name="starred" value=<%=bookmarks[i].Star %>>
 														<input type="hidden" name="user_ID" value=<%=bookmarks[i].user_ID %>>
 														<input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
-														<button class="card__button"><i class="fa fa-star fa-lg"></i></button>
+														<button class="card__button" ><i class="fa fa-star fa-lg"></i></button>
 													</form>
-													<a href=<%= '#updateModal'+bookmarks[i].book_ID %> class ="button"><i class="fa fa-edit fa-lg"></i></a>
+
+													<a href=<%= '#updateModal'+bookmarks[i].book_ID %>  class="fa fa-edit fa-lg" ></a>
+
 													<form action="/bookmarks/delete" method="post" class="card__button">
 														<input type="hidden" name="user_ID" value=<%=bookmarks[i].user_ID %>>
 														<input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
