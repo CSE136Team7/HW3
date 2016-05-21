@@ -81,7 +81,6 @@ module.exports.deleteFolder = function(req, res) {
     user_ID = db.escape(req.session.user_ID);
 
    	if (req.body.user_ID != ""
-      && req.body.folder != ""
    		&& req.body.folder_ID != ""
       && req.body.book_ID != ""
       && typeof(req.body.book_ID) != 'undefined'){
@@ -89,7 +88,7 @@ module.exports.deleteFolder = function(req, res) {
 
    	    var folder_ID = db.escape(req.body.folder_ID);
         var book_ID = db.escape(req.body.book_ID);
-
+        console.log("req.body: ----------->"+JSON.stringify(req.body,null,4)+"req.body.folder_ID: "+req.body.folder_ID);
         var queryString = 'INSERT INTO folder_has_books (folder_ID, book_ID) VALUES ('
             + folder_ID + ','  + book_ID + ')';
 
