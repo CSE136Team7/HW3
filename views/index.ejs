@@ -107,8 +107,11 @@
 						<button style="background-color:#474448"><i class="fa fa-star fa-lg"></i> Starred</button>
 					</form>
 				</li>
-				<li class="pinned"><a href="all.html"><i class="fa fa-th fa-lg"></i> All</a></li>
-					<%if(folders){ for(var j = 0; j < folders.length; j++) {%>
+			<li class="pinned">
+				<form action="/showAll" method="get">
+				<a href="/showAll"><i class="fa fa-th fa-lg"></i> All</a>
+			</form>
+			</li>					<%if(folders){ for(var j = 0; j < folders.length; j++) {%>
 						<li>
 							<form action="/folders" method="get" style="display:inline-block">
 								<input type="hidden" name="folderName" value=<%= folders[j].Name%> >
