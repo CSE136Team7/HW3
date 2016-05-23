@@ -158,7 +158,7 @@ app.get('/*', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
     user = 'unsub';
-  debug.print('404 Error: user '+user+' tried to access unknown path');
+  //debug.print('404 Error: user '+user+' tried to access unknown path');
   res.send('<h1>404 Not Found</h1><br><p>Please user the browser\'s back button or navigate to the <a href="login">/login</a> page</p>');
 //  req.session.destroy();
 //  res.redirect('/login');
