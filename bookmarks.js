@@ -88,6 +88,23 @@ var getStarred = function(callback,user_ID){
 
  }
 
+ var asyncHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_ID, done){
+   async.parallel([function(callback){bookmarkFunc(callback)},function(callback){folderFunc(callback,user_ID)}],
+      function(err, results){
+        console.log("bookmarks: ----> "+JSON.stringify(results[0][0],null,4));
+        var bookmarks = results[0];
+        var folders = results[1];
+        done({
+                 bookmarks : bookmarks,
+                 folders   : folders,
+                 filter    : filter,
+                 errormsg  : errormsg
+               });
+      }
+   )
+
+ }
+
  module.exports.folders = function(req, res){
 
    var folder_ID = req.query.folder_ID;
@@ -99,22 +116,19 @@ var getStarred = function(callback,user_ID){
      res.redirect('/login');
    }
    user = req.session.user_ID;
-    console.log("folder_ID: ---------------->"+folder_ID+"  folderName: "+folderName);
-    var sql = "SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID =" + folder_ID +  "AND folder_has_books.book_ID = books.book_ID;";
+   if (folder_ID != ""
+     && folderName != ""
+     && user != ""
+     && typeof(folder_ID) != 'undefined'){
+       console.log("folder_ID: ---------------->"+folder_ID+"  folderName: "+folderName);
+        var getFoldersBookmarks = function(callback) { db.query("SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID = " + folder_ID +  " AND folder_has_books.book_ID = books.book_ID", callback) };
 
-    db.query(sql, function(err) {
-      if (err) {
-        res.redirect('/home?error=Cannot list books from selected folder.');
-      } else {
-        res.redirect('/home');
-      }
-    });
-  //    var getFoldersBookmarks = function(callback) { db.query("SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID =" + folder_ID +  "AND folder_has_books.book_ID = books.book_ID", callback) };
-   //
-  //  renderHomePage(getFoldersBookmarks,getFolders,folderName, "",user,function(obj){
-  //    console.log("obj: "+JSON.stringify(obj,null,4));
-  //    res.render('index',obj);
-  //  });
+      asyncHomePage(getFoldersBookmarks,getFolders,folderName, "",user,function(obj){
+        res.render('index',obj);
+      });
+    } else{
+      res.redirect('/home?error=couldnt load books');
+    }
  }
 
 
