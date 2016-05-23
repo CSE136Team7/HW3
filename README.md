@@ -23,6 +23,7 @@ FINISHED:
 -logging occurs in console via debug.js. will change to write to file soon
 -cookie is used to lookup user id, which is only associated with a session id after logging in
 -add bookmark works
+-link the bookmark to the URL
 
 To Do list:
 -implement "all" button
@@ -31,6 +32,5 @@ To Do list:
 -implement sorting
 -set up a home button (when click on logo)  Constance
 -error in login and signup on the page      Constance
--link the bookmark to the URL
 -star
 -password reset/forgot password
