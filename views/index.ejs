@@ -135,10 +135,11 @@
 							</div>
 							<form action="/addBookToFolder" method="post">
 								<div class="form" id="add-folder-form">
-									<input type="text" name="folder" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" value=<%= folders[j].Name%> >
-									<input type="hidden" name="folder_ID" style="display:none" value=<%= folders[j].folder_ID%> >
+									<input type="text" name="folder" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" value=<%= folders[j].Name%>>
+									<input type="hidden" name="folder_ID" style="display:none" value=<%= folders[j].folder_ID%>>
 
 									<select name="book_ID"style="width:100%;margin-bottom: 15px;height: 32px;border: 2px solid #FFF;background-color: #6C7A89; font-size: 15px;color:#fff">
+											<option></option>
 										<% if(bookmarks){ bookmarks.forEach(function(book) { %>
 											<option name="book_ID" value=<%= book.book_ID%> > <%=book.Title %></option>
 											<% }); }%>

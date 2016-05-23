@@ -81,33 +81,59 @@ module.exports.deleteFolder = function(req, res) {
     user_ID = db.escape(req.session.user_ID);
 
    	if (req.body.user_ID != ""
+      && req.body.folder != ""
    		&& req.body.folder_ID != ""
       && req.body.book_ID != ""
       && typeof(req.body.book_ID) != 'undefined'){
 
-
+        var folderName = db.escape(req.body.folder);
    	    var folder_ID = db.escape(req.body.folder_ID);
         var book_ID = db.escape(req.body.book_ID);
         console.log("req.body: ----------->"+JSON.stringify(req.body,null,4)+"req.body.folder_ID: "+req.body.folder_ID);
         var queryString = 'INSERT INTO folder_has_books (folder_ID, book_ID) VALUES ('
             + folder_ID + ','  + book_ID + ')';
 
+        var updateFolderName = 'UPDATE folders SET Name=' + folderName + ' WHERE folder_ID=' + folder_ID + ';';
 
-        db.query(queryString, function(err) {
-            if (err) {
-                debug.print("Query failed err:" + err);
-                throw(err);
-            }
-            else {
-                res.redirect('/home');
-            }
+        db.query(updateFolderName, function(err) {
+          if(err) {
+            debug.print("Query failed err: " + err);
+            throw err;
+          }
+          else {
+            db.query(queryString, function(err) {
+                if (err) {
+                    debug.print("Query failed err:" + err);
+                    throw(err);
+                }
+                else {
+                    res.redirect('/home');
+                }
+            });
+          }
         });
       }
 
    else{
-   	if (req.body.folder == "" || req.body.folder_ID == ""  ||req.body.book_ID=="") {
-   		res.redirect('/home?error=Form is not filled correctly');
+   	 if (req.body.folder == "" || req.body.folder_ID == "") {
+   	   res.redirect('/home?error=Form is not filled correctly');
+   	 }
+     // if they're only updating the folder name
+     else {
+       var folderName = db.escape(req.body.folder);
+       var folder_ID = db.escape(req.body.folder_ID);
 
-   	}
+       var updateFolderName = 'UPDATE folders SET Name=' + folderName + ' WHERE folder_ID=' + folder_ID + ';';
+
+       db.query(updateFolderName, function(err) {
+         if(err) {
+           debug.print("Query failed err: " + err);
+           throw err;
+         }
+         else {
+           res.redirect('/home');
+         }
+       });
+     }
    }
   }
