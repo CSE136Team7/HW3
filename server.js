@@ -71,7 +71,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 /* Set up cookie information */
 //cookie test
 app.use(function printSession(req, res, next) {
-  debug.print2('req.session: ', req.session);
+  // debug.print2('req.session: ', req.session);
   return next();
 });
 
@@ -115,7 +115,7 @@ app.post('/deleteFolder', folders.deleteFolder);
 app.post('/addBookToFolder', folders.addBookToFolder);
 app.post('/bookmarks/import', bookmarks.import);
 
-app.post('/folders', bookmarks.folders);
+app.get('/folders', bookmarks.folders);
 app.get('/find', bookmarks.find);
 
 app.listen(config.PORT, function () {

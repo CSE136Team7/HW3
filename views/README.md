@@ -1,7 +1,7 @@
 ## HW3 Description
 
 ## Description Button
-Please test the `Description Button` in the Most Visited tab in the Youtube bookmark. 
+Please test the `Description Button` in the Most Visited tab in the Youtube bookmark.
 http://www.wolfpacksd.xyz/pa2/index.html
 
 ## Edit Button
@@ -11,7 +11,7 @@ Please test the `Edit Button` at http://www.wolfpacksd.xyz/pa2/index.html
 Please test the `Sort Button` at http://www.wolfpacksd.xyz/pa2/all.html
 
 ## Sidebar Links
-To see a preview of our design, feel free to try any of these links: 
+To see a preview of our design, feel free to try any of these links:
  * **Starred** (http://www.wolfpacksd.xyz/pa2/starred.html)
  * **All** (http://www.wolfpacksd.xyz/pa2/all.html)
  * **Courses** (http://www.wolfpacksd.xyz/pa2/courses.html)
@@ -28,6 +28,6 @@ To see a preview of our design, feel free to try any of these links:
  * export and import?
  * implement sorting -M
  * set up a home button (when click on logo)
- * error in login and signup on the page 
+ * error in login and signup on the page
  * link the bookmark to the URL
- * star 
+ * star

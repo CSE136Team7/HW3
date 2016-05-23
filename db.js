@@ -3,7 +3,7 @@ var config = require('./config');
 
 var MySQL = function() {
     var connection;
-    
+
     return {
         init: function(){
             MySQL.connection = mysql.createConnection({
@@ -12,7 +12,7 @@ var MySQL = function() {
                 password : config.DATABASE_PASSWORD,
                 database : config.DATABASE_NAME
             });
-         
+
             MySQL.connection.connect();
         },
         query: function(querystring, callback){

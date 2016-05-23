@@ -105,16 +105,13 @@ module.exports.signup = function(req, res){
   res.render('users/signup');
 }
 
-
-
-
 module.exports.newAccount = function(req, res){
 
   if (req.body.username != "" && req.body.password != "" ){
     var user = req.body.username;
     var pwd = req.body.password;
 
-    
+
     var sql = 'SELECT username FROM users WHERE username = ' + db.escape(user);
     db.query(sql, function(err, results) {
       if(err){
@@ -123,8 +120,8 @@ module.exports.newAccount = function(req, res){
       else{
         if (results.length==0){
             //no existing username --> insert into the table
-               //hashing of the password   
-               var pwdCrypted = md5(pwd, user);  
+               //hashing of the password
+               var pwdCrypted = md5(pwd, user);
                var queryString = "INSERT INTO users(username, passhash) VALUES ("+ db.escape(user) + "," + db.escape(pwdCrypted) +")";
                db.query(queryString, function(err, result){
                 if (err){
