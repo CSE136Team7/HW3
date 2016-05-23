@@ -1,4 +1,18 @@
-// window.onload = function() {
+window.onload = function() {
+  var form = document.getElementById("import");
+  form.addEventListener('submit', function(ev) {
+    var oData = new FormData(form);
+    console.log("form submitted");
+    var oReq = new XMLHttpRequest();
+    oReq.open("POST", "/bookmarks/import", true);
+    oReq.onload = function(oEvent) {
+      console.log(oReq.status);
+  };
+  console.log(oData);
+  console.log(form);
+  oReq.send(oData);
+    ev.preventDefault();
+  }, false);
 //
 // var menuButton = document.getElementById("menu");
 // var sidebar = document.getElementById("sidebar");
@@ -76,4 +90,4 @@
 // 	document.getElementById('hide-submit-btn').click();
 // };
 //
-// }
+}

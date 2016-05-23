@@ -74,8 +74,8 @@
 									<li id="import-bookmark" class="is-active"><a href="#import-bookmark-form">Import Bookmarks</a></li>
 								</ul>
 							</div>
-							<form method='post' action='/bookmarks/import' enctype="multipart/form-data">
-								<input type="file" name="file" accept=".csv" style="margin-bottom:15px; width:100%">
+							<form method='post' action='/bookmarks/import' id="import" enctype="multipart/form-data">
+								<input type="file" name="myFile" accept=".csv" style="margin-bottom:15px; width:100%">
 								<div class="buttonWrapper"  style="margin-bottom:15px">
 									<!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
 									<button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Import</i></button>
@@ -156,8 +156,9 @@
 									<!-- <div><i class="fa fa-plus-circle fa-lg"></i> Folder</div> -->
 									<a href="#folderModal" class="button" style="background-color:#474448"><i class="fa fa-plus-circle fa-lg"></i> Folder</a>
 								</div>
-
-								<div><i class="fa fa-download fa-lg"></i> Export</div>
+								<form action="/bookmarks/export" method="get">
+									<button><i class="fa fa-download fa-lg"></i> Export</button>
+								</form>
 							</div>
 						</div>
 

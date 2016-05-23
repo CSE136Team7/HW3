@@ -13,6 +13,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
+var multer = require('multer');
 
 //this is the object for express-mysql-session
 var sessionStore = new MySQLStore ({
@@ -67,6 +68,7 @@ app.use(mySession);
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(multer({dest:'./uploads/'}).single('myFile'));
 
 /* Set up cookie information */
 //cookie test
@@ -114,6 +116,8 @@ app.post('/createFolder', folders.createFolder);
 app.post('/deleteFolder', folders.deleteFolder);
 app.post('/addBookToFolder', folders.addBookToFolder);
 app.post('/bookmarks/import', bookmarks.import);
+
+app.get('/bookmarks/export', bookmarks.export);
 
 app.get('/folders', bookmarks.folders);
 app.get('/find', bookmarks.find);
