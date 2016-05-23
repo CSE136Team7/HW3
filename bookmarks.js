@@ -7,7 +7,6 @@ var db = require('./db');
 var debug = require('./debug');
 var async = require('async');
 var utility = require('./utility');
-var xlsx = require('node-xlsx');
 var json2csv = require('json2csv');
 var Converter = require("csvtojson").Converter;
 var util = require("util");
