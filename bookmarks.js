@@ -419,9 +419,7 @@ module.exports.find = function (req, res) {
     }, searchstring
   );
 }
-var getStarred = function(callback,user_ID){
 
-}
 var matchBookmarks = function(callback, user_ID, searchstring){
   getBookmarks(function(err,bookmarks) {
     var results = [];
