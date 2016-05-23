@@ -88,6 +88,23 @@ var getStarred = function(callback,user_ID){
 
  }
 
+ var asyncHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_ID, done){
+   async.parallel([function(callback){bookmarkFunc(callback)},function(callback){folderFunc(callback,user_ID)}],
+      function(err, results){
+        console.log("bookmarks: ----> "+JSON.stringify(results[0][0],null,4));
+        var bookmarks = results[0];
+        var folders = results[1];
+        done({
+                 bookmarks : bookmarks,
+                 folders   : folders,
+                 filter    : filter,
+                 errormsg  : errormsg
+               });
+      }
+   )
+
+ }
+
  module.exports.folders = function(req, res){
 
    var folder_ID = req.query.folder_ID;
