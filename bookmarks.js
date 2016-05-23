@@ -7,20 +7,11 @@ var db = require('./db');
 var debug = require('./debug');
 var async = require('async');
 var utility = require('./utility');
-var xlsx = require('node-xlsx');
 var json2csv = require('json2csv');
 var Converter = require("csvtojson").Converter;
 var util = require("util");
 var fs = require("fs");
-// import xlsx from 'node-xlsx';
-/**
- *
- * renders the page to index.ejs
- */
-/* //COULD NOT RESOLVE TODO: Merge this back in
-module.exports.homePage = function(req, res) {
 
-    */
 module.exports.homePage = function(req, res) {
   debug.print('Received request for home page user id is: '+req.session.user_ID);
   var user;
@@ -58,14 +49,12 @@ module.exports.starredPage = function(req, res) {
   user = req.session.user_ID;
   renderHomePage(getBookmarks,getFolders,"Starred","",user,
     function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
-      console.log("IM TRYING TO RENDER!");
       res.render('index',obj);
     }, null
   );
 }
 
 var getStarred = function(callback,user_ID){
-  console.log("11");
   getBookmarks(function(err,bookmarks) {
 
     var results = [];
@@ -368,6 +357,7 @@ module.exports.import = function (req, res) {
                 addBookmark(result,user_ID,callback);
               },
               function(err,results){
+                console.log("Im going home");
                 res.redirect('/home');
               }
             );
@@ -452,7 +442,7 @@ var mostVisitedCompare = function(bookmark1, bookmark2){
 
 
 module.exports.find = function (req, res) {
-  debug.print ("Search title \n" + JSON.stringify(req.body));
+  debug.print ("Received search request: \n" + JSON.stringify(req.query));
   var user;
   if (typeof req.session.user_ID === 'undefined') {
       //throw err
@@ -477,6 +467,7 @@ module.exports.find = function (req, res) {
 }
 
 var matchBookmarks = function(callback, user_ID, searchstring){
+  debug.print("Matching bookmarks that match: " + searchstring + " for user " + user_ID);
   getBookmarks(function(err,bookmarks) {
     var results = [];
     for (var i= 0; i < bookmarks.length ;i++)  {
@@ -494,78 +485,3 @@ var matchBookmarks = function(callback, user_ID, searchstring){
 module.exports.createFolder=function(req, res) {
   // console.log("req.body: "+JSON.stringify(req.body,null,4));
 }
-module.exports.showAll = function(req,res){
-
-var user;
-  if (typeof req.session.user_ID === 'undefined') {
-      //throw err
-    // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
-    req.session.destroy();
-    res.redirect('/login');
-  }
-  user = req.session.user_ID;
-  renderHomePage(getBookmarks,getFolders,"All","",user,
-    function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
-      res.render('index',obj);
-    }
-  );
-
-}
-
-
-var pullTitle = function(callback, user_ID){
- getBookmarks(function(err,bookmarks) {
-  //console.log(bookmarks);
-  var results = [];
-debug.print("bookmarks is printed here");
-  debug.print(bookmarks);
-
-  for (var i=0; i < bookmarks.length; i++){
-    //var s = bookmarks[i].Title;
-    debug.print("shit")
-
-    console.log("helo---------------------------->: "+bookmarks[i].Title);
-
-    results.push(bookmarks[i].Title);
-    //console.log("bye---------------------------->: "+bookmarks[i++].Title);
-  }
-  // var t = bookmarks.Title;
-  // debug.print(t);
-      //debug.print("s is printed here");
-          //debug.print(s);
-
-
-  callback(err,results);
- }, user_ID);
-
-}
-
-
-
-
-module.exports.sortBooks = function(req,res) {
-
-var user;
-
-  if (typeof req.session.user_ID === 'undefined') {
-      //throw err
-    // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
-    req.session.destroy();
-    res.redirect('/login');
-  }
-  //console.log("getbookmarks "+ JSON.stringify(getBookmarks));
-  //console.log("getbookmarks "+ JSON.stringify(getBookmarks.Title);
-
-  user = req.session.user_ID;
-
-  renderHomePage(pullTitle,getFolders,"Sort","",user,
-    function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
-      res.render('index',obj);
-    }
-  );
-
-
-}
-
