@@ -2,6 +2,7 @@
 # Team 7
 # due 16 May 2016
 
+
 TODO:
 -cache/expiration headers etc
 -validation on server side
@@ -13,7 +14,7 @@ TODO:
 -don’t throw stack traces. How do you trap them? How do you only throw them during debug and not production?
 -fetch new data and not all the old data and the new data. Could do change locally and sync without fetching the data
 -minification (gulp)
--automation (not having to ctrl c, node server.js whenever we make an edit)
+-automation, pipelining (not having to ctrl c, node server.js whenever we make an edit)
 
 FINISHED:
 -remove x-powered-by header
@@ -32,3 +33,8 @@ To Do list:
 -password reset/forgot password
 -all button
 -add and remove a bookmark in a folder
+
+
+Notes for self:
+Memory store: a default for express session (node dependency) to store cookies and data etc. Instead we are using express-mysql-session. Make sure not to revert to default at any point
+

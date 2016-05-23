@@ -7,20 +7,11 @@ var db = require('./db');
 var debug = require('./debug');
 var async = require('async');
 var utility = require('./utility');
-var xlsx = require('node-xlsx');
 var json2csv = require('json2csv');
 var Converter = require("csvtojson").Converter;
 var util = require("util");
 var fs = require("fs");
-// import xlsx from 'node-xlsx';
-/**
- *
- * renders the page to index.ejs
- */
-/* //COULD NOT RESOLVE TODO: Merge this back in
-module.exports.homePage = function(req, res) {
 
-    */
 module.exports.homePage = function(req, res) {
   debug.print('Received request for home page user id is: '+req.session.user_ID);
   var user;
@@ -56,16 +47,15 @@ module.exports.starredPage = function(req, res) {
     return;
   }
   user = req.session.user_ID;
-  renderHomePage(getBookmarks,getFolders,"Starred","",user,
+
+  renderHomePage(getStarred, getFolders, "Starred", "", user,
     function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
-      console.log("IM TRYING TO RENDER!");
       res.render('index',obj);
     }, null
   );
 }
 
 var getStarred = function(callback,user_ID){
-  console.log("11");
   getBookmarks(function(err,bookmarks) {
 
     var results = [];
@@ -83,7 +73,7 @@ var getStarred = function(callback,user_ID){
 
  var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_ID, done, searchstring){
    debug.print("Rendering Homepage");
-   async.parallel([function(callback){bookmarkFunc(callback,user_ID)},function(callback){folderFunc(callback,user_ID)}],
+   async.parallel([function(callback){bookmarkFunc(callback,user_ID,searchstring)},function(callback){folderFunc(callback,user_ID)}],
       function(err, results){
         if(err){
           throw err;
@@ -102,12 +92,31 @@ var getStarred = function(callback,user_ID){
  }
 
  module.exports.folders = function(req, res){
-   var folder_ID = req.body.folder_ID;
-   var getFoldersBookmarks = function(callback) { db.query('SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID = ' + folder_ID + ' AND folder_has_books.book_ID = books.book_ID', callback) };
-   renderHomePage(getFoldersBookmarks,getFolders,"Folder Name", "",function(obj){
+   var folder_ID = req.query.folder_ID;
+   var folderName = req.query.folderName;
+   var user;
+   if (typeof req.session.user_ID === 'undefined') {
+     debug.print('Warning: user went to homePage without a user_ID');
+     req.session.destroy();
+     res.redirect('/login');
+   }
+   user = req.session.user_ID;
+   console.log("folder_ID: ---------------->"+folder_ID+"  folderName: "+folderName);
 
+   var getFoldersBookmarks = function(callback) {
+     db.query("SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID =" + folder_ID +  " AND folder_has_books.book_ID = books.book_ID",
+     function(err, results){
+       if(err){
+         throw err;
+       }
+       callback(err, results);
+     })
+   };
+
+   renderHomePage(getFoldersBookmarks,getFolders,folderName, "",user,function(obj){
+     console.log("obj: "+JSON.stringify(obj,null,4));
      res.render('index',obj);
-   })
+   });
  }
 
 
@@ -368,6 +377,7 @@ module.exports.import = function (req, res) {
                 addBookmark(result,user_ID,callback);
               },
               function(err,results){
+                console.log("Im going home");
                 res.redirect('/home');
               }
             );
@@ -452,7 +462,7 @@ var mostVisitedCompare = function(bookmark1, bookmark2){
 
 
 module.exports.find = function (req, res) {
-  debug.print ("Search title \n" + JSON.stringify(req.body));
+  debug.print ("Received search request: \n" + JSON.stringify(req.query));
   var user;
   if (typeof req.session.user_ID === 'undefined') {
       //throw err
@@ -477,6 +487,7 @@ module.exports.find = function (req, res) {
 }
 
 var matchBookmarks = function(callback, user_ID, searchstring){
+  debug.print("Matching bookmarks that match: " + searchstring + " for user " + user_ID);
   getBookmarks(function(err,bookmarks) {
     var results = [];
     for (var i= 0; i < bookmarks.length ;i++)  {
