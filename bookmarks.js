@@ -239,6 +239,7 @@ module.exports.insert = function(req, res) {
           }
           else {
               res.redirect('/home');
+              
           }
       });
     }
