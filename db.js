@@ -6,13 +6,7 @@ var MySQL = function() {
 
     return {
         init: function(){
-            MySQL.connection = mysql.createConnection({
-                host     : config.DATABASE_HOST,
-                user     : config.DATABASE_USER,
-                password : config.DATABASE_PASSWORD,
-                database : config.DATABASE_NAME
-            });
-
+            MySQL.connection = mysql.createConnection('mysql://bf10eaf95350d6:d8fcd7ae@us-cdbr-iron-east-04.cleardb.net/heroku_3ddd6cbd9fad3cb?reconnect=true');
             MySQL.connection.connect();
         },
         query: function(querystring, callback){
