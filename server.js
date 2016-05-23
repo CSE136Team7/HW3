@@ -71,7 +71,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 /* Set up cookie information */
 //cookie test
 app.use(function printSession(req, res, next) {
-  debug.print2('req.session: ', req.session);
+  // debug.print2('req.session: ', req.session);
   return next();
 });
 

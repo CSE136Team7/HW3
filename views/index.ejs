@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 	<% include helpers.ejs %>
 	<% include updateBookmarkModal.ejs %>
@@ -108,44 +107,48 @@
 					</form>
 				</li>
 				<li class="pinned"><a href="all.html"><i class="fa fa-th fa-lg"></i> All</a></li>
-				<li class="pinned">
-						<% if(folders){ folders.forEach(function(folder) { %>
-							<li>
-								<form action="/folders" method="get" style="display:inline-block">
-									<input type="hidden" name="folderName" value=<%= folder.Name%> >
-									<button style="background-color:#474448;"name="folder_ID"value=<%= folder.folder_ID%> ><%= folder.Name%> </button>
-								</form>
-								<a href="#folderModaledit"class="pad-trash-icon button" style="background-color:#474448;margin-left:55px;"><i class="fa fa-edit fa-lg" ></i></a>
-								<form action="/deleteFolder" method="post" style="display:inline-block">
-									<input type="hidden" name="folder_ID" value=<%= folder.folder_ID%> >
-									<button style="background-color:#474448;"><i class="fa fa-trash-o fa-lg"></i></button>
-								</form>
-								<div id="folderModaledit" class="modalDialog">
-									<div class="grid grid-pad">
-										<a href="#close" title="Close" class="close x-button">x</a>
-										<div class="tabs is-centered">
-											<ul>
-												<li id="add-folder" class="is-active"><a>Add Bookmarks in Folder</a></li>
-											</ul>
-										</div>
-										<form action="/addBookToFolder" method="post">
-											<div class="form" id="add-folder-form">
-												<!-- <input type="text" name="folder" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" value=<%= folder.Name%> > -->
-												<input type="hidden" name="folder_ID" style="display:none"value=<%=folder.folder_ID%>>
+					<%if(folders){ for(var j = 0; j < folders.length; j++) {%>
+						<li>
+							<form action="/folders" method="get" style="display:inline-block">
+								<input type="hidden" name="folderName" value=<%= folders[j].Name%> >
+								<button style="background-color:#474448;"name="folder_ID"value=<%= folders[j].folder_ID%> ><%= folders[j].Name%> </button>
+							</form>
 
-												<select name="book_ID"style="width:100%;margin-bottom: 15px;height: 32px;border: 2px solid #FFF;background-color: #6C7A89; font-size: 15px;color:#fff">
-													<% if(bookmarks){ bookmarks.forEach(function(book) { %>
-														<option name="book_ID"value=<%= book.book_ID%> > <%=book.Title %></option>
-														<% }); }%>
-													</select>
-													<button ><i class="fa fa-check-circle fa-lg" ></i> Save</button>
-												</div>
-											</form>
-										</div>
+							<a href=<%= '#folderModaledit'+folders[j].folder_ID %> class="pad-trash-icon button" style="background-color:#474448;margin-left:55px;"><i class="fa fa-edit fa-lg" ></i></a>
+							<form action="/deleteFolder" method="post" style="display:inline-block">
+								<input type="hidden" name="folder_ID" value=<%= folders[j].folder_ID%> >
+								<button style="background-color:#474448;"><i class="fa fa-trash-o fa-lg"></i></button>
+							</form>
+						</li>
+					<%}}%>
+				</ul>
+
+				<%if(folders){ for(var j = 0; j < folders.length; j++) {%>
+					<div id=<%='folderModaledit'+folders[j].folder_ID %> class="modalDialog">
+						<div class="grid grid-pad">
+							<a href="#close" title="Close" class="close x-button">x</a>
+							<div class="tabs is-centered">
+								<ul>
+									<li id="add-folder" class="is-active"><a>Add Bookmarks in Folder</a></li>
+								</ul>
+							</div>
+							<form action="/addBookToFolder" method="post">
+								<div class="form" id="add-folder-form">
+									<input type="text" name="folder" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" value=<%= folders[j].Name%> >
+									<input type="hidden" name="folder_ID" style="display:none" value=<%= folders[j].folder_ID%> >
+
+									<select name="book_ID"style="width:100%;margin-bottom: 15px;height: 32px;border: 2px solid #FFF;background-color: #6C7A89; font-size: 15px;color:#fff">
+										<% if(bookmarks){ bookmarks.forEach(function(book) { %>
+											<option name="book_ID" value=<%= book.book_ID%> > <%=book.Title %></option>
+											<% }); }%>
+										</select>
+										<button ><i class="fa fa-check-circle fa-lg" ></i> Save</button>
 									</div>
-								</li>
-								<% }); }%>
-							</ul>
+								</form>
+							</div>
+						</div>
+						<%}}%>
+
 							<div class="buttonWrapper">
 								<div>
 									<!-- <div><i class="fa fa-plus-circle fa-lg"></i> Folder</div> -->
