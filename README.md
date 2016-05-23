@@ -27,10 +27,8 @@ FINISHED:
 -list bookmarks in a specific folder
 
 To Do list:
--implement "all" button
 -export and import?
 -implement sorting
--set up a home button (when click on logo)  Constance
--error in login and signup on the page      Constance
--star
 -password reset/forgot password
+-all button
+-add and remove a bookmark in a folder
