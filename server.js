@@ -77,6 +77,30 @@ app.use(function printSession(req, res, next) {
   return next();
 });
 
+var checkJS = function (req, res, next) {
+  if(req.body.javascript) {
+
+    debug.print('Warning: User has JavaScript disabled.');
+
+    if (typeof req.session.user_ID === 'undefined') {
+        //throw err
+      // go to login
+      debug.print('redirecting to login...');
+      req.session.destroy();
+      res.redirect('/login?error=You need to enable JavaScript.');
+    }
+    else {
+      debug.print('redirecting to home...');
+      res.redirect('/home?error=You need to enable JavaScript.');
+    }
+  }
+  else {
+    next();
+  }
+}
+
+app.use( checkJS );
+
 /* Stop the annoying cannot GET / */
 app.get('/', function (req, res) {
   //res.send('<h1>404 Not Found</h1><br><p>You are being redirected to <a href="login">/login</a></p>');

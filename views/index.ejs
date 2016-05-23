@@ -48,7 +48,7 @@
 						</div>
 
 						<form method='post' action='/bookmarks/insert' id="add-bookmark-form">
-							<div class="form" id="add-bookmark-form">
+							<div class="form">
 								<input type="text" name="title" placeholder="Title">
 								<div class="textFieldWrapper">
 									<input type="url" name="url" required pattern="https?://.+" placeholder="http://www.example.com">
@@ -56,6 +56,9 @@
 								<div class="textFieldWrapper">
 									<input type="text" name="description" placeholder="Description">
 								</div>
+								<noscript>
+								  <input type="hidden" name="javascript" value="0">
+								</noscript>
 								<div class="buttonWrapper" style="margin-bottom:15px">
 									<!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
 									<button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Save</i></button>

@@ -1,18 +1,37 @@
 window.onload = function() {
-  var form = document.getElementById("import");
+  var addBookForm = document.getElementById("add-bookmark-form");
+
+  addBookForm.addEventListener('submit', function(ev) {
+    var oData = new FormData(addBookForm);
+    var oReq = new XMLHttpRequest();
+    oReq.onreadystatechange = function () {
+      if(oReq.readyState == 4 && oReq.status == 200) {
+        debug(oReq.responseText);
+      }
+    };
+    oReq.open("POST", "/bookmarks/insert", true);
+    oReq.send(oData);
+    ev.preventDefault();
+  }, false);
+
+  var importBookForm = document.getElementById("import");
   form.addEventListener('submit', function(ev) {
-    var oData = new FormData(form);
-    console.log("form submitted");
+    var oData = new FormData(importBookForm);
     var oReq = new XMLHttpRequest();
     oReq.open("POST", "/bookmarks/import", true);
     oReq.onload = function(oEvent) {
       console.log(oReq.status);
   };
-  console.log(oData);
-  console.log(form);
   oReq.send(oData);
     ev.preventDefault();
   }, false);
+
+  var debug = function(s) {
+    var bool = 1;
+    if(bool) {
+      console.log(s);
+    }
+  }
 //
 // var menuButton = document.getElementById("menu");
 // var sidebar = document.getElementById("sidebar");
