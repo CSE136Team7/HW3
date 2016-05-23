@@ -50,7 +50,7 @@ module.exports.starredPage = function(req, res) {
     res.redirect('/login');
   }
   user = req.session.user_ID;
-  renderHomePage(getStarred,getFolders,"Starred","",user,
+  renderHomePage(getStarred, getFolders, "Starred", "", user,
     function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
       res.render('index',obj);
     }
@@ -58,7 +58,7 @@ module.exports.starredPage = function(req, res) {
 }
 
 var getStarred = function(callback,user_ID){
-    debug.print();
+  console.log("in get starred");
   getBookmarks(function(err,bookmarks) {
     var results = [];
     if(bookmarks){
@@ -362,7 +362,7 @@ var getBookmarks = function(callback, user) {
 }
 
 var getFolders = function(callback, user) {
-
+console.log("in get folder");
   var sql = "SELECT * FROM folders WHERE user_ID=" + user + ";";
 
   db.query(sql, function(err, folders) {
@@ -402,9 +402,7 @@ module.exports.find = function (req, res) {
     }, searchstring
   );
 }
-var getStarred = function(callback,user_ID){
 
-}
 var matchBookmarks = function(callback, user_ID, searchstring){
   getBookmarks(function(err,bookmarks) {
     var results = [];
