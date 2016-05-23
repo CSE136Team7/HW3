@@ -24,10 +24,10 @@ FINISHED:
 -cookie is used to lookup user id, which is only associated with a session id after logging in
 -add bookmark works
 -link the bookmark to the URL
+-list bookmarks in a specific folder
 
 To Do list:
 -implement "all" button
--list bookmarks in a specific folder
 -export and import?
 -implement sorting
 -set up a home button (when click on logo)  Constance
