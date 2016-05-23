@@ -1,6 +1,10 @@
 {
   "name": "bookmarx",
   "version": "1.0.0",
+  "engines": {
+    "node": "v5.9.1",
+    "npm": "3.8.6"
+  },
   "description": "",
   "main": "index.js",
   "scripts": {

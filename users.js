@@ -30,11 +30,10 @@
       else{
           if(results.length>0){
 
-            //debug.print(results[0].username);
-            //debug.print(results[0].passhash);
-            //debug.print(userInput);
-            //debug.print(pwdInputCrypted);
-              debug.print(results[0].user_ID);
+            console.log(results[0].username);
+            console.log(results[0].passhash);
+          console.log(userInput);
+            console.log(pwdInputCrypted);
             if (userInput===results[0].username && pwdInputCrypted===results[0].passhash) {
                 if (typeof req.session.user_ID === 'undefined') {
                     req.session.user_ID = results[0].user_ID;
@@ -54,11 +53,11 @@
           else{
             res.redirect('/login?error=The query has an empty result!');
           }
-      }
-    });
+        }
+      });
 
-  }
-  else{
+}
+else{
     //Alert message : all the fields have not been filled
     res.redirect('/login?error=The login form was not filled up properly! Please try again!');
   }
@@ -109,12 +108,12 @@
 
 module.exports.signup = function(req, res){
   if(req.query.error) {
-      var error = req.query.error;
-      res.render('users/signup', {errormsg : error});
-     }
-      else {
-     res.render('users/signup', { errormsg : "" });
-   }
+    var error = req.query.error;
+    res.render('users/signup', {errormsg : error});
+  }
+  else {
+   res.render('users/signup', { errormsg : "" });
+ }
 }
 
 module.exports.newAccount = function(req, res){
@@ -143,7 +142,7 @@ module.exports.newAccount = function(req, res){
                     //render an alert message : the account have been created
                     //res.render('users/login');
                     res.redirect('/login');
-                    
+
                 }
               });
           }
@@ -151,10 +150,10 @@ module.exports.newAccount = function(req, res){
             //already existing username --> alert message
             res.redirect('/signup?error=This username is already taken. Try another one! ');
           }
-      }
-    });
-  }
-  else{
-    res.redirect('/signup?error=The form was not filled up properly! Please try again!');
-  }
- };
+        }
+      });
+}
+else{
+  res.redirect('/signup?error=The form was not filled up properly! Please try again!');
+}
+};
