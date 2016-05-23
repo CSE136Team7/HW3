@@ -99,22 +99,22 @@ var getStarred = function(callback,user_ID){
      res.redirect('/login');
    }
    user = req.session.user_ID;
-    console.log("folder_ID: ---------------->"+folder_ID+"  folderName: "+folderName);
-    var sql = "SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID =" + folder_ID +  "AND folder_has_books.book_ID = books.book_ID;";
+   console.log("folder_ID: ---------------->"+folder_ID+"  folderName: "+folderName);
 
-    db.query(sql, function(err) {
-      if (err) {
-        res.redirect('/home?error=Cannot list books from selected folder.');
-      } else {
-        res.redirect('/home');
-      }
-    });
-  //    var getFoldersBookmarks = function(callback) { db.query("SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID =" + folder_ID +  "AND folder_has_books.book_ID = books.book_ID", callback) };
-   //
-  //  renderHomePage(getFoldersBookmarks,getFolders,folderName, "",user,function(obj){
-  //    console.log("obj: "+JSON.stringify(obj,null,4));
-  //    res.render('index',obj);
-  //  });
+   var getFoldersBookmarks = function(callback) {
+     db.query("SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID =" + folder_ID +  " AND folder_has_books.book_ID = books.book_ID",
+     function(err, results){
+       if(err){
+         throw err;
+       }
+       callback(err, results);
+     })
+   };
+
+   renderHomePage(getFoldersBookmarks,getFolders,folderName, "",user,function(obj){
+     console.log("obj: "+JSON.stringify(obj,null,4));
+     res.render('index',obj);
+   });
  }
 
 
