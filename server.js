@@ -105,12 +105,12 @@ app.use( checkJS );
 app.get('/', function (req, res) {
   //res.send('<h1>404 Not Found</h1><br><p>You are being redirected to <a href="login">/login</a></p>');
 
-  debug.print('404 Error: user tried to access /');
+  debug.print('Error: user tried to access /');
   res.redirect('/login');
   // res.send('<h1>404 Not Found</h1><br><p>You are being redirected to <a href="login">/login</a></p>');
   //
   // debug.print('404 Error: user tried to access /');
-
+  //next();
 });
 
 
@@ -154,7 +154,7 @@ app.get('/admin', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
     user = 'unsub';
-  debug.print('404 Error: user '+user+' tried to access admin');
+  debug.print('Error: user '+user+' tried to access admin');
   req.session.destroy();
   res.redirect('/login');
   return next();
@@ -163,7 +163,7 @@ app.get('/robot', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
     user = 'unsub';
-  debug.print('404 Error: user '+user+' tried to access robot');
+  debug.print('Error: user '+user+' tried to access robot');
   req.session.destroy();
   res.redirect('/login');
   return next();
@@ -172,7 +172,7 @@ app.get('/root', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
   user = 'unsub';
-  debug.print('404 Error: user '+user+' tried to access root');
+  debug.print('user '+user+' tried to access root');
   req.session.destroy();
   res.redirect('/login');
   return next();
@@ -181,8 +181,8 @@ app.get('/*', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
     user = 'unsub';
-  debug.print('404 Error: user '+user+' tried to access unknown path');
-  res.send('<h1>404 Not Found</h1><br><p>Please user the browser\'s back button or navigate to the <a href="login">/login</a> page</p>');
+  debug.print('Info: user '+user+' tried to access unknown path');
+  res.send('<h1>404 Not Found</h1><br><p>Please use the browser\'s back button.</p>');
 //  req.session.destroy();
 //  res.redirect('/login');
   return next();
