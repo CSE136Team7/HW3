@@ -17,18 +17,18 @@ var multer = require('multer');
 
 //this is the object for express-mysql-session
 var sessionStore = new MySQLStore ({
-  checkExpirationInterval: 15 * 60 * 1000, //15 minutes (900000 milliseconds)
-  expiration: 24 * 60 * 60 * 1000, //24 hours (86400000 milliseconds)
-  createDatabaseTable: true,
-  schema: {
-    tableName: 'sessions',
-    columNames: {
-      session_id: 'session_id',
-      expires: 'expires',
-      data: 'data'
-    }
-  }
-},
+      checkExpirationInterval: 15 * 60 * 1000, //15 minutes (900000 milliseconds)
+      expiration: 24 * 60 * 60 * 1000, //24 hours (86400000 milliseconds)
+      createDatabaseTable: true,
+      schema: {
+        tableName: 'sessions',
+        columNames: {
+          session_id: 'session_id',
+          expires: 'expires',
+          data: 'data'
+        }
+      }
+    },
     db.connection
 );
 
@@ -77,16 +77,40 @@ app.use(function printSession(req, res, next) {
   return next();
 });
 
+var checkJS = function (req, res, next) {
+  if(req.body.javascript) {
+
+    debug.print('Warning: User has JavaScript disabled.');
+
+    if (typeof req.session.user_ID === 'undefined') {
+      //throw err
+      // go to login
+      debug.print('redirecting to login...');
+      req.session.destroy();
+      res.redirect('/login?error=You need to enable JavaScript.');
+    }
+    else {
+      debug.print('redirecting to home...');
+      res.redirect('/home?error=You need to enable JavaScript.');
+    }
+  }
+  else {
+    next();
+  }
+}
+
+app.use( checkJS );
+
 /* Stop the annoying cannot GET / */
 app.get('/', function (req, res) {
   //res.send('<h1>404 Not Found</h1><br><p>You are being redirected to <a href="login">/login</a></p>');
 
-  debug.print('404 Error: user tried to access /');
+  debug.print('Error: user tried to access /');
   res.redirect('/login');
   // res.send('<h1>404 Not Found</h1><br><p>You are being redirected to <a href="login">/login</a></p>');
   //
   // debug.print('404 Error: user tried to access /');
-
+  //next();
 });
 
 
@@ -118,6 +142,8 @@ app.post('/addBookToFolder', folders.addBookToFolder);
 app.post('/bookmarks/import', bookmarks.import);
 
 app.get('/bookmarks/export', bookmarks.export);
+app.get('/showAll', bookmarks.showAll);
+app.get('/sortBooks', bookmarks.sortBooks);
 
 app.get('/folders', bookmarks.folders);
 app.get('/find', bookmarks.find);
@@ -130,7 +156,7 @@ app.get('/admin', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
     user = 'unsub';
-  debug.print('404 Error: user '+user+' tried to access admin');
+  debug.print('Error: user '+user+' tried to access admin');
   req.session.destroy();
   res.redirect('/login');
   return next();
@@ -139,7 +165,7 @@ app.get('/robot', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
     user = 'unsub';
-  debug.print('404 Error: user '+user+' tried to access robot');
+  debug.print('Error: user '+user+' tried to access robot');
   req.session.destroy();
   res.redirect('/login');
   return next();
@@ -147,8 +173,8 @@ app.get('/robot', function (req, res, next) {
 app.get('/root', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
-  user = 'unsub';
-  debug.print('404 Error: user '+user+' tried to access root');
+    user = 'unsub';
+  debug.print('user '+user+' tried to access root');
   req.session.destroy();
   res.redirect('/login');
   return next();
@@ -157,8 +183,8 @@ app.get('/*', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
     user = 'unsub';
-  debug.print('404 Error: user '+user+' tried to access unknown path');
-  res.send('<h1>404 Not Found</h1><br><p>Please user the browser\'s back button or navigate to the <a href="login">/login</a> page</p>');
+  debug.print('Info: user '+user+' tried to access unknown path');
+  res.send('<h1>404 Not Found</h1><br><p>Please use the browser\'s back button.</p>');
 //  req.session.destroy();
 //  res.redirect('/login');
   return next();
