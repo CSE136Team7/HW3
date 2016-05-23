@@ -58,7 +58,7 @@ module.exports.starredPage = function(req, res) {
 }
 
 var getStarred = function(callback,user_ID){
-    debug.print()
+    debug.print();
   getBookmarks(function(err,bookmarks) {
     var results = [];
     if(bookmarks){
