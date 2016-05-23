@@ -507,7 +507,25 @@ module.exports.createFolder=function(req, res) {
   // console.log("req.body: "+JSON.stringify(req.body,null,4));
 }
 
-/* functions that possibly work or don't work
+
+
+var compareTitle = function (a,b){
+  return a.Title.localeCompare(b.Title);
+}
+
+var pullTitle = function(callback, user_ID){
+ getBookmarks(function(err,bookmarks) {
+
+  bookmarks.sort(compareTitle);
+
+  callback(err, bookmarks);
+ }, user_ID);
+
+}
+
+
+
+
 module.exports.showAll = function(req,res){
 
 var user;
@@ -526,37 +544,6 @@ var user;
   );
 
 }
-
-
-var pullTitle = function(callback, user_ID){
- getBookmarks(function(err,bookmarks) {
-  //console.log(bookmarks);
-  var results = [];
-debug.print("bookmarks is printed here");
-  debug.print(bookmarks);
-
-  for (var i=0; i < bookmarks.length; i++){
-    //var s = bookmarks[i].Title;
-    debug.print("shit")
-
-    console.log("helo---------------------------->: "+bookmarks[i].Title);
-
-    results.push(bookmarks[i].Title);
-    //console.log("bye---------------------------->: "+bookmarks[i++].Title);
-  }
-  // var t = bookmarks.Title;
-  // debug.print(t);
-      //debug.print("s is printed here");
-          //debug.print(s);
-
-
-  callback(err,results);
- }, user_ID);
-
-}
-
-
-
 
 module.exports.sortBooks = function(req,res) {
 
@@ -583,5 +570,3 @@ var user;
 
 }
 
-
-*/
