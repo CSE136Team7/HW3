@@ -185,7 +185,6 @@ app.get('/*', function (req, res, next) {
     user = 'unsub';
   debug.print('Info: user '+user+' tried to access unknown path');
   res.send('<h1>404 Not Found</h1><br><p>Please use the browser\'s back button.</p>');
->>>>>>> a9a151bc4b65ed5bfb6b045f6fae0cf1fd3f9af3
 //  req.session.destroy();
 //  res.redirect('/login');
   return next();
