@@ -3,7 +3,7 @@ var db = require('./db');
 var debug = require('./debug');
 var async = require('async');
 var utility = require('./utility');
-var xlsx = require('node-xlsx');
+
 
 
 module.exports.createFolder=function(req, res) {
