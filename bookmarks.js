@@ -8,22 +8,27 @@ var debug = require('./debug');
 var async = require('async');
 var utility = require('./utility');
 var xlsx = require('node-xlsx');
+var json2csv = require('json2csv');
+var Converter = require("csvtojson").Converter;
+var util = require("util");
+var fs = require("fs");
 // import xlsx from 'node-xlsx';
 /**
  *
  * renders the page to index.ejs
  */
+/* //COULD NOT RESOLVE TODO: Merge this back in
 module.exports.homePage = function(req, res) {
-  debug.print('Received request for home page');
+
+    */
+module.exports.homePage = function(req, res) {
+  debug.print('Received request for home page user id is: '+req.session.user_ID);
   var user;
   if (typeof req.session.user_ID === 'undefined') {
       //throw err
     // go to login
     debug.print('Warning: user went to homePage without a user_ID');
-      if (typeof req === 'undefined' || typeof req.session === 'undefined') {
-          res.redirect('/login');
-      }
-      req.session.destroy();
+    req.session.destroy();
     res.redirect('/login');
   }
   user = req.session.user_ID;
@@ -48,20 +53,24 @@ module.exports.starredPage = function(req, res) {
     debug.print('Warning: user went to homePage without a user_ID');
     req.session.destroy();
     res.redirect('/login');
+    return;
   }
   user = req.session.user_ID;
-  renderHomePage(getStarred,getFolders,"Starred","",user,
+  renderHomePage(getBookmarks,getFolders,"Starred","",user,
     function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
+      console.log("IM TRYING TO RENDER!");
       res.render('index',obj);
-    }
+    }, null
   );
 }
 
 var getStarred = function(callback,user_ID){
-    debug.print()
+  console.log("11");
   getBookmarks(function(err,bookmarks) {
+
     var results = [];
     if(bookmarks){
+      console.log("21");
       bookmarks.forEach(function(bookmark){
         if(bookmark.Star == 1)
           results.push(bookmark);
@@ -73,25 +82,12 @@ var getStarred = function(callback,user_ID){
 }
 
  var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_ID, done, searchstring){
-   async.parallel([function(callback){bookmarkFunc(callback,user_ID,searchstring)},function(callback){folderFunc(callback,user_ID)}],
+   debug.print("Rendering Homepage");
+   async.parallel([function(callback){bookmarkFunc(callback,user_ID)},function(callback){folderFunc(callback,user_ID)}],
       function(err, results){
-        var bookmarks = results[0];
-        var folders = results[1];
-        done({
-                 bookmarks : bookmarks,
-                 folders   : folders,
-                 filter    : filter,
-                 errormsg  : errormsg
-               });
-      }
-   )
-
- }
-
- var asyncHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_ID, done){
-   async.parallel([function(callback){bookmarkFunc(callback)},function(callback){folderFunc(callback,user_ID)}],
-      function(err, results){
-        console.log("bookmarks: ----> "+JSON.stringify(results[0][0],null,4));
+        if(err){
+          throw err;
+        }
         var bookmarks = results[0];
         var folders = results[1];
         done({
@@ -106,32 +102,12 @@ var getStarred = function(callback,user_ID){
  }
 
  module.exports.folders = function(req, res){
+   var folder_ID = req.body.folder_ID;
+   var getFoldersBookmarks = function(callback) { db.query('SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID = ' + folder_ID + ' AND folder_has_books.book_ID = books.book_ID', callback) };
+   renderHomePage(getFoldersBookmarks,getFolders,"Folder Name", "",function(obj){
 
-   var folder_ID = req.query.folder_ID;
-   var folderName = req.query.folderName;
-   var user;
-   if (typeof req.session.user_ID === 'undefined') {
-     debug.print('Warning: user went to homePage without a user_ID');
-     req.session.destroy();
-     res.redirect('/login');
-   }
-   user = req.session.user_ID;
-   console.log("folder_ID: ---------------->"+folder_ID+"  folderName: "+folderName);
-
-   var getFoldersBookmarks = function(callback) {
-     db.query("SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID =" + folder_ID +  " AND folder_has_books.book_ID = books.book_ID",
-     function(err, results){
-       if(err){
-         throw err;
-       }
-       callback(err, results);
-     })
-   };
-
-   renderHomePage(getFoldersBookmarks,getFolders,folderName, "",user,function(obj){
-     console.log("obj: "+JSON.stringify(obj,null,4));
      res.render('index',obj);
-   });
+   })
  }
 
 
@@ -139,6 +115,7 @@ var getStarred = function(callback,user_ID){
 
 
 module.exports.clicked = function(req, res){
+
   debug.print("Received click bookmark request.\n" + JSON.stringify(req.body));
 
   var user_ID;
@@ -154,12 +131,11 @@ module.exports.clicked = function(req, res){
   }
 
   var book_ID = db.escape(req.body.book_ID);
-  var url = req.body.url;
+  var url = db.escape(req.body.URL);
   var sql = 'UPDATE books SET Clicks = Clicks + 1 WHERE book_ID = ' + book_ID + ' AND user_ID = ' + user_ID;
 
   if(!utility.isURL(url)) {
-    //throw new Error('invalid URL');
-    res.redirect('/home?error=URL is invalid.');
+    throw new Error('invalid URL');
   }
 
   db.query(sql, function(err) {
@@ -238,7 +214,7 @@ module.exports.insert = function(req, res) {
 
 
       var title = db.escape(req.body.title);
- 	  var url = db.escape(req.body.url);
+ 	    var url = db.escape(req.body.url);
       var description = db.escape(req.body.description);
       //var user_ID = db.escape(req.body.user_ID);
       var book_ID = db.escape(req.body.book_ID);
@@ -273,6 +249,8 @@ module.exports.insert = function(req, res) {
  	}
  }
 }
+
+
 
 // update
 module.exports.update = function(req, res) {
@@ -362,7 +340,62 @@ module.exports.delete = function(req, res) {
   }
 
 module.exports.import = function (req, res) {
-  var file = req.body.file;
+  debug.print("Received import bookmarks request.\n" + JSON.stringify(req.file));
+
+  var user_ID;
+  if (typeof req.session.user_ID === 'undefined') {
+    //throw err
+    // go to login
+    debug.print('Warning: user tried to insert a bookmark without a user_ID');
+    req.session.destroy();
+    res.redirect('/login?error=You are not logged in');
+  }
+  //else
+  user_ID = db.escape(req.session.user_ID);
+
+  if (req.file) {
+		console.log(util.inspect(req.file));
+		if (req.file.size === 0) {
+		    console.log("Hey, first would you select a file?");
+		}
+		fs.exists(req.file.path, function(exists) {
+			if(exists) {
+        var converter = new Converter({});
+        converter.fromFile(req.file.path,function(err,results){
+          if(results){
+            async.map(results,
+              function(result,callback){
+                addBookmark(result,user_ID,callback);
+              },
+              function(err,results){
+                res.redirect('/home');
+              }
+            );
+          }
+        });
+			} else {
+				res.end("Well, there is no magic for those who don’t believe in it!");
+			}
+		});
+	}
+}
+
+var addBookmark = function(bookmark, user_ID,callback){
+  var title = db.escape(bookmark.Title);
+  var star = db.escape(bookmark.Star);
+  var description = db.escape(bookmark.Description);
+  var URL = db.escape(bookmark.URL);
+  var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID) VALUES ('
+      + title + ',' + star + ', ' + description + ', ' + URL + ', ' + user_ID + ');';
+
+  console.log(queryString);
+  db.query(queryString, function(err) {
+      if (err) {
+          debug.print("Query failed err:" + err);
+          throw(err);
+      }
+      callback(err);
+  });
 }
   // Get list of bookmarks for user 3 for now until users are set up.
 var getBookmarks = function(callback, user) {
@@ -378,11 +411,34 @@ var getBookmarks = function(callback, user) {
 
 }
 
-var getFolders = function(callback, user) {
+module.exports.export = function(req, res){
+  var user;
+  if (typeof req.session.user_ID === 'undefined') {
+      //throw err
+    // go to login
+    debug.print('Warning: user went to homePage without a user_ID');
+    req.session.destroy();
+    res.redirect('/login');
+    return;
+  }
+  user = req.session.user_ID;
+  getBookmarks(function(err,bookmarks){
+    var fields = ['Title', 'Star', 'Description', 'URL', 'Clicks'];
+    json2csv({ data: bookmarks, fields: fields }, function(err, csv) {
+      if (err) console.log(err);
+      console.log(csv);
+      res.write(csv);
+      res.end();
+    });
+  }, user);
+}
 
+var getFolders = function(callback, user) {
+  console.log("31");
   var sql = "SELECT * FROM folders WHERE user_ID=" + user + ";";
 
   db.query(sql, function(err, folders) {
+    console.log("32");
     if (err) {
       throw err;
     }
@@ -433,4 +489,8 @@ var matchBookmarks = function(callback, user_ID, searchstring){
     };
     callback(err,results);
   },user_ID);
+}
+
+module.exports.createFolder=function(req, res) {
+  // console.log("req.body: "+JSON.stringify(req.body,null,4));
 }
