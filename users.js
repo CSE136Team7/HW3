@@ -53,19 +53,19 @@
                 }
             }
             else{
-              res.render('users/errorBadLogin');
+              res.redirect('/login?error=Your username or password are incorrect. Please try again!');
             }
           }
           else{
-            res.render('users/errorDB');
+            res.redirect('/login?error=The query has an empty result!');
           }
-      }
-    });
+        }
+      });
 
-  }
-  else{
+}
+else{
     //Alert message : all the fields have not been filled
-    res.render('users/errorBadForm');
+    res.redirect('/login?error=The login form was not filled up properly! Please try again!');
   }
 };
 
@@ -77,7 +77,13 @@
      else {
          req.session.destroy();
      }*/
-     res.render('users/login');
+     if(req.query.error) {
+        var error = req.query.error;
+        res.render('users/login', {errormsg : error});
+      }
+      else {
+       res.render('users/login', { errormsg : "" });
+     }
 };
 
 
@@ -107,7 +113,13 @@
 
 
 module.exports.signup = function(req, res){
-  res.render('users/signup');
+  if(req.query.error) {
+    var error = req.query.error;
+    res.render('users/signup', {errormsg : error});
+  }
+  else {
+   res.render('users/signup', { errormsg : "" });
+ }
 }
 
 module.exports.newAccount = function(req, res){
@@ -142,12 +154,13 @@ module.exports.newAccount = function(req, res){
           }
           else{
             //already existing username --> alert message
-            res.render('users/errorNew');
+            res.redirect('/signup?error=This username is already taken. Try another one! ');
           }
-      }
-    });
-  }
-  else{
-    res.render('users/errorBadForm');
-  }
- };
+        }
+      });
+}
+else{
+  res.redirect('/signup?error=The form was not filled up properly! Please try again!');
+}
+};
+
