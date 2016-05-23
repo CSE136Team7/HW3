@@ -141,7 +141,7 @@ module.exports.clicked = function(req, res){
   }
 
   var book_ID = db.escape(req.body.book_ID);
-  var url = db.escape(req.body.url);//(if this doesn't work try taking off db escape)
+  var url = req.body.url;//(if this doesn't work try putting on db escape)
   var sql = 'UPDATE books SET Clicks = Clicks + 1 WHERE book_ID = ' + book_ID + ' AND user_ID = ' + user_ID;
 
   if(!utility.isURL(url)) {
