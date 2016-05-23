@@ -494,3 +494,78 @@ var matchBookmarks = function(callback, user_ID, searchstring){
 module.exports.createFolder=function(req, res) {
   // console.log("req.body: "+JSON.stringify(req.body,null,4));
 }
+module.exports.showAll = function(req,res){
+
+var user;
+  if (typeof req.session.user_ID === 'undefined') {
+      //throw err
+    // go to login
+    debug.print('Warning: user went to homePage without a user_ID');
+    req.session.destroy();
+    res.redirect('/login');
+  }
+  user = req.session.user_ID;
+  renderHomePage(getBookmarks,getFolders,"All","",user,
+    function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
+      res.render('index',obj);
+    }
+  );
+
+}
+
+
+var pullTitle = function(callback, user_ID){
+ getBookmarks(function(err,bookmarks) {
+  //console.log(bookmarks);
+  var results = [];
+debug.print("bookmarks is printed here");
+  debug.print(bookmarks);
+
+  for (var i=0; i < bookmarks.length; i++){
+    //var s = bookmarks[i].Title;
+    debug.print("shit")
+
+    console.log("helo---------------------------->: "+bookmarks[i].Title);
+
+    results.push(bookmarks[i].Title);
+    //console.log("bye---------------------------->: "+bookmarks[i++].Title);
+  }
+  // var t = bookmarks.Title;
+  // debug.print(t);
+      //debug.print("s is printed here");
+          //debug.print(s);
+
+
+  callback(err,results);
+ }, user_ID);
+
+}
+
+
+
+
+module.exports.sortBooks = function(req,res) {
+
+var user;
+
+  if (typeof req.session.user_ID === 'undefined') {
+      //throw err
+    // go to login
+    debug.print('Warning: user went to homePage without a user_ID');
+    req.session.destroy();
+    res.redirect('/login');
+  }
+  //console.log("getbookmarks "+ JSON.stringify(getBookmarks));
+  //console.log("getbookmarks "+ JSON.stringify(getBookmarks.Title);
+
+  user = req.session.user_ID;
+
+  renderHomePage(pullTitle,getFolders,"Sort","",user,
+    function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
+      res.render('index',obj);
+    }
+  );
+
+
+}
+
