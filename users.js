@@ -30,18 +30,18 @@
       else{
           if(results.length>0){
 
-            console.log(results[0].username);
-            console.log(results[0].passhash);
-          console.log(userInput);
-            console.log(pwdInputCrypted);
+             // debug.print('info'+results[0].username);
+             // debug.print('info'+results[0].passhash);
+             // debug.print('info'+userInput);
+             // debug.print('info'+pwdInputCrypted);
             if (userInput===results[0].username && pwdInputCrypted===results[0].passhash) {
                 if (typeof req.session.user_ID === 'undefined') {
                     req.session.user_ID = results[0].user_ID;
                     res.redirect('/home');
                 }
                 else {
-                    debug.print('There was already a user field in cookie session, they were not logged out properly');
-                    debug.print('Logging them in anyway');
+                    debug.print('info: There was already a user field in cookie session, user was not logged out properly');
+                    debug.print('info: Logging in user anyway');
                     req.session.user_ID = results[0].user_ID;
                     res.redirect('/home');
                 }

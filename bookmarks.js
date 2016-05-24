@@ -13,16 +13,21 @@ var util = require("util");
 var fs = require("fs");
 
 module.exports.homePage = function(req, res) {
-  debug.print('Received request for home page user id is: '+req.session.user_ID);
-  var user;
-  if (typeof req.session.user_ID === 'undefined') {
-      //throw err
-    // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
-    req.session.destroy();
-    res.redirect('/login');
-  }
-  user = req.session.user_ID;
+    var user;
+    debug.print('Received request for home page user id is: ');
+    if (typeof req.session === 'undefined' || typeof req.session.user_ID === 'undefined'){
+        //throw err
+        // go to login
+        debug.print('Warning: user went to homePage without a user_ID');
+        req.session.destroy();
+        res.redirect('/login');
+        return;
+    }
+    else {
+        user = req.session.user_ID;
+    }
+  debug.print(user);
+
   if(req.query.error){
     var error = req.query.error;
     renderHomePage(getBookmarks,getFolders,"Most Visited",error,user,function(obj){
@@ -47,7 +52,8 @@ module.exports.starredPage = function(req, res) {
     return;
   }
   user = req.session.user_ID;
-  renderHomePage(getStarred,getFolders,"Starred","",user,
+
+  renderHomePage(getStarred, getFolders, "Starred", "", user,
     function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
       res.render('index',obj);
     }, null
@@ -72,7 +78,7 @@ var getStarred = function(callback,user_ID){
 
  var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_ID, done, searchstring){
    debug.print("Rendering Homepage");
-   async.parallel([function(callback){bookmarkFunc(callback,user_ID, searchstring)},function(callback){folderFunc(callback,user_ID)}],
+   async.parallel([function(callback){bookmarkFunc(callback,user_ID,searchstring)},function(callback){folderFunc(callback,user_ID)}],
       function(err, results){
         if(err){
           throw err;
@@ -122,7 +128,6 @@ var getStarred = function(callback,user_ID){
 
 
 
-
 module.exports.clicked = function(req, res){
 
   debug.print("Received click bookmark request.\n" + JSON.stringify(req.body));
@@ -140,7 +145,7 @@ module.exports.clicked = function(req, res){
   }
 
   var book_ID = db.escape(req.body.book_ID);
-  var url = req.body.url;//(if this doesn't work try putting on db escape)
+  var url = req.body.url;
   var sql = 'UPDATE books SET Clicks = Clicks + 1 WHERE book_ID = ' + book_ID + ' AND user_ID = ' + user_ID;
 
   if(!utility.isURL(url)) {
@@ -238,9 +243,8 @@ module.exports.insert = function(req, res) {
               throw(err);
           }
           else {
-            console.log(res.json);
               res.redirect('/home');
-
+              
           }
       });
     }
@@ -507,67 +511,3 @@ var matchBookmarks = function(callback, user_ID, searchstring){
 module.exports.createFolder=function(req, res) {
   // console.log("req.body: "+JSON.stringify(req.body,null,4));
 }
-
-
-
-var compareTitle = function (a,b){
-  return a.Title.localeCompare(b.Title);
-}
-
-var pullTitle = function(callback, user_ID){
- getBookmarks(function(err,bookmarks) {
-
-  bookmarks.sort(compareTitle);
-
-  callback(err, bookmarks);
- }, user_ID);
-
-}
-
-
-
-
-module.exports.showAll = function(req,res){
-
-var user;
-  if (typeof req.session.user_ID === 'undefined') {
-      //throw err
-    // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
-    req.session.destroy();
-    res.redirect('/login');
-  }
-  user = req.session.user_ID;
-  renderHomePage(getBookmarks,getFolders,"All","",user,
-    function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
-      res.render('index',obj);
-    }
-  );
-
-}
-
-module.exports.sortBooks = function(req,res) {
-
-var user;
-
-  if (typeof req.session.user_ID === 'undefined') {
-      //throw err
-    // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
-    req.session.destroy();
-    res.redirect('/login');
-  }
-  //console.log("getbookmarks "+ JSON.stringify(getBookmarks));
-  //console.log("getbookmarks "+ JSON.stringify(getBookmarks.Title);
-
-  user = req.session.user_ID;
-
-  renderHomePage(pullTitle,getFolders,"Sort","",user,
-    function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
-      res.render('index',obj);
-    }
-  );
-
-
-}
-

@@ -12,31 +12,27 @@ TODO:
 -nice error pages
 -404, 500, pages etc
 -don’t throw stack traces. How do you trap them? How do you only throw them during debug and not production?
--fetch new data and not all the old data and the new data. Could do change locally and sync without fetching the data (ajax)
+-fetch new data and not all the old data and the new data. Could do change locally and sync without fetching the data
 -minification (gulp)
--automation, pipelining (not having to ctrl c, node server.js whenever we make an edit) (heroku pipeline)
+-automation, pipelining (not having to ctrl c, node server.js whenever we make an edit)
 
 FINISHED:
 -remove x-powered-by header
 -cookie should say myapp.val=something instead of connect.sid=something
--navigating to / instead of /login gives a nice redirect to login
+-navigating to / instead of /login gives a nice 404. will change to redirect soon
 --now navigating to any unknown (or /root /admin /robot) will log a message
 -logging occurs in console via debug.js. will change to write to file soon
 -cookie is used to lookup user id, which is only associated with a session id after logging in
 -add bookmark works
--can star a bookmark and view all starred bookmarks
--link the bookmark to the stored URL
+-link the bookmark to the URL
 -list bookmarks in a specific folder
--export and import
--implement sorting
--all button
 
 To Do list:
--ajax client side
--ajax server side
+-export and import?
+-implement sorting
 -password reset/forgot password
--add and remove a bookmark to a folder
--make description take more than one space delimited token
+-all button
+-add and remove a bookmark in a folder
 
 
 Notes for self:
