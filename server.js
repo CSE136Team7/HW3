@@ -83,7 +83,7 @@ var checkJS = function (req, res, next) {
     debug.print('Warning: User has JavaScript disabled.');
 
     if (typeof req.session.user_ID === 'undefined') {
-      //throw err
+      // throw err
       // go to login
       debug.print('redirecting to login...');
       req.session.destroy();
@@ -131,6 +131,9 @@ app.use(users.auth);
 
 app.get('/home', bookmarks.homePage);
 
+app.get('/bookmarks/getbooks', bookmarks.getbooks);
+app.get('/bookmarks/getfolders', bookmarks.getfolders);
+
 app.post('/bookmarks/star', bookmarks.star);
 app.post('/bookmarks/delete', bookmarks.delete);
 app.post('/bookmarks/insert', bookmarks.insert);
@@ -143,8 +146,6 @@ app.post('/deleteFolder', folders.deleteFolder);
 app.post('/addBookToFolder', folders.addBookToFolder);
 app.post('/bookmarks/import', bookmarks.import);
 app.get('/bookmarks/export', bookmarks.export);
-app.get('/showAll', bookmarks.showAll);
-app.get('/sortBooks', bookmarks.sortBooks);
 
 
 app.get('/folders', bookmarks.folders);
