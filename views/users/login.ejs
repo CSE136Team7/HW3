@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -51,11 +50,13 @@
     .button:hover {
         color: #fff;
     }
+    .logbutton:hover {
+        color: #fff;
+        border-color: #FF9EAE;
+    }
     .FormField {
         width: 50%;
     }
-   
-}
     </style>
 
 </head>
@@ -69,8 +70,8 @@
             </a>
 
             <div class="content">
-            <h3 style="color:#AEC6CF"><%= errormsg %></h3>
-        </div>
+                <h3 style="color:#AEC6CF"><%= errormsg %></h3>
+            </div>
 
             <div id="signin">
 
@@ -92,25 +93,27 @@
                             </div>
 
                             <div class="buttonWrapper">
-                             <br></br>
-                             <input class= "logbutton" type='submit' value="LOG IN">
-                         </div>
+                                <br>
+                                <input class= "logbutton" type='submit' value="LOG IN">
+                            </div>
 
-                     </div>
-                 </form>
+                        </div>
+                    </form>
 
-             </div>
+                    <br>
+                    <div class="tabs">
 
-         </div>
+                            <a href="/resetpw">Forgot Password?</a>
 
-         </div>
+                    </div> <!-- mini grid for pw link-->
 
+                </div><!-- big grid for btns and forms -->
 
-  </div>
-</div>
-</div>
+            </div> <!-- signin -->
 
+        </div><!-- middle -->
 
+    </div> <!-- outer -->
 
 
 </body>

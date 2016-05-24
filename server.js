@@ -121,8 +121,10 @@ app.get('/logout', users.logout);
 
 
 app.post('/newAccount', users.newAccount);
+app.post('/doReset', users.doReset);
 
 app.get('/signup', users.signup);
+app.get('/resetpw', users.resetpw);
 
 /*  This must go between the users routes and the bookmarks routes */
 app.use(users.auth);
@@ -140,7 +142,6 @@ app.post('/createFolder', folders.createFolder);
 app.post('/deleteFolder', folders.deleteFolder);
 app.post('/addBookToFolder', folders.addBookToFolder);
 app.post('/bookmarks/import', bookmarks.import);
-
 app.get('/bookmarks/export', bookmarks.export);
 //app.get('/showAll', bookmarks.showAll);
 //app.get('/sortBooks', bookmarks.sortBooks);
@@ -183,7 +184,7 @@ app.get('/*', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
     user = 'unsub';
-  debug.print('Info: user '+user+' tried to access unknown path');
+  //debug.print('Info: user '+user+' tried to access unknown path');
   res.send('<h1>404 Not Found</h1><br><p>Please use the browser\'s back button.</p>');
 //  req.session.destroy();
 //  res.redirect('/login');
