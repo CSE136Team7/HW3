@@ -41,4 +41,8 @@ To Do list:
 
 
 Notes for self:
-Memory store: a default for express session (node dependency) to store cookies and data etc. Instead we are using express-mysql-session. Make sure not to revert to default at any point
+Memory store: a default for express session (node dependency) to store cookies and data etc. Instead we are using 
+express-mysql-session. Make sure not to revert to default at any point
+Reset password: a more secure way to reset passwords would be to store user emails and send them a code or link via 
+email that they must use to reset their passwords. Since there is no notion of admin users, we can leave this feature 
+as is without any real risk to the website, but user accounts could be fairly easily 'stolen'.
