@@ -37,13 +37,13 @@
             if (userInput===results[0].username && pwdInputCrypted===results[0].passhash) {
                 if (typeof req.session.user_ID === 'undefined') {
                     req.session.user_ID = results[0].user_ID;
-                    res.redirect('/home');
+                    res.redirect('/views');
                 }
                 else {
                     debug.print('info: There was already a user field in cookie session, user was not logged out properly');
                     debug.print('info: Logging in user anyway');
                     req.session.user_ID = results[0].user_ID;
-                    res.redirect('/home');
+                    res.redirect('/views');
                 }
             }
             else{

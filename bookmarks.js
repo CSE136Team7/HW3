@@ -243,9 +243,7 @@ module.exports.insert = function(req, res) {
               throw(err);
           }
           else {
-              console.log(res.json);
-
-              res.redirect('/home');
+              res.json({});
 
           }
       });
@@ -448,6 +446,40 @@ module.exports.export = function(req, res){
       res.write(csv);
       res.end();
     });
+  }, user);
+}
+
+module.exports.getbooks = function(req,res){
+  var user;
+  if (typeof req.session.user_ID === 'undefined') {
+      //throw err
+    // go to login
+    debug.print('Warning: user went to homePage without a user_ID');
+    req.session.destroy();
+    res.redirect('/login');
+    return;
+  }
+  user = req.session.user_ID;
+  getBookmarks(function(err,bookmarks){
+
+    res.json({books: bookmarks});
+  }, user);
+}
+
+module.exports.getfolders = function(req,res){
+  var user;
+  if (typeof req.session.user_ID === 'undefined') {
+      //throw err
+    // go to login
+    debug.print('Warning: user went to homePage without a user_ID');
+    req.session.destroy();
+    res.redirect('/login');
+    return;
+  }
+  user = req.session.user_ID;
+  getFolders(function(err,folders){
+
+    res.json({folders: folders});
   }, user);
 }
 

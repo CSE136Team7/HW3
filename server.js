@@ -129,6 +129,9 @@ app.use(users.auth);
 
 app.get('/home', bookmarks.homePage);
 
+app.get('/bookmarks/getbooks', bookmarks.getbooks);
+app.get('/bookmarks/getfolders', bookmarks.getfolders);
+
 app.post('/bookmarks/star', bookmarks.star);
 app.post('/bookmarks/delete', bookmarks.delete);
 app.post('/bookmarks/insert', bookmarks.insert);

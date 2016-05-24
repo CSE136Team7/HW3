@@ -1,4 +1,109 @@
+var debug = function(s) {
+  var bool = 1;
+  if(bool) {
+    console.log(s);
+  }
+}
+
+
+
 window.onload = function() {
+  loadBookmarksList();
+  loadFoldersList();
+  /**
+     *  Uses Ajax to get the book list data from the server.
+     */
+
+    function loadBookmarksList() {
+
+        ajax('/bookmarks/getbooks/', 'GET', null, function(books) {
+            debug(JSON.stringify(books));
+            loadTemplate('booklist', {books : books.books});
+        });
+    }
+
+    function loadFoldersList() {
+      ajax('/bookmarks/getfolders/', 'GET', null, function(folders) {
+          loadTemplate('folderlist', folders);
+      });
+    }
+
+  /**
+     * Capture back/forward button.
+     * When the button is pressed, load the appropriate page and data based on the e.state
+     */
+  window.addEventListener('popstate', function(e) {
+        var pageName = e.state.pageName;
+        displayTemplate(templatesCache[pageName], e.state);
+    });
+
+  /*  variable used to store templates in a cache to prevent multiple requests on static file */
+    var templatesCache = [];
+
+  /**
+     * Short, generic Ajax function to avoid jquery usage
+     */
+    function ajax(url, method, data, callback){
+        var request = new XMLHttpRequest();
+        request.open(method, url, true);
+
+        request.onload = function() {
+            if (request.status >= 200 && request.status < 400) {
+                var contentType = request.getResponseHeader('content-type') || '';
+                var response;
+
+                if (contentType.indexOf('json') >= 0){
+                    response = JSON.parse(request.responseText);
+                }
+                else{
+                    response = request.responseText;
+                }
+
+                callback(response);
+            }
+        };
+
+        if (data){
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            request.send(data);
+        }
+        else {
+            request.send();
+        }
+    }
+
+    function displayTemplate(name, data) {
+      //console.log(JSON.stringify(data));
+        var snippet = ejs.render(templatesCache[name], data);
+        document.getElementById(name).innerHTML = snippet;
+    }
+
+  /**
+     *   Adds Request to History
+     *   Checks if template exists in the cache.  If so, calls displayTemplate.
+     *   If not, first loads template and adds it to cache before calling displayTemplate.
+     */
+    function loadTemplate(name, data){
+        addToHistory(name, data);
+
+        if (templatesCache[name]){
+            displayTemplate(name, data);
+        }
+        else{
+            ajax('/views/' + name + '.ejs', 'GET', null, function (template) {
+              console.log(template);
+                templatesCache[name] = template;
+                displayTemplate(name, data);
+            });
+        }
+    }
+
+  function addToHistory(name, data){
+        data = data || {};
+        data.pageName = name;
+        history.pushState(data, null, "/views/index.html#" + name);
+     }
+
   var addBookForm = document.getElementById("add-bookmark-form");
 
   addBookForm.addEventListener('submit', function(ev) {
@@ -6,7 +111,7 @@ window.onload = function() {
     var oReq = new XMLHttpRequest();
     oReq.onreadystatechange = function () {
       if(oReq.readyState == 4 && oReq.status == 200) {
-        debug(oReq.responseText);
+        loadBookmarksList();
       }
     };
     oReq.open("POST", "/bookmarks/insert", true);
@@ -15,7 +120,7 @@ window.onload = function() {
   }, false);
 
   var importBookForm = document.getElementById("import");
-  form.addEventListener('submit', function(ev) {
+  importBookForm.addEventListener('submit', function(ev) {
     var oData = new FormData(importBookForm);
     var oReq = new XMLHttpRequest();
     oReq.open("POST", "/bookmarks/import", true);
@@ -26,12 +131,7 @@ window.onload = function() {
     ev.preventDefault();
   }, false);
 
-  var debug = function(s) {
-    var bool = 1;
-    if(bool) {
-      console.log(s);
-    }
-  }
+
 //
 // var menuButton = document.getElementById("menu");
 // var sidebar = document.getElementById("sidebar");
