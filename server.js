@@ -142,8 +142,8 @@ app.post('/addBookToFolder', folders.addBookToFolder);
 app.post('/bookmarks/import', bookmarks.import);
 
 app.get('/bookmarks/export', bookmarks.export);
-app.get('/showAll', bookmarks.showAll);
-app.get('/sortBooks', bookmarks.sortBooks);
+//app.get('/showAll', bookmarks.showAll);
+//app.get('/sortBooks', bookmarks.sortBooks);
 
 app.get('/folders', bookmarks.folders);
 app.get('/find', bookmarks.find);

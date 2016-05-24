@@ -37,6 +37,7 @@ To Do list:
 -password reset/forgot password
 -add and remove a bookmark to a folder
 -make description take more than one space delimited token
+-confirm delete modal
 
 
 Notes for self:
