@@ -238,7 +238,7 @@ module.exports.insert = function(req, res) {
               throw(err);
           }
           else {
-            console.log(res.json);
+              console.log(res.json);
               res.redirect('/home');
 
           }
@@ -570,4 +570,3 @@ var user;
 
 
 }
-
