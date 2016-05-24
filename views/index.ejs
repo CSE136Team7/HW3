@@ -220,19 +220,10 @@
 														<input type="hidden" name="starred" value=<%=bookmarks[i].Star %>>
 														<input type="hidden" name="user_ID" value=<%=bookmarks[i].user_ID %>>
 														<input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
-														<button class="card__button" ><i class="fa fa-star fa-lg"></i></button>
+														<button id="star-btn" class="card__button" ><i class="fa fa-star fa-lg"></i></button>
 													</form>
 
 													<a href=<%= '#updateModal'+bookmarks[i].book_ID %>  class="fa fa-edit fa-lg" ></a>
-
-													<!-- delete former code to be replaced with modal -->
-													<!--
-													<form action="/bookmarks/delete" method="post" class="card__button">
-														<input type="hidden" name="user_ID" value=<%=bookmarks[i].user_ID %>>
-														<input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
-														<button class="card__button"><i class="fa fa-trash-o fa-lg"></i></button>
-													</form>
-													-->
 
 													<!-- umm TODO: fix spacing in a better way -->
 													&nbsp&nbsp&nbsp&nbsp&nbsp

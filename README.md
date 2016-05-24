@@ -18,11 +18,12 @@ TODO:
 
 FINISHED:
 -remove x-powered-by header
--cookie should say myapp.val=something instead of connect.sid=something
+-cookie should say BookmarxTeam7=something instead of connect.sid=something
 -navigating to / instead of /login gives a nice redirect to login
 --now navigating to any unknown (or /root /admin /robot) will log a message
 -logging occurs in console via debug.js. will change to write to file soon
 -cookie is used to lookup user id, which is only associated with a session id after logging in
+--session is destroyed anytime a user attempts to access internal pages without a user id
 -add bookmark works
 -can star a bookmark and view all starred bookmarks
 -link the bookmark to the stored URL
@@ -30,14 +31,15 @@ FINISHED:
 -export and import
 -implement sorting
 -all button
+-confirm delete modal
+-password reset/forgot password
 
 To Do list:
 -ajax client side
 -ajax server side
--password reset/forgot password
 -add and remove a bookmark to a folder
 -make description take more than one space delimited token
--confirm delete modal
+
 
 
 Notes for self:
