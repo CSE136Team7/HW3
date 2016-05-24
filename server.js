@@ -143,8 +143,9 @@ app.post('/deleteFolder', folders.deleteFolder);
 app.post('/addBookToFolder', folders.addBookToFolder);
 app.post('/bookmarks/import', bookmarks.import);
 app.get('/bookmarks/export', bookmarks.export);
-//app.get('/showAll', bookmarks.showAll);
-//app.get('/sortBooks', bookmarks.sortBooks);
+app.get('/showAll', bookmarks.showAll);
+app.get('/sortBooks', bookmarks.sortBooks);
+
 
 app.get('/folders', bookmarks.folders);
 app.get('/find', bookmarks.find);
@@ -186,6 +187,7 @@ app.get('/*', function (req, res, next) {
     user = 'unsub';
   //debug.print('Info: user '+user+' tried to access unknown path');
   res.send('<h1>404 Not Found</h1><br><p>Please use the browser\'s back button.</p>');
+
 //  req.session.destroy();
 //  res.redirect('/login');
   return next();

@@ -12,11 +12,11 @@ var Converter = require("csvtojson").Converter;
 var util = require("util");
 var fs = require("fs");
 
-
 /*
 * homePage
 * the main view that the user can see their bookmarks and a nav bar/header with various functions
 * */
+
 module.exports.homePage = function(req, res) {
     debug.print('Received request for home page user id is: '+req.session.user_ID);
     var user;
@@ -60,6 +60,7 @@ module.exports.starredPage = function(req, res) {
   user = req.session.user_ID;
 
   renderHomePage(getStarred, getFolders, "Starred", "", user,
+
     function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
       res.render('index',obj);
     }, null
@@ -91,6 +92,7 @@ var getStarred = function(callback,user_ID){
 * retrieves all the books data needed to populate the home page
 * */
  var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_ID, done, searchstring){
+
    debug.print("info: Rendering Homepage");
    async.parallel([function(callback){bookmarkFunc(callback,user_ID,searchstring)},function(callback){folderFunc(callback,user_ID)}],
       function(err, results){
@@ -536,7 +538,9 @@ var mostVisitedCompare = function(bookmark1, bookmark2){
  * fields a search on the user's books
  * */
 module.exports.find = function (req, res) {
+
   debug.print ("info: Received search request: \n" + JSON.stringify(req.query));
+
   var user;
   if (typeof req.session.user_ID === 'undefined') {
       //throw err
@@ -565,6 +569,7 @@ module.exports.find = function (req, res) {
  * aids the search in finding matches
  * */
 var matchBookmarks = function(callback, user_ID, searchstring){
+
   debug.print("info: Matching bookmarks that match: " + searchstring + " for user " + user_ID);
   getBookmarks(function(err,bookmarks) {
     var results = [];
@@ -587,3 +592,67 @@ var matchBookmarks = function(callback, user_ID, searchstring){
 module.exports.createFolder=function(req, res) {
   // debug.print("req.body: "+JSON.stringify(req.body,null,4));
 }
+
+
+
+var compareTitle = function (a,b){
+  return a.Title.localeCompare(b.Title);
+}
+
+var pullTitle = function(callback, user_ID){
+ getBookmarks(function(err,bookmarks) {
+
+  bookmarks.sort(compareTitle);
+
+  callback(err, bookmarks);
+ }, user_ID);
+
+}
+
+
+
+
+module.exports.showAll = function(req,res){
+
+var user;
+  if (typeof req.session.user_ID === 'undefined') {
+      //throw err
+    // go to login
+    debug.print('Warning: user went to homePage without a user_ID');
+    req.session.destroy();
+    res.redirect('/login');
+  }
+  user = req.session.user_ID;
+  renderHomePage(getBookmarks,getFolders,"All","",user,
+    function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
+      res.render('index',obj);
+    }
+  );
+
+}
+
+module.exports.sortBooks = function(req,res) {
+
+var user;
+
+  if (typeof req.session.user_ID === 'undefined') {
+      //throw err
+    // go to login
+    debug.print('Warning: user went to homePage without a user_ID');
+    req.session.destroy();
+    res.redirect('/login');
+  }
+  //console.log("getbookmarks "+ JSON.stringify(getBookmarks));
+  //console.log("getbookmarks "+ JSON.stringify(getBookmarks.Title);
+
+  user = req.session.user_ID;
+
+  renderHomePage(pullTitle,getFolders,"Sort","",user,
+    function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
+      res.render('index',obj);
+    }
+  );
+
+
+}
+
