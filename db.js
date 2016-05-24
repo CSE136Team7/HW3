@@ -1,3 +1,23 @@
+// var mysql      = require('mysql');
+// var config = require('./config');
+//
+// var MySQL = function() {
+//     var connection;
+//
+//     return {
+//         init: function(){
+//             MySQL.connection = mysql.createConnection('mysql://bf10eaf95350d6:d8fcd7ae@us-cdbr-iron-east-04.cleardb.net/heroku_3ddd6cbd9fad3cb?reconnect=true');
+//             MySQL.connection.connect();
+//         },
+//         query: function(querystring, callback){
+//             MySQL.connection.query(querystring, callback);
+//         },
+//         escape: mysql.escape
+//     }
+// }();
+//
+// module.exports = MySQL;
+
 var mysql      = require('mysql');
 var config = require('./config');
 
@@ -17,7 +37,7 @@ var MySQL = function() {
               MySQL.connection.on('error', function(err) {
                 console.log('db error', err);
                 if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
-                  MySQL();                         // lost due to either server restart, or a
+                   MySQL.init();                          // lost due to either server restart, or a
                 } else {                                      // connnection idle timeout (the wait_timeout
                   throw err;                                  // server variable configures this)
                 }
