@@ -13,21 +13,16 @@ var util = require("util");
 var fs = require("fs");
 
 module.exports.homePage = function(req, res) {
-    var user;
-    debug.print('Received request for home page user id is: ');
-    if (typeof req.session === 'undefined' || typeof req.session.user_ID === 'undefined'){
-        //throw err
-        // go to login
-        debug.print('Warning: user went to homePage without a user_ID');
-        req.session.destroy();
-        res.redirect('/login');
-        return;
-    }
-    else {
-        user = req.session.user_ID;
-    }
-  debug.print(user);
-
+  debug.print('Received request for home page user id is: '+req.session.user_ID);
+  var user;
+  if (typeof req.session.user_ID === 'undefined') {
+      //throw err
+    // go to login
+    debug.print('Warning: user went to homePage without a user_ID');
+    req.session.destroy();
+    res.redirect('/login');
+  }
+  user = req.session.user_ID;
   if(req.query.error){
     var error = req.query.error;
     renderHomePage(getBookmarks,getFolders,"Most Visited",error,user,function(obj){
