@@ -30,10 +30,10 @@
       else{
           if(results.length>0){
 
-             // debug.print('info'+results[0].username);
-             // debug.print('info'+results[0].passhash);
-             // debug.print('info'+userInput);
-             // debug.print('info'+pwdInputCrypted);
+
+            // debug.print('retrieved username:'+results[0].username+' and hash:'+results[0].passhash+' from db');
+            // debug.print('matching with username:'+userInput+' and hash:'+pwdInputCrypted+' from user');
+
             if (userInput===results[0].username && pwdInputCrypted===results[0].passhash) {
                 if (typeof req.session.user_ID === 'undefined') {
                     req.session.user_ID = results[0].user_ID;
@@ -132,6 +132,7 @@ module.exports.newAccount = function(req, res){
         if (results.length==0){
             //no existing username --> insert into the table
                //hashing of the password
+                debug.print('user and pw entered: '+user+pwd);
                var pwdCrypted = md5(pwd, user);
                var queryString = "INSERT INTO users(username, passhash) VALUES ("+ db.escape(user) + "," + db.escape(pwdCrypted) +")";
                db.query(queryString, function(err, result){
@@ -156,4 +157,55 @@ module.exports.newAccount = function(req, res){
 else{
   res.redirect('/signup?error=The form was not filled up properly! Please try again!');
 }
+};
+
+module.exports.resetpw = function(req, res){
+    if(req.query.error) {
+        var error = req.query.error;
+        res.render('users/resetpw', {errormsg : error});
+    }
+    else {
+        res.render('users/resetpw', { errormsg : "" });
+    }
+}
+
+module.exports.doReset = function(req, res) {
+    if (typeof req.body.user === 'undefined')
+        debug.print('Warning: user undefined in resetpw');
+    if (req.body.username != "" && req.body.pwd != "") {
+        var user = req.body.username;
+        var pwd = req.body.password;
+        debug.print('info: user and pwd entered were: ' + user + pwd);
+        var sql = 'SELECT username FROM users WHERE username = ' + db.escape(user);
+        db.query(sql, function (err, results) {
+            if (err) {
+                debug.print('ERROR: db query failed on retrieve username');
+                throw(err);
+            }
+            else {
+                //debug.print('info: query result:'+results[0].username+' and '+results[0].passhash)
+                if (results.length == 0) {
+                    //no user name exists --> error message
+                    //render an alert : the account does not exist
+                    res.redirect('/resetpw?error=There is no user by this name. Try again!');
+                }
+                else {
+                    var pwdCrypted = md5(pwd, user);
+                    var queryString = 'UPDATE users SET passhash=' + db.escape(pwdCrypted) + ' WHERE username = ' + db.escape(user);
+                    db.query(queryString, function (err, results) {
+                        if (err) {
+                            debug.print('info: update passhash failed');
+                        }
+                        else {
+                            res.redirect('/login');
+                        }
+                    })
+
+                }
+            }
+        })
+    }
+    else {
+        res.redirect('/resetpw?error=The form was not filled up properly! Please try again!');
+    }
 };

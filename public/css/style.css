@@ -28,9 +28,11 @@ h1,h3 {
   color: #474448;
 }
 
-.fa-star-o:hover:before {
+/*.fa-star-o:hover:before {
   content: "\f005";
 }
+*/
+
 
 .fa-star:before {
   color: #FF9EAE;

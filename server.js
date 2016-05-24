@@ -17,18 +17,18 @@ var multer = require('multer');
 
 //this is the object for express-mysql-session
 var sessionStore = new MySQLStore ({
-  checkExpirationInterval: 15 * 60 * 1000, //15 minutes (900000 milliseconds)
-  expiration: 24 * 60 * 60 * 1000, //24 hours (86400000 milliseconds)
-  createDatabaseTable: true,
-  schema: {
-    tableName: 'sessions',
-    columNames: {
-      session_id: 'session_id',
-      expires: 'expires',
-      data: 'data'
-    }
-  }
-},
+      checkExpirationInterval: 15 * 60 * 1000, //15 minutes (900000 milliseconds)
+      expiration: 24 * 60 * 60 * 1000, //24 hours (86400000 milliseconds)
+      createDatabaseTable: true,
+      schema: {
+        tableName: 'sessions',
+        columNames: {
+          session_id: 'session_id',
+          expires: 'expires',
+          data: 'data'
+        }
+      }
+    },
     db.connection
 );
 
@@ -83,7 +83,11 @@ var checkJS = function (req, res, next) {
     debug.print('Warning: User has JavaScript disabled.');
 
     if (typeof req.session.user_ID === 'undefined') {
+<<<<<<< HEAD
         //throw err
+=======
+      //throw err
+>>>>>>> c7fa96842c0693175f2b8ac223e2f968b53149cf
       // go to login
       debug.print('redirecting to login...');
       req.session.destroy();
@@ -121,8 +125,10 @@ app.get('/logout', users.logout);
 
 
 app.post('/newAccount', users.newAccount);
+app.post('/doReset', users.doReset);
 
 app.get('/signup', users.signup);
+app.get('/resetpw', users.resetpw);
 
 /*  This must go between the users routes and the bookmarks routes */
 app.use(users.auth);
@@ -143,8 +149,8 @@ app.post('/createFolder', folders.createFolder);
 app.post('/deleteFolder', folders.deleteFolder);
 app.post('/addBookToFolder', folders.addBookToFolder);
 app.post('/bookmarks/import', bookmarks.import);
-
 app.get('/bookmarks/export', bookmarks.export);
+
 
 app.get('/folders', bookmarks.folders);
 app.get('/find', bookmarks.find);
@@ -174,7 +180,11 @@ app.get('/robot', function (req, res, next) {
 app.get('/root', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
+<<<<<<< HEAD
   user = 'unsub';
+=======
+    user = 'unsub';
+>>>>>>> c7fa96842c0693175f2b8ac223e2f968b53149cf
   debug.print('user '+user+' tried to access root');
   req.session.destroy();
   res.redirect('/login');
@@ -184,8 +194,14 @@ app.get('/*', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
     user = 'unsub';
+<<<<<<< HEAD
   debug.print('Info: user '+user+' tried to access unknown path');
   res.send('<h1>404 Not Found</h1><br><p>Please use the browser\'s back button.</p>');
+=======
+  //debug.print('Info: user '+user+' tried to access unknown path');
+  res.send('<h1>404 Not Found</h1><br><p>Please use the browser\'s back button.</p>');
+
+>>>>>>> c7fa96842c0693175f2b8ac223e2f968b53149cf
 //  req.session.destroy();
 //  res.redirect('/login');
   return next();
