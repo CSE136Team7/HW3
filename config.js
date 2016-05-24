@@ -3,7 +3,7 @@ module.exports = {
   DATABASE_USER: 'root',
   DATABASE_PASSWORD: '',
   DATABASE_NAME: 'bookmarks',
-  PORT: process.env.PORT || 8000,
+  PORT: process.env.PORT || 8001,
   SECRET: 'T34m7R0ckx'
 };
 /*
