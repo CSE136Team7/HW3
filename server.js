@@ -83,11 +83,8 @@ var checkJS = function (req, res, next) {
     debug.print('Warning: User has JavaScript disabled.');
 
     if (typeof req.session.user_ID === 'undefined') {
-<<<<<<< HEAD
-        //throw err
-=======
+
       //throw err
->>>>>>> c7fa96842c0693175f2b8ac223e2f968b53149cf
       // go to login
       debug.print('redirecting to login...');
       req.session.destroy();
@@ -180,11 +177,8 @@ app.get('/robot', function (req, res, next) {
 app.get('/root', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
-<<<<<<< HEAD
-  user = 'unsub';
-=======
+
     user = 'unsub';
->>>>>>> c7fa96842c0693175f2b8ac223e2f968b53149cf
   debug.print('user '+user+' tried to access root');
   req.session.destroy();
   res.redirect('/login');
@@ -194,14 +188,10 @@ app.get('/*', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
     user = 'unsub';
-<<<<<<< HEAD
-  debug.print('Info: user '+user+' tried to access unknown path');
-  res.send('<h1>404 Not Found</h1><br><p>Please use the browser\'s back button.</p>');
-=======
+
   //debug.print('Info: user '+user+' tried to access unknown path');
   res.send('<h1>404 Not Found</h1><br><p>Please use the browser\'s back button.</p>');
 
->>>>>>> c7fa96842c0693175f2b8ac223e2f968b53149cf
 //  req.session.destroy();
 //  res.redirect('/login');
   return next();

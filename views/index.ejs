@@ -13,7 +13,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
 
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300|Montserrat:400,700' rel='stylesheet' type='text/css'>
-	
+
 	<script type="text/javascript" src="/js/index.js"></script>
 </head>
 
@@ -30,7 +30,9 @@
 				</form>
 			</li>
 			<li class="navbar-right">
-				<a class="button" href="#"><i class="fa fa-sort-alpha-asc fa-lg"></i></a>
+				<form action="/sortBooks" method="get">
+					<a class="button" href="/sortBooks" name="sort"><i class="fa fa-sort-alpha-asc fa-lg"></i></a>
+				</form>
 				<a href="/logout"><i class="fa fa-sign-out"></i></a>
 			</li>
 			<li class="navbar-right">
@@ -55,7 +57,7 @@
 						</div>
 
 						<form method='post' action='/bookmarks/insert' id="add-bookmark-form">
-							<div class="form">
+							<div class="form" id="add-bookmark-form">
 								<input type="text" name="title" placeholder="Title">
 								<div class="textFieldWrapper">
 									<input type="url" name="url" required pattern="https?://.+" placeholder="http://www.example.com">
@@ -63,9 +65,6 @@
 								<div class="textFieldWrapper">
 									<input type="text" name="description" placeholder="Description">
 								</div>
-								<noscript>
-								  <input type="hidden" name="javascript" value="0">
-								</noscript>
 								<div class="buttonWrapper" style="margin-bottom:15px">
 									<!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
 									<button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Save</i></button>
@@ -117,8 +116,11 @@
 						<button style="background-color:#474448"><i class="fa fa-star fa-lg"></i> Starred</button>
 					</form>
 				</li>
-				<li class="pinned"><a href="all.html"><i class="fa fa-th fa-lg"></i> All</a></li>
-					<%if(folders){ for(var j = 0; j < folders.length; j++) {%>
+			<li class="pinned">
+				<form action="/showAll" method="get">
+				<a href="/showAll"><i class="fa fa-th fa-lg"></i> All</a>
+			</form>
+			</li>					<%if(folders){ for(var j = 0; j < folders.length; j++) {%>
 						<li>
 							<form action="/folders" method="get" style="display:inline-block">
 								<input type="hidden" name="folderName" value=<%= folders[j].Name%> >

@@ -33,8 +33,8 @@
       </li>
       <li class="navbar-right">
         <div id="bookmodals"></div>
-              <a href="#addModal" class="button"><i class="fa fa-plus fa-lg"></i></a>
-              <div id="addModal" class="modalDialog">
+              <a href="#addModal" class="button" ><i class="fa fa-plus fa-lg"  onclick="showAddModal()"></i></a>
+              <div id="addModal" class="modalDialog" >
                 <div class="grid grid-pad">
                   <a href="#close" title="Close" class="close x-button">x</a>
                   <div class="tabs is-centered">
@@ -58,7 +58,7 @@
                       </noscript>
                       <div class="buttonWrapper" style="margin-bottom:15px">
                         <!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
-                        <button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Save</i></button>
+                        <button onclick="closeAddModal()"><i class="fa fa-check-circle fa-lg" >Save</i></button>
                       </div>
                     </div>
                   </form>
@@ -116,10 +116,10 @@
         <div class="buttonWrapper">
           <div>
             <!-- <div><i class="fa fa-plus-circle fa-lg"></i> Folder</div> -->
-            <a href="#folderModal" class="button" style="background-color:#474448"><i class="fa fa-plus-circle fa-lg"></i> Folder</a>
+            <a href="#folderModal" class="button" style="background-color:#474448" onclick="showAddModal()"><i class="fa fa-plus-circle fa-lg"></i> Folder</a>
           </div>
           <form action="/bookmarks/export" method="get">
-            <button><i class="fa fa-download fa-lg"></i> Export</button>
+            <button style="background-color:#474448"><i class="fa fa-download fa-lg"></i> Export</button>
           </form>
         </div>
   </div>
@@ -136,11 +136,11 @@
           <li id="add-folder" class="is-active"><a>Add Folder</a></li>
         </ul>
       </div>
-      <form action="/createFolder" method="post">
-        <div class="form" id="add-folder-form">
+      <form action="/createFolder" method="post" id="add-folder-form">
+        <div class="form" >
           <input type="text" name="folder" placeholder="Folder Name" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px">
           <div class="buttonWrapper" style="margin-bottom:20px; ">
-            <button><i class="fa fa-check-circle fa-lg"></i> Save</button>
+            <button onclick="closeAddModal()"><i class="fa fa-check-circle fa-lg"></i> Save</button>
           </div>
         </div>
       </form>

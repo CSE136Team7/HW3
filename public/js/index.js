@@ -5,7 +5,18 @@ var debug = function(s) {
   }
 }
 
+function showAddModal() {
+  console.log("clearing in field: -----------------------===>>>"+document.getElementById("addModal"));
+    document.getElementById("addModal").style.visibility = "visible";
+    document.getElementById("folderModal").style.visibility = "visible";
+    document.getElementById("add-bookmark-form").reset();
+    document.getElementById("add-folder-form").reset();
+}
 
+function closeAddModal() {
+    document.getElementById("addModal").style.visibility = "hidden";
+    document.getElementById("folderModal").style.visibility = "hidden";
+}
 
 window.onload = function() {
   loadBookmarksList();
@@ -18,12 +29,14 @@ window.onload = function() {
 
         ajax('/bookmarks/getbooks/', 'GET', null, function(books) {
             debug(JSON.stringify(books));
+            console.log("books:--------------------->"+JSON.stringify(books.books));
             loadTemplate('booklist', {books : books.books});
         });
     }
 
     function loadFoldersList() {
       ajax('/bookmarks/getfolders/', 'GET', null, function(folders) {
+        console.log("books:--------------------->"+JSON.stringify(folders));
           loadTemplate('folderlist', folders);
       });
     }
@@ -105,6 +118,7 @@ window.onload = function() {
      }
 
   var addBookForm = document.getElementById("add-bookmark-form");
+  var createFolder = document.getElementById("add-folder-form");
 
   addBookForm.addEventListener('submit', function(ev) {
     var oData = new FormData(addBookForm);
@@ -119,6 +133,24 @@ window.onload = function() {
     ev.preventDefault();
   }, false);
 
+
+
+  createFolder.addEventListener('submit', function(ev) {
+    var oData = new FormData(createFolder);
+    console.log("oData:---------------------->"+JSON.stringify(oData,null,4));
+    var oReq = new XMLHttpRequest();
+    oReq.onreadystatechange = function () {
+      if(oReq.readyState == 4 && oReq.status == 200) {
+        loadFoldersList();
+      }
+    };
+    oReq.open("POST", "/createFolder", true);
+    oReq.send(oData);
+    ev.preventDefault();
+  }, false);
+
+
+
   var importBookForm = document.getElementById("import");
   importBookForm.addEventListener('submit', function(ev) {
     var oData = new FormData(importBookForm);
@@ -132,37 +164,50 @@ window.onload = function() {
   }, false);
 
 
-//
-// var menuButton = document.getElementById("menu");
-// var sidebar = document.getElementById("sidebar");
-// var menuIcon = document.getElementById("menu-icon");
-// var triggerSubmit = document.getElementById("trigger-submit");
-//
-// menuButton.onclick = function() {
-// 	var right = document.getElementById("right");
-// 	if(sidebar.style.display !== 'none'){
-// 		sidebar.style.display = 'none';
-// 		right.style.width = '100%';
-// 		menuButton.style.color = "#FFF";
-// 	}
-// 	else {
-// 		sidebar.style.display = 'block';
-// 		right.style.width = '82%';
-// 		menuButton.style.color = "#FF9EAE";
-// 	}
-// };
-//
-// var addBookmark = document.getElementById("add-bookmark");
-// var importBookmark = document.getElementById("import-bookmark");
-// var addBookmarkForm = document.getElementById("add-bookmark-form");
-// var importBookmarkForm = document.getElementById("import-bookmark-form");
-//
-// var SignIn = document.getElementById("signin");
-// var NewUser = document.getElementById("newuser");
-// var SignInForm = document.getElementById("signin-form");
-// var NewUserForm = document.getElementById("newuser-form");
-//
-//
+  var importBookForm = document.getElementById("import");
+  importBookForm.addEventListener('submit', function(ev) {
+    var oData = new FormData(importBookForm);
+    var oReq = new XMLHttpRequest();
+    oReq.open("POST", "/bookmarks/import", true);
+    oReq.onload = function(oEvent) {
+      console.log(oReq.status);
+  };
+  oReq.send(oData);
+    ev.preventDefault();
+  }, false);
+
+
+
+var menuButton = document.getElementById("menu");
+var sidebar = document.getElementById("sidebar");
+var menuIcon = document.getElementById("menu-icon");
+var triggerSubmit = document.getElementById("trigger-submit");
+
+menuButton.onclick = function() {
+	var right = document.getElementById("right");
+	if(sidebar.style.display !== 'none'){
+		sidebar.style.display = 'none';
+		right.style.width = '100%';
+		menuButton.style.color = "#FFF";
+	}
+	else {
+		sidebar.style.display = 'block';
+		right.style.width = '82%';
+		menuButton.style.color = "#FF9EAE";
+	}
+};
+
+var addBookmark = document.getElementById("add-bookmark");
+var importBookmark = document.getElementById("import-bookmark");
+var addBookmarkForm = document.getElementById("add-bookmark-form");
+var importBookmarkForm = document.getElementById("import-bookmark-form");
+
+var SignIn = document.getElementById("signin");
+var NewUser = document.getElementById("newuser");
+var SignInForm = document.getElementById("signin-form");
+var NewUserForm = document.getElementById("newuser-form");
+
+
 // SignIn.onclick = function() {
 // 	NewUserForm.style.display = 'none';
 // 	SignInForm.style.display = 'block';
@@ -208,5 +253,5 @@ window.onload = function() {
 // triggerSubmit.onclick = function() {
 // 	document.getElementById('hide-submit-btn').click();
 // };
-//
+
 }
