@@ -29,14 +29,12 @@ window.onload = function() {
 
         ajax('/bookmarks/getbooks/', 'GET', null, function(books) {
             debug(JSON.stringify(books));
-            console.log("books:--------------------->"+JSON.stringify(books.books));
             loadTemplate('booklist', {books : books.books});
         });
     }
 
     function loadFoldersList() {
       ajax('/bookmarks/getfolders/', 'GET', null, function(folders) {
-        console.log("books:--------------------->"+JSON.stringify(folders));
           loadTemplate('folderlist', folders);
       });
     }

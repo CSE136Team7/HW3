@@ -2,17 +2,17 @@
 <html>
 
 <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      <title>Bookmarx</title>
-      <link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
-      <link rel="stylesheet" type="text/css" href="/css/simplegrid.css" />
-      <link rel="stylesheet" type="text/css" href="/css/style.css">
+  <title>Bookmarx</title>
+  <link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="/css/simplegrid.css" />
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
 
-      <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300|Montserrat:400,700' rel='stylesheet' type='text/css'>
-      <script src="/scripts/ejs.min.js"></script>
-      <script type="text/javascript" src="/js/index.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300|Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <script src="/scripts/ejs.min.js"></script>
+  <script type="text/javascript" src="/js/index.js"></script>
 </head>
 
 <body>
@@ -29,69 +29,69 @@
       </li>
       <li class="navbar-right">
         <a class="button" href="#"><i class="fa fa-sort-alpha-asc fa-lg"></i></a>
-        <a href="/logout"><i class="fa fa-sign-out"></i></a>
+        <a href="/logout"><i class="fa fa-sign-out" style="color:#fff"></i></a>
       </li>
       <li class="navbar-right">
         <div id="bookmodals"></div>
-              <a href="#addModal" class="button" ><i class="fa fa-plus fa-lg"  onclick="showAddModal()"></i></a>
-              <div id="addModal" class="modalDialog" >
-                <div class="grid grid-pad">
-                  <a href="#close" title="Close" class="close x-button">x</a>
-                  <div class="tabs is-centered">
-                    <ul>
-                      <li id="add-bookmark" class="is-active"><a>Add Bookmark</a></li>
-                      <li id="import-bookmark"><a href="#importBookmark">Import Bookmarks</a></li>
-                    </ul>
-                  </div>
+        <a href="#addModal" class="button" ><i class="fa fa-plus fa-lg"  onclick="showAddModal()"></i></a>
+        <div id="addModal" class="modalDialog" >
+          <div class="grid grid-pad">
+            <a href="#close" title="Close" class="close x-button">x</a>
+            <div class="tabs is-centered">
+              <ul>
+                <li id="add-bookmark" class="is-active"><a>Add Bookmark</a></li>
+                <li id="import-bookmark"><a href="#importBookmark">Import Bookmarks</a></li>
+              </ul>
+            </div>
 
-                  <form method='post' action='/bookmarks/insert' id="add-bookmark-form">
-                    <div class="form">
-                      <input type="text" name="title" placeholder="Title">
-                      <div class="textFieldWrapper">
-                        <input type="url" name="url" required pattern="https?://.+" placeholder="http://www.example.com">
-                      </div>
-                      <div class="textFieldWrapper">
-                        <input type="text" name="description" placeholder="Description">
-                      </div>
-                      <noscript>
-                        <input type="hidden" name="javascript" value="0">
-                      </noscript>
-                      <div class="buttonWrapper" style="margin-bottom:15px">
-                        <!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
-                        <button onclick="closeAddModal()"><i class="fa fa-check-circle fa-lg" >Save</i></button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-              <a href="#importBookmark" class="button">Import Bookmark</i></a>
-              <div id="importBookmark" class="modalDialog">
-                <div class="grid grid-pad">
-                  <a href="#close" title="Close" class="close x-button">x</a>
-                  <div class="tabs is-centered">
-                    <ul>
-                      <li id="add-bookmark"><a href="#addModal">Add Bookmark</a></li>
-                      <li id="import-bookmark" class="is-active"><a href="#import-bookmark-form">Import Bookmarks</a></li>
-                    </ul>
-                  </div>
-                  <form method='post' action='/bookmarks/import' id="import" enctype="multipart/form-data">
-                    <input type="file" name="myFile" accept=".csv" style="margin-bottom:15px; width:100%">
-                    <div class="buttonWrapper" style="margin-bottom:15px">
-                      <!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
-                      <button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Import</i></button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-              <div class="form" id="import-bookmark-form">
+            <form method='post' action='/bookmarks/insert' id="add-bookmark-form">
+              <div class="form">
+                <input type="text" name="title" placeholder="Title">
                 <div class="textFieldWrapper">
-                  <input type="url" name="url" placeholder="File Path">
+                  <input type="url" name="url" required pattern="https?://.+" placeholder="http://www.example.com">
                 </div>
-                <div class="buttonWrapper">
-                  <div><i class="fa fa-folder-open fa-lg"></i> Browse</div>
-                  <div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
+                <div class="textFieldWrapper">
+                  <input type="text" name="description" placeholder="Description">
+                </div>
+                <noscript>
+                  <input type="hidden" name="javascript" value="0">
+                </noscript>
+                <div class="buttonWrapper" style="margin-bottom:15px">
+                  <!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
+                  <button onclick="closeAddModal()"><i class="fa fa-check-circle fa-lg" >Save</i></button>
                 </div>
               </div>
+            </form>
+          </div>
+        </div>
+        <a href="#importBookmark" class="button">Import Bookmark</i></a>
+        <div id="importBookmark" class="modalDialog">
+          <div class="grid grid-pad">
+            <a href="#close" title="Close" class="close x-button">x</a>
+            <div class="tabs is-centered">
+              <ul>
+                <li id="add-bookmark"><a href="#addModal">Add Bookmark</a></li>
+                <li id="import-bookmark" class="is-active"><a href="#import-bookmark-form">Import Bookmarks</a></li>
+              </ul>
+            </div>
+            <form method='post' action='/bookmarks/import' id="import" enctype="multipart/form-data">
+              <input type="file" name="myFile" accept=".csv" style="margin-bottom:15px; width:100%">
+              <div class="buttonWrapper" style="margin-bottom:15px">
+                <!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
+                <button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Import</i></button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="form" id="import-bookmark-form">
+          <div class="textFieldWrapper">
+            <input type="url" name="url" placeholder="File Path">
+          </div>
+          <div class="buttonWrapper">
+            <div><i class="fa fa-folder-open fa-lg"></i> Browse</div>
+            <div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
+          </div>
+        </div>
       </li>
     </ul>
   </nav>
@@ -99,29 +99,28 @@
     <ul>
       <li class="pinned">
         <form class="resetme" action="/home" method="get">
-          <button style="background-color:#474448"><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
+          <button style="background-color:#474448; width:100%; padding-right: 50px;"><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
         </form>
       </li>
       <li class="pinned">
         <form class="resetme" action="/folder/starred" method="get">
-          <button style="background-color:#474448"><i class="fa fa-star fa-lg"></i> Starred</button>
+          <button style="background-color:#474448; width:100%; padding-right: 95px;"><i class="fa fa-star fa-lg"></i> Starred</button>
         </form>
       </li>
       <li class="pinned"><a href="all.html"><i class="fa fa-th fa-lg"></i> All</a></li>
       <div id="folderlist"></div>
     </ul>
-    <div id="foldermodals"></div>
 
 
-        <div class="buttonWrapper">
-          <div>
-            <!-- <div><i class="fa fa-plus-circle fa-lg"></i> Folder</div> -->
-            <a href="#folderModal" class="button" style="background-color:#474448" onclick="showAddModal()"><i class="fa fa-plus-circle fa-lg"></i> Folder</a>
-          </div>
-          <form action="/bookmarks/export" method="get">
-            <button style="background-color:#474448"><i class="fa fa-download fa-lg"></i> Export</button>
-          </form>
-        </div>
+
+    <div class="buttonWrapper">
+      <div>
+        <a href="#folderModal" class="button" style="background-color:#474448" onclick="showAddModal()"><i class="fa fa-plus-circle fa-lg"></i> Folder</a>
+      </div>
+      <form action="/bookmarks/export" method="get">
+        <button style="background-color:#474448"><i class="fa fa-download fa-lg"></i> Export</button>
+      </form>
+    </div>
   </div>
 
 
@@ -137,7 +136,7 @@
         </ul>
       </div>
       <form action="/createFolder" method="post" id="add-folder-form">
-        <div class="form" >
+        <div class="form">
           <input type="text" name="folder" placeholder="Folder Name" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px">
           <div class="buttonWrapper" style="margin-bottom:20px; ">
             <button onclick="closeAddModal()"><i class="fa fa-check-circle fa-lg"></i> Save</button>
@@ -146,6 +145,10 @@
       </form>
     </div>
   </div>
+
+
+
+
   <div id="right">
     <div class="main grid grid-pad">
       <div id="title" class="col-1-1">
@@ -154,8 +157,7 @@
         </div>
       </div>
       <div id="booklist"></div>
+    </div>
   </div>
-
 </body>
-
 </html>
