@@ -3,7 +3,6 @@
 <head>
 	<% include helpers.ejs %>
 	<% include updateBookmarkModal.ejs %>
-	<% include deleteBookmarkModal.ejs %>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -30,21 +29,13 @@
 				</form>
 			</li>
 			<li class="navbar-right">
-				<form action="/sortBooks" method="get">
-					<a class="button" href="/sortBooks" name="sort"><i class="fa fa-sort-alpha-asc fa-lg"></i></a>
-				</form>
+				<a class="button" href="#"><i class="fa fa-sort-alpha-asc fa-lg"></i></a>
 				<a href="/logout"><i class="fa fa-sign-out"></i></a>
 			</li>
 			<li class="navbar-right">
-				<!-- Update bookmark modal -->
 				<% if(bookmarks){for(var i = 0; i < bookmarks.length; i++) {%>
 					<%= updateBookmarkModal(bookmarks[i]) %>
 				<% }} %>
-				<!-- Delete bookmark modal -->
-				<% if(bookmarks){for(var i = 0; i < bookmarks.length; i++) {%>
-					<%= deleteBookmarkModal(bookmarks[i]) %>
-				<% }} %>
-
 				<a href="#addModal" class="button"><i class="fa fa-plus fa-lg"></i></a>
 				<div id="addModal" class="modalDialog">
 					<div class="grid grid-pad">
@@ -57,7 +48,7 @@
 						</div>
 
 						<form method='post' action='/bookmarks/insert' id="add-bookmark-form">
-							<div class="form" id="add-bookmark-form">
+							<div class="form">
 								<input type="text" name="title" placeholder="Title">
 								<div class="textFieldWrapper">
 									<input type="url" name="url" required pattern="https?://.+" placeholder="http://www.example.com">
@@ -65,6 +56,9 @@
 								<div class="textFieldWrapper">
 									<input type="text" name="description" placeholder="Description">
 								</div>
+								<noscript>
+								  <input type="hidden" name="javascript" value="0">
+								</noscript>
 								<div class="buttonWrapper" style="margin-bottom:15px">
 									<!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
 									<button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Save</i></button>
@@ -108,19 +102,16 @@
 			<ul>
 				<li class="pinned">
 					<form class="resetme" action="/home" method="get">
-						<button style="background-color:#474448; width:100%"><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
+						<button style="background-color:#474448"><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
 					</form>
 				</li>
 				<li class="pinned">
 					<form class="resetme" action="/folder/starred" method="get">
-						<button style="background-color:#474448;width:100%;"><i class="fa fa-star fa-lg"></i> Starred</button>
+						<button style="background-color:#474448"><i class="fa fa-star fa-lg"></i> Starred</button>
 					</form>
 				</li>
-			<li class="pinned">
-				<form action="/showAll" method="get">
-				<a href="/showAll"><i class="fa fa-th fa-lg"></i> All</a>
-			</form>
-			</li>					<%if(folders){ for(var j = 0; j < folders.length; j++) {%>
+				<li class="pinned"><a href="all.html"><i class="fa fa-th fa-lg"></i> All</a></li>
+					<%if(folders){ for(var j = 0; j < folders.length; j++) {%>
 						<li>
 							<form action="/folders" method="get" style="display:inline-block">
 								<input type="hidden" name="folderName" value=<%= folders[j].Name%> >
@@ -225,16 +216,16 @@
 														<input type="hidden" name="starred" value=<%=bookmarks[i].Star %>>
 														<input type="hidden" name="user_ID" value=<%=bookmarks[i].user_ID %>>
 														<input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
-														<button id="star-btn" class="card__button" ><i class="fa fa-star fa-lg"></i></button>
+														<button class="card__button" ><i class="fa fa-star fa-lg"></i></button>
 													</form>
 
 													<a href=<%= '#updateModal'+bookmarks[i].book_ID %>  class="fa fa-edit fa-lg" ></a>
 
-													<!-- umm TODO: fix spacing in a better way -->
-													&nbsp&nbsp&nbsp&nbsp&nbsp
-
-													<a href=<%= '#deleteModal'+bookmarks[i].book_ID %> class="fa fa-trash fa-lg"></a>
-
+													<form action="/bookmarks/delete" method="post" class="card__button">
+														<input type="hidden" name="user_ID" value=<%=bookmarks[i].user_ID %>>
+														<input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
+														<button class="card__button"><i class="fa fa-trash-o fa-lg"></i></button>
+													</form>
 												</div>
 											</div>
 										</div>
