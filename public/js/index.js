@@ -6,7 +6,6 @@ var debug = function(s) {
 }
 
 function showAddModal() {
-  console.log("clearing in field: -----------------------===>>>"+document.getElementById("addModal"));
     document.getElementById("addModal").style.visibility = "visible";
     document.getElementById("folderModal").style.visibility = "visible";
     document.getElementById("add-bookmark-form").reset();
@@ -62,14 +61,12 @@ window.onload = function() {
             if (request.status >= 200 && request.status < 400) {
                 var contentType = request.getResponseHeader('content-type') || '';
                 var response;
-
                 if (contentType.indexOf('json') >= 0){
                     response = JSON.parse(request.responseText);
                 }
                 else{
                     response = request.responseText;
                 }
-
                 callback(response);
             }
         };
@@ -102,7 +99,7 @@ window.onload = function() {
         }
         else{
             ajax('/views/' + name + '.ejs', 'GET', null, function (template) {
-              console.log(template);
+              // console.log(template);
                 templatesCache[name] = template;
                 displayTemplate(name, data);
             });
@@ -135,7 +132,6 @@ window.onload = function() {
 
   createFolder.addEventListener('submit', function(ev) {
     var oData = new FormData(createFolder);
-    console.log("oData:---------------------->"+JSON.stringify(oData,null,4));
     var oReq = new XMLHttpRequest();
     oReq.onreadystatechange = function () {
       if(oReq.readyState == 4 && oReq.status == 200) {
