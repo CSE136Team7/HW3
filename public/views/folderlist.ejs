@@ -7,7 +7,8 @@
       </button>
     </form>
 
-    <a href=<%='#folderModaledit' +folders[j].folder_ID %> class="pad-trash-icon button" style="background-color:#474448;margin-left:55px;"><i class="fa fa-edit fa-lg" ></i></a>
+    <!-- <button  id="folderedit" class="pad-trash-icon button" onclick="folderModaledit('<%=folders[j].folder_ID %>','<%=folders[j].Name %>')"style="background-color:#474448;margin-left:41px;"> <i class="fa fa-edit fa-lg" ></i> </button> -->
+    <a href='#folderModaledit' class="pad-trash-icon button" onclick="folderModaledit('<%=folders[j].folder_ID %>','<%=folders[j].Name %>')" style="background-color:#474448;margin-left:55px;"><i class="fa fa-edit fa-lg" ></i></a>
     <form action="/deleteFolder" method="post" style="display:inline-block">
       <input type="hidden" name="folder_ID" value=<%=folders[j].folder_ID%> >
       <button style="background-color:#474448;"><i class="fa fa-trash-o fa-lg"></i></button>
