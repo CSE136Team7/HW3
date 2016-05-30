@@ -5,9 +5,9 @@ var debug = function(s) {
   }
 }
 
-function validate(textbox) {
+var validate = function(textbox) {
   if(textbox.value === '') {
-    textbox.setCustomValidity('This field is required.');
+    textbox.setCustomValidity('Please fill out this field.');
   }
   else if(textbox.validity.typeMismatch) {
     textbox.setCustomValidity('Please type a valid entry.');
@@ -18,11 +18,13 @@ function validate(textbox) {
   return true;
 }
 
-var validateFile = function(fileName) {
+var validateFile = function() {
   console.log('in validate file\n');
 
+  var file = document.getElementById('myFileId').value;
+  console.log(file);
   var allowedExtension = "csv";
-  var fileExtension = fileName.split('.').pop();
+  var fileExtension = file.split('.').pop();
   console.log(fileExtension);
 
   if(allowedExtension === fileExtension){
@@ -30,16 +32,8 @@ var validateFile = function(fileName) {
     return true;
   }
   console.log('not a valid csv file\n');
+  alert('not a valid csv file!');
   return false;
-}
-
-var validateImport = function(fileName) {
-  if(!validateFile(fileName)) {
-    console.log('not valid\n');
-    alert('not a valid file extension!');
-    return false;
-  }
-  return true;
 }
 
 window.onload = function() {

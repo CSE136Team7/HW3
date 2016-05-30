@@ -46,12 +46,12 @@
 
                   <form method='post' action='/bookmarks/insert' id="add-bookmark-form">
                     <div class="form">
-                      <input type="text" oninvalid="validate(this)" oninput="validate(this)" id="bookTitle" name="title" placeholder="Title">
+                      <input type="text" oninvalid="validate(this);" oninput="validate(this);" id="bookTitle" name="title" placeholder="Title" required>
                       <div class="textFieldWrapper">
                         <input type="url" name="url" required pattern="https?://.+" placeholder="http://www.example.com">
                       </div>
                       <div class="textFieldWrapper">
-                        <input type="text" oninvalid="validate(this)" oninput="validate(this)" id="bookDescription" name="description" placeholder="Description">
+                        <input type="text" oninvalid="validate(this);" oninput="validate(this);" id="bookDescription" name="description" placeholder="Description" required>
                       </div>
                       <noscript>
                         <input type="hidden" name="javascript" value="0">
@@ -74,11 +74,12 @@
                       <li id="import-bookmark" class="is-active"><a href="#import-bookmark-form">Import Bookmarks</a></li>
                     </ul>
                   </div>
-                  <form method='post' action='/bookmarks/import' id="import" enctype="multipart/form-data">
-                    <input type="file" id="myFileId" name="myFile" accept=".csv" onchange="validateFile(this.value)" style="margin-bottom:15px; width:100%">
+                  <form method='post' action='/bookmarks/import' id="import" onsubmit="return validateFile();" enctype="multipart/form-data">
+                    <p>Please select a .csv file.</p>
+                    <input type="file" id="myFileId" name="myFile" accept=".csv" style="margin-bottom:15px; width:100%" required>
                     <div class="buttonWrapper" style="margin-bottom:15px">
                       <!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
-                      <button onclick="validateImport(this.value)"><i class="fa fa-check-circle fa-lg" id="trigger-submit">Import</i></button>
+                    <button type="submit"><i class="fa fa-check-circle fa-lg" id="trigger-submit">Import</i></button>
                     </div>
                   </form>
                 </div>
@@ -138,7 +139,7 @@
       </div>
       <form action="/createFolder" method="post">
         <div class="form" id="add-folder-form">
-          <input type="text" name="folder" placeholder="Folder Name" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px">
+          <input type="text" name="folder" placeholder="Folder Name" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" required>
           <div class="buttonWrapper" style="margin-bottom:20px; ">
             <button><i class="fa fa-check-circle fa-lg"></i> Save</button>
           </div>
