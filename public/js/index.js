@@ -88,7 +88,26 @@ function folderModaledit(id,name){
   ajax('/bookmarks/getbooks/', 'GET', null, function(books){
     loadTemplate('foldermodallist', {books : books.books,id,name});
   });
+  document.getElementById("folderModaledit").style.visibility = "visible";
 }
+
+function addbookstoFolder(){
+  var updateFolder = document.getElementById("update-folder-form");
+  updateFolder.addEventListener('submit', function(ev) {
+    var oData = new FormData(updateFolder);
+    console.log("oData: "+JSON.stringify(oData));
+    var oReq = new XMLHttpRequest();
+    oReq.onreadystatechange = function () {
+      if(oReq.readyState == 4 && oReq.status == 200) {
+      }
+    };
+    oReq.open("POST", "/addBookToFolder", true);
+    oReq.send(oData);
+    ev.preventDefault();
+  }, false);
+  document.getElementById("folderModaledit").style.visibility = "hidden";
+}
+
 
 
 
@@ -129,7 +148,7 @@ window.onload = function() {
 
   var addBookForm = document.getElementById("add-bookmark-form");
   var createFolder = document.getElementById("add-folder-form");
-  var updateFolder = document.getElementById("update-folder-form");
+
 
 
   addBookForm.addEventListener('submit', function(ev) {
@@ -162,21 +181,6 @@ window.onload = function() {
 
 
 
-  if(updateFolder){
-    updateFolder.addEventListener('submit', function(ev) {
-      var oData = new FormData(updateFolder);
-      var oReq = new XMLHttpRequest();
-      oReq.onreadystatechange = function () {
-        if(oReq.readyState == 4 && oReq.status == 200) {
-          loadFoldersList();
-        }
-      };
-      oReq.open("POST", "/addBookToFolder", true);
-      oReq.send(oData);
-      ev.preventDefault();
-    }, false);
-
-  }
 
 
 
