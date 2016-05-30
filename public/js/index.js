@@ -52,7 +52,7 @@ window.onload = function() {
       var oData = new FormData(activeForm);
 
       // Send the data as a POST to the update route
-      ajax("bookmarks/update", "POST", oData, function(){
+      ajax("/bookmarks/update", "POST", oData, function(){
         // Finally when this callback is called reload the list of bookmarks on the homepage
         loadBookmarksList();
       });
