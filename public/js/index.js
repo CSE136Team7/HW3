@@ -85,11 +85,12 @@ function closeAddModal() {
 }
 
 function folderModaledit(id,name){
-  console.log("ID: "+id+" "+name);
   ajax('/bookmarks/getbooks/', 'GET', null, function(books){
     loadTemplate('foldermodallist', {books : books.books,id,name});
   });
 }
+
+
 
 
 window.onload = function() {
@@ -130,6 +131,7 @@ window.onload = function() {
   var createFolder = document.getElementById("add-folder-form");
   var updateFolder = document.getElementById("update-folder-form");
 
+
   addBookForm.addEventListener('submit', function(ev) {
     var oData = new FormData(addBookForm);
     var oReq = new XMLHttpRequest();
@@ -158,19 +160,23 @@ window.onload = function() {
     ev.preventDefault();
   }, false);
 
-  updateFolder.addEventListener('submit', function(ev) {
-    var oData = new FormData(updateFolder);
-    console.log("oData: --->"+JSON.stringify(oData,null,4));
-    var oReq = new XMLHttpRequest();
-    oReq.onreadystatechange = function () {
-      if(oReq.readyState == 4 && oReq.status == 200) {
-        loadFoldersList();
-      }
-    };
-    oReq.open("POST", "/addBookToFolder", true);
-    oReq.send(oData);
-    ev.preventDefault();
-  }, false);
+
+
+  if(updateFolder){
+    updateFolder.addEventListener('submit', function(ev) {
+      var oData = new FormData(updateFolder);
+      var oReq = new XMLHttpRequest();
+      oReq.onreadystatechange = function () {
+        if(oReq.readyState == 4 && oReq.status == 200) {
+          loadFoldersList();
+        }
+      };
+      oReq.open("POST", "/addBookToFolder", true);
+      oReq.send(oData);
+      ev.preventDefault();
+    }, false);
+
+  }
 
 
 
@@ -186,18 +192,6 @@ window.onload = function() {
     ev.preventDefault();
   }, false);
 
-
-  var importBookForm = document.getElementById("import");
-  importBookForm.addEventListener('submit', function(ev) {
-    var oData = new FormData(importBookForm);
-    var oReq = new XMLHttpRequest();
-    oReq.open("POST", "/bookmarks/import", true);
-    oReq.onload = function(oEvent) {
-      console.log(oReq.status);
-  };
-  oReq.send(oData);
-    ev.preventDefault();
-  }, false);
 
   var menuButton = document.getElementById("menu");
   var sidebar = document.getElementById("sidebar");

@@ -629,9 +629,9 @@ var matchBookmarks = function(callback, user_ID, searchstring){
  * createFolder
  * allows the user to create a new folder
  * */
-module.exports.createFolder=function(req, res) {
-  // debug.print("req.body: "+JSON.stringify(req.body,null,4));
-}
+// module.exports.createFolder=function(req, res) {
+//   // debug.print("req.body: "+JSON.stringify(req.body,null,4));
+// }
 
 var compareTitle = function (a,b){
   return a.Title.localeCompare(b.Title);

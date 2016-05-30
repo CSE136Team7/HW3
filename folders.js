@@ -19,7 +19,6 @@ module.exports.createFolder=function(req, res) {
   if (req.body.folder != ""){
     user = req.session.user_ID;
     var folderName = db.escape(req.body.folder);
-    console.log("folderName:-------------------> "+folderName);
     var queryString = 'INSERT INTO folders (Name, user_ID) VALUES ('
         + folderName + ',' + user + ')';
     db.query(queryString, function(err) {
@@ -74,7 +73,6 @@ module.exports.deleteFolder = function(req, res) {
 
 
   module.exports.addBookToFolder = function(req, res) {
-    console.log("book_ID:----> "+JSON.stringify(req.body,null,4));
     var user_ID;
     if (typeof req.session.user_ID === 'undefined') {
       //throw err
@@ -95,7 +93,6 @@ module.exports.deleteFolder = function(req, res) {
         var folderName = db.escape(req.body.folder);
    	    var folder_ID = db.escape(req.body.folder_ID);
         var book_ID = db.escape(req.body.book_ID);
-        console.log("req.body: ----------->"+JSON.stringify(req.body,null,4)+"req.body.folder_ID: "+req.body.folder_ID);
         var queryString = 'INSERT INTO folder_has_books (folder_ID, book_ID) VALUES ('
             + folder_ID + ','  + book_ID + ')';
 
@@ -113,7 +110,8 @@ module.exports.deleteFolder = function(req, res) {
                     throw(err);
                 }
                 else {
-                    res.redirect('/home');
+                  res.json({});
+                    // res.redirect('/home');
                 }
             });
           }
@@ -137,7 +135,8 @@ module.exports.deleteFolder = function(req, res) {
            throw err;
          }
          else {
-           res.redirect('/home');
+           res.json({});
+          //  res.redirect('/home');
          }
        });
      }
