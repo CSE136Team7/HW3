@@ -5,7 +5,42 @@ var debug = function(s) {
   }
 }
 
+function validate(textbox) {
+  if(textbox.value === '') {
+    textbox.setCustomValidity('This field is required.');
+  }
+  else if(textbox.validity.typeMismatch) {
+    textbox.setCustomValidity('Please type a valid entry.');
+  }
+  else{
+    textbox.setCustomValidity('');
+  }
+  return true;
+}
 
+var validateFile = function(fileName) {
+  console.log('in validate file\n');
+
+  var allowedExtension = "csv";
+  var fileExtension = fileName.split('.').pop();
+  console.log(fileExtension);
+
+  if(allowedExtension === fileExtension){
+    console.log('valid file extension\n');
+    return true;
+  }
+  console.log('not a valid csv file\n');
+  return false;
+}
+
+var validateImport = function(fileName) {
+  if(!validateFile(fileName)) {
+    console.log('not valid\n');
+    alert('not a valid file extension!');
+    return false;
+  }
+  return true;
+}
 
 window.onload = function() {
   loadBookmarksList();
