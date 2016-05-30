@@ -74,7 +74,7 @@
                       <li id="import-bookmark" class="is-active"><a href="#import-bookmark-form">Import Bookmarks</a></li>
                     </ul>
                   </div>
-                  <form method='post' action='/bookmarks/import' id="import" onsubmit="return validateFile();" enctype="multipart/form-data">
+                  <form method='post' action='/bookmarks/import' id="import" name="importForm" enctype="multipart/form-data">
                     <p>Please select a .csv file.</p>
                     <input type="file" id="myFileId" name="myFile" accept=".csv" style="margin-bottom:15px; width:100%" required>
                     <div class="buttonWrapper" style="margin-bottom:15px">

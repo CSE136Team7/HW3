@@ -5,7 +5,7 @@ var debug = function(s) {
   }
 }
 
-var validate = function(textbox) {
+function validate(textbox) {
   if(textbox.value === '') {
     textbox.setCustomValidity('Please fill out this field.');
   }
@@ -18,22 +18,19 @@ var validate = function(textbox) {
   return true;
 }
 
-var validateFile = function() {
-  console.log('in validate file\n');
-
-  var file = document.getElementById('myFileId').value;
-  console.log(file);
+function validateFile() {
+  var file = document.forms["importForm"]["myFile"].value;
   var allowedExtension = "csv";
   var fileExtension = file.split('.').pop();
-  console.log(fileExtension);
 
   if(allowedExtension === fileExtension){
-    console.log('valid file extension\n');
+    alert('import successful!');
     return true;
   }
-  console.log('not a valid csv file\n');
-  alert('not a valid csv file!');
-  return false;
+  else {
+    alert('not a valid csv file!');
+    return false;
+  }
 }
 
 window.onload = function() {
@@ -149,6 +146,7 @@ window.onload = function() {
   }, false);
 
   var importBookForm = document.getElementById("import");
+
   importBookForm.addEventListener('submit', function(ev) {
     var oData = new FormData(importBookForm);
     var oReq = new XMLHttpRequest();
@@ -156,7 +154,9 @@ window.onload = function() {
     oReq.onload = function(oEvent) {
       console.log(oReq.status);
   };
-  oReq.send(oData);
+  if(validateFile()) {
+    oReq.send(oData);
+  }
     ev.preventDefault();
   }, false);
 
