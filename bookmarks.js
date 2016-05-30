@@ -18,6 +18,7 @@ var fs = require("fs");
 * */
 
 module.exports.homePage = function(req, res) {
+
     debug.print('Received request for home page user id is: '+req.session.user_ID);
     var user;
     if (typeof req.session.user_ID === 'undefined') {
@@ -151,6 +152,7 @@ var getStarred = function(callback,user_ID){
 * clicked
 * When a bookmark is clicked, the user is redirected to the stored url
 * */
+
 module.exports.clicked = function(req, res){
 
   debug.print("info: Received click bookmark request.\n" + JSON.stringify(req.body));
@@ -275,7 +277,8 @@ module.exports.insert = function(req, res) {
               throw(err);
           }
           else {
-              res.redirect('/home');
+              res.json({});
+
           }
       });
     }
@@ -508,10 +511,47 @@ module.exports.export = function(req, res){
   }, user);
 }
 
+
+module.exports.getbooks = function(req,res){
+  var user;
+  if (typeof req.session.user_ID === 'undefined') {
+      //throw err
+    // go to login
+    debug.print('Warning: user went to homePage without a user_ID');
+    req.session.destroy();
+    res.redirect('/login');
+    return;
+  }
+  user = req.session.user_ID;
+  getBookmarks(function(err,bookmarks){
+
+    res.json({books: bookmarks});
+  }, user);
+}
+
+module.exports.getfolders = function(req,res){
+  var user;
+  if (typeof req.session.user_ID === 'undefined') {
+      //throw err
+    // go to login
+    debug.print('Warning: user went to homePage without a user_ID');
+    req.session.destroy();
+    res.redirect('/login');
+    return;
+  }
+  user = req.session.user_ID;
+  getFolders(function(err,folders){
+
+    res.json({folders: folders});
+  }, user);
+}
+
+
 /**
  * Function getFolders
  * retrieves the folders associated with that user
  * */
+
 var getFolders = function(callback, user) {
     debug.print("info: Received getFolders request: 31");
   var sql = "SELECT * FROM folders WHERE user_ID=" + user + ";";
@@ -593,8 +633,6 @@ module.exports.createFolder=function(req, res) {
   // debug.print("req.body: "+JSON.stringify(req.body,null,4));
 }
 
-
-
 var compareTitle = function (a,b){
   return a.Title.localeCompare(b.Title);
 }
@@ -652,7 +690,4 @@ var user;
       res.render('index',obj);
     }
   );
-
-
 }
-

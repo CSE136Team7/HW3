@@ -30,18 +30,20 @@
       else{
           if(results.length>0){
 
+
             // debug.print('retrieved username:'+results[0].username+' and hash:'+results[0].passhash+' from db');
             // debug.print('matching with username:'+userInput+' and hash:'+pwdInputCrypted+' from user');
+
             if (userInput===results[0].username && pwdInputCrypted===results[0].passhash) {
                 if (typeof req.session.user_ID === 'undefined') {
                     req.session.user_ID = results[0].user_ID;
-                    res.redirect('/home');
+                    res.redirect('/views');
                 }
                 else {
-                    debug.print('There was already a user field in cookie session, they were not logged out properly');
-                    debug.print('Logging them in anyway');
+                    debug.print('info: There was already a user field in cookie session, user was not logged out properly');
+                    debug.print('info: Logging in user anyway');
                     req.session.user_ID = results[0].user_ID;
-                    res.redirect('/home');
+                    res.redirect('/views');
                 }
             }
             else{
@@ -207,4 +209,3 @@ module.exports.doReset = function(req, res) {
         res.redirect('/resetpw?error=The form was not filled up properly! Please try again!');
     }
 };
-

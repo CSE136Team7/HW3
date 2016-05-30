@@ -14,21 +14,27 @@ module.exports.createFolder=function(req, res) {
     // go to login
     debug.print('Warning: user went to homePage without a user_ID');
     req.session.destroy();
-    res.redirect('/login');
+    res.redirect('/login?error=You are not logged in');
   }
   if (req.body.folder != ""){
     user = req.session.user_ID;
     var folderName = db.escape(req.body.folder);
+    console.log("folderName:-------------------> "+folderName);
     var queryString = 'INSERT INTO folders (Name, user_ID) VALUES ('
         + folderName + ',' + user + ')';
     db.query(queryString, function(err) {
-      if (err) {throw err;}
-      res.redirect('/home');
+      if (err) {
+          debug.print("ERROR: Query failed err:" + err);
+          throw(err);
+      }else {
+          res.json({});
+      }
     });
   } else{
     res.redirect('/home?error=The form was not filled properly');
   }
 }
+
 
 
 
