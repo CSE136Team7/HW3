@@ -342,7 +342,7 @@ module.exports.update = function(req, res) {
 	debug.print(queryString);
 	db.query(queryString, function(err) {
 		if (err) {throw err;}
-		res.redirect('/home');
+		res.json({});
 	});
 }
 else{
