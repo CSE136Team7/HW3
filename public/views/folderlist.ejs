@@ -1,8 +1,8 @@
 <%if(folders){ for(var j = 0; j < folders.length; j++) {%>
   <li>
-    <form action="/folders" method="get" style="display:inline-block">
+    <form action="/folders" method="get" style="display:inline-block" id="books-in-folder-<%=folders[j].folder_ID%>">
       <input type="hidden" name="folderName" value=<%=folders[j].Name%> >
-      <button style="background-color:#474448;" name="folder_ID" value=<%=folders[j].folder_ID%> >
+      <button onclick="getFolders(<%=folders[j].folder_ID%>); return false;"style="background-color:#474448;" name="folder_ID" value=<%=folders[j].folder_ID%> >
         <%= folders[j].Name%>
       </button>
     </form>

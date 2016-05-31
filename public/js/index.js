@@ -19,17 +19,18 @@ function loadFoldersList() {
 function ajax(url, method, data, callback){
     var request = new XMLHttpRequest();
     request.open(method, url, true);
-
     request.onload = function() {
         if (request.status >= 200 && request.status < 400) {
+
             var contentType = request.getResponseHeader('content-type') || '';
             var response;
             if (contentType.indexOf('json') >= 0){
-                response = JSON.parse(request.responseText);
-            }
+                response = JSON.parse(request.responseText)
+              }
             else{
                 response = request.responseText;
             }
+            // console.log("response:--> "+JSON.stringify(response,null,4));
             callback(response);
         }
     };
@@ -127,6 +128,13 @@ function deleteFolders(id){
       oReq.open("POST", "/deleteFolder", true);
       oReq.send(oData);
   }
+}
+
+function getFolders(id){
+  console.log("i am inside folder");
+  ajax('/folders/'+id, 'GET', null, function(books) {
+      loadTemplate('booklist', {books : books.books});
+  });
 }
 
 
