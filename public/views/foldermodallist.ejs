@@ -1,5 +1,5 @@
 <form action="/addBookToFolder" method="post" id="update-folder-form">
-  <div class="form" id="add-folder-form">
+  <div class="form" >
     <input type="text" name="folder" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" value=<%=name %>>
     <input type="hidden" name="folder_ID" style="display:none" value=<%=id %>>
 
@@ -11,6 +11,6 @@
         </option>
         <% }); }%>
     </select>
-    <button onclick="closeAddModal()"><i class="fa fa-check-circle fa-lg"></i> Save</button>
+    <button onclick="addbookstoFolder()"><i class="fa fa-check-circle fa-lg"></i> Save</button>
   </div>
 </form>

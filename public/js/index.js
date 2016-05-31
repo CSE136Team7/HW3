@@ -10,20 +10,27 @@ var debug = function(s) {
   var templatesCache = [];
 
 
+function loadFoldersList() {
+  ajax('/bookmarks/getfolders/', 'GET', null, function(folders) {
+      loadTemplate('folderlist', folders);
+  });
+}
+
 function ajax(url, method, data, callback){
     var request = new XMLHttpRequest();
     request.open(method, url, true);
-
     request.onload = function() {
         if (request.status >= 200 && request.status < 400) {
+
             var contentType = request.getResponseHeader('content-type') || '';
             var response;
             if (contentType.indexOf('json') >= 0){
-                response = JSON.parse(request.responseText);
-            }
+                response = JSON.parse(request.responseText)
+              }
             else{
                 response = request.responseText;
             }
+            // console.log("response:--> "+JSON.stringify(response,null,4));
             callback(response);
         }
     };
@@ -85,9 +92,48 @@ function closeAddModal() {
 }
 
 function folderModaledit(id,name){
-  console.log("ID: "+id+" "+name);
   ajax('/bookmarks/getbooks/', 'GET', null, function(books){
     loadTemplate('foldermodallist', {books : books.books,id,name});
+  });
+  document.getElementById("folderModaledit").style.visibility = "visible";
+}
+
+function addbookstoFolder(){
+  var updateFolder = document.getElementById("update-folder-form");
+  updateFolder.addEventListener('submit', function(ev) {
+    var oData = new FormData(updateFolder);
+    var oReq = new XMLHttpRequest();
+    oReq.onreadystatechange = function () {
+      if(oReq.readyState == 4 && oReq.status == 200) {
+        loadFoldersList();
+      }
+    };
+    oReq.open("POST", "/addBookToFolder", true);
+    oReq.send(oData);
+    ev.preventDefault();
+  }, false);
+  document.getElementById("folderModaledit").style.visibility = "hidden";
+}
+
+function deleteFolders(id){
+  var deleteFolderform= document.getElementById('delete-folder-form-'+id);
+  if(deleteFolderform){
+      var oData = new FormData(deleteFolderform);
+      var oReq = new XMLHttpRequest();
+      oReq.onreadystatechange = function () {
+        if(oReq.readyState == 4 && oReq.status == 200) {
+          loadFoldersList();
+        }
+      };
+      oReq.open("POST", "/deleteFolder", true);
+      oReq.send(oData);
+  }
+}
+
+function getFolders(id){
+  console.log("i am inside folder");
+  ajax('/folders/'+id, 'GET', null, function(books) {
+      loadTemplate('booklist', {books : books.books});
   });
 }
 
@@ -107,11 +153,6 @@ window.onload = function() {
     }
 
 
-    function loadFoldersList() {
-      ajax('/bookmarks/getfolders/', 'GET', null, function(folders) {
-          loadTemplate('folderlist', folders);
-      });
-    }
 
   /**
     * Capture back/forward button.
@@ -128,7 +169,7 @@ window.onload = function() {
 
   var addBookForm = document.getElementById("add-bookmark-form");
   var createFolder = document.getElementById("add-folder-form");
-  var updateFolder = document.getElementById("update-folder-form");
+
 
   addBookForm.addEventListener('submit', function(ev) {
     var oData = new FormData(addBookForm);
@@ -158,19 +199,9 @@ window.onload = function() {
     ev.preventDefault();
   }, false);
 
-  updateFolder.addEventListener('submit', function(ev) {
-    var oData = new FormData(updateFolder);
-    console.log("oData: --->"+JSON.stringify(oData,null,4));
-    var oReq = new XMLHttpRequest();
-    oReq.onreadystatechange = function () {
-      if(oReq.readyState == 4 && oReq.status == 200) {
-        loadFoldersList();
-      }
-    };
-    oReq.open("POST", "/addBookToFolder", true);
-    oReq.send(oData);
-    ev.preventDefault();
-  }, false);
+
+
+
 
 
 
@@ -186,18 +217,6 @@ window.onload = function() {
     ev.preventDefault();
   }, false);
 
-
-  var importBookForm = document.getElementById("import");
-  importBookForm.addEventListener('submit', function(ev) {
-    var oData = new FormData(importBookForm);
-    var oReq = new XMLHttpRequest();
-    oReq.open("POST", "/bookmarks/import", true);
-    oReq.onload = function(oEvent) {
-      console.log(oReq.status);
-  };
-  oReq.send(oData);
-    ev.preventDefault();
-  }, false);
 
   var menuButton = document.getElementById("menu");
   var sidebar = document.getElementById("sidebar");

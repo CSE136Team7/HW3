@@ -149,7 +149,7 @@ app.post('/bookmarks/import', bookmarks.import);
 app.get('/bookmarks/export', bookmarks.export);
 
 
-app.get('/folders', bookmarks.folders);
+app.get('/folders/:fid', bookmarks.folders);
 app.get('/find', bookmarks.find);
 
 app.listen(config.PORT, function () {
