@@ -64,7 +64,8 @@ module.exports.deleteFolder = function(req, res) {
       if (err) {
         res.redirect('/home?error=Could not delete folder.');
       } else {
-        res.redirect('/home');
+        res.json({});
+        // res.redirect('/home');
       }
     });
   }
