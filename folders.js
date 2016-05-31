@@ -51,6 +51,7 @@ module.exports.deleteFolder = function(req, res) {
     // Do validation on book_ID && user_ID
     if (req.body.folder_ID && user_ID) {
       // get userid and book_ID
+      console.log("req.body.folder_ID: ======>"+req.body.folder_ID);
       var folder_ID = db.escape(req.body.folder_ID);
       //var user_ID = db.escape(req.body.user_ID);
     } else {

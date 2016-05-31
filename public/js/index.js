@@ -114,12 +114,10 @@ function addbookstoFolder(){
   document.getElementById("folderModaledit").style.visibility = "hidden";
 }
 
-function deleteFolders(){
-  console.log("deleteFolders");
-  var deleteFolderform= document.getElementById("delete-folder-form");
+function deleteFolders(id){
+  var deleteFolderform= document.getElementById('delete-folder-form-'+id);
   if(deleteFolderform){
       var oData = new FormData(deleteFolderform);
-      console.log("oData: "+JSON.stringify(oData));
       var oReq = new XMLHttpRequest();
       oReq.onreadystatechange = function () {
         if(oReq.readyState == 4 && oReq.status == 200) {
