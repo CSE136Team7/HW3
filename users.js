@@ -163,12 +163,6 @@ module.exports.newAccount = function(req, res){
                                         req.session.user_ID = results[0].user_ID;
                                         res.redirect('/views');
                                     }
-                                    else {
-                                        debug.print('info: There was already a user field in cookie session, user was not logged out properly');
-                                        debug.print('info: Logging in user anyway');
-                                        req.session.user_ID = results[0].user_ID;
-                                        res.redirect('/views');
-                                    }
                                 }
                                 else{
                                     res.redirect('/login?error=Your username or password are incorrect. Please try again!');
