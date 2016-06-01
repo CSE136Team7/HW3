@@ -29,7 +29,7 @@
       </li>
       <li class="navbar-right">
         <a class="button" href="#"><i class="fa fa-sort-alpha-asc fa-lg"></i></a>
-        <a href="/logout"><i class="fa fa-sign-out" style="color:#fff"></i></a>
+        <a href="/logout"><i class="fa fa-sign-out"></i></a>
       </li>
       <li class="navbar-right">
         <div id="bookmodals"></div>
@@ -83,22 +83,24 @@
                     </div>
                   </form>
                 </div>
+              </div>
+
+              <div class="form" id="import-bookmark-form">
+                <div class="textFieldWrapper">
+                  <input type="text" name="description" placeholder="Description">
+                </div>
                 <noscript>
                   <input type="hidden" name="javascript" value="0">
                 </noscript>
+                <div class="buttonWrapper" style="margin-bottom:15px">
+                  <!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
+                  <button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Save</i></button>
+                </div>
               </div>
+            </form>
           </div>
         </div>
 
-        <div class="form" id="import-bookmark-form">
-          <div class="textFieldWrapper">
-            <input type="url" name="url" placeholder="File Path">
-          </div>
-          <div class="buttonWrapper">
-            <div><i class="fa fa-folder-open fa-lg"></i> Browse</div>
-            <div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
-          </div>
-        </div>
       </li>
     </ul>
   </nav>
@@ -106,18 +108,18 @@
     <ul>
       <li class="pinned">
         <form class="resetme" action="/home" method="get">
-          <button style="background-color:#474448; width:100%; padding-right: 50px;"><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
+          <button style="background-color:#474448"><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
         </form>
       </li>
       <li class="pinned">
         <form class="resetme" action="/folder/starred" method="get">
-          <button style="background-color:#474448; width:100%; padding-right: 95px;"><i class="fa fa-star fa-lg"></i> Starred</button>
+          <button style="background-color:#474448"><i class="fa fa-star fa-lg"></i> Starred</button>
         </form>
       </li>
       <li class="pinned"><a href="all.html"><i class="fa fa-th fa-lg"></i> All</a></li>
       <div id="folderlist"></div>
     </ul>
-
+    <div id="foldermodals"></div>
 
 
     <div class="buttonWrapper">
@@ -142,7 +144,6 @@
           <li id="add-folder" class="is-active"><a>Add Folder</a></li>
         </ul>
       </div>
-
       <form action="/createFolder" method="post" id="add-folder-form">
         <div class="form">
           <input type="text" name="folder" placeholder="Folder Name" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" required>
@@ -153,23 +154,6 @@
       </form>
     </div>
   </div>
-  <!--  Modal for folder update-->
-  <div id ="folderModaledit" class="modalDialog">
-    <div class="grid grid-pad">
-      <a href="#close" title="Close" class="close x-button">x</a>
-      <div class="tabs is-centered">
-        <ul>
-          <li id="add-folder" class="is-active"><a>Add Bookmarks in Folder</a></li>
-        </ul>
-      </div>
-      <div id="foldermodallist"></div>
-    </div>
-  </div>
-
-
-
-
-
   <div id="right">
     <div class="main grid grid-pad">
       <div id="title" class="col-1-1">
@@ -179,6 +163,7 @@
       </div>
       <div id="booklist"></div>
     </div>
-  </div>
+
 </body>
+
 </html>

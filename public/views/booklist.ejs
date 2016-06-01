@@ -10,7 +10,11 @@
             <input type="hidden" name="url" value=<%=books[i].URL %>>
             <input type="submit" class="card__title" value=<%=books[i].Title %>>
           </form>
-          <div style=<%= 'background-color:#'+Math.floor(Math.random()*16777215).toString(16); %> class="card__image"></div>
+          <div style=<%= 'background-color:#'+function(){var x; while(1){
+            x = Math.floor(Math.random()*900 + 100).toString();
+            return x;
+          }}();
+           %> class="card__image"></div>
           <div class="card__action-bar" >
             <form action="/bookmarks/star" method="post" class="card__button">
               <input type="hidden" name="starred" value=<%=books[i].Star %>>
@@ -19,12 +23,12 @@
               <button class="card__button" ><i class="fa fa-star fa-lg"></i></button>
             </form>
 
-            <a href=<%= '#updateModal'+books[i].book_ID %>  class="fa fa-edit fa-lg" ></a>
+            <div onclick=<%="showEdit("+books[i].book_ID+")"%> class="fa fa-edit fa-lg" ></div>
 
             <form action="/bookmarks/delete" method="post" class="card__button">
               <input type="hidden" name="user_ID" value=<%=books[i].user_ID %>>
               <input type="hidden" name="book_ID" value=<%=books[i].book_ID %>>
-              <button class="card__button"><i class="fa fa-trash-o fa-lg"></i></button>
+              <button class="card__button" id="trigger-submit"><i class="fa fa-trash-o fa-lg"></i></button>
             </form>
           </div>
         </div>
