@@ -141,7 +141,44 @@ module.exports.newAccount = function(req, res){
                 else{
                     //render an alert message : the account have been created
                     //res.render('users/login');
-                    res.redirect('/login');
+                    debug.print("redirect to: views?");
+                    //if (typeof req.session.user_ID === 'undefined') {
+                    //    req.session.user_ID = user;
+                    //}
+                    //res.redirect('/home');
+                    //Look into the data base if there is a login matching the input
+                    var sql = 'SELECT username, passhash, user_ID FROM users WHERE username = ' + db.escape(user);
+                    db.query(sql, function(err, results) {
+                        if(err){
+                            throw(err);
+                        }
+                        else{
+                            if(results.length>0){
+
+                                // debug.print('retrieved username:'+results[0].username+' and hash:'+results[0].passhash+' from db');
+                                // debug.print('matching with username:'+userInput+' and hash:'+pwdInputCrypted+' from user');
+
+                                if (user===results[0].username && pwdCrypted===results[0].passhash) {
+                                    if (typeof req.session.user_ID === 'undefined') {
+                                        req.session.user_ID = results[0].user_ID;
+                                        res.redirect('/views');
+                                    }
+                                    else {
+                                        debug.print('info: There was already a user field in cookie session, user was not logged out properly');
+                                        debug.print('info: Logging in user anyway');
+                                        req.session.user_ID = results[0].user_ID;
+                                        res.redirect('/views');
+                                    }
+                                }
+                                else{
+                                    res.redirect('/login?error=Your username or password are incorrect. Please try again!');
+                                }
+                            }
+                            else{
+                                res.redirect('/login?error=The query has an empty result!');
+                            }
+                        }
+                    });
 
                 }
               });
