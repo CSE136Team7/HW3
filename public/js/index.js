@@ -37,6 +37,7 @@ function validateFile() {
 
   if(allowedExtension === fileExtension){
     console.log('import successful!');
+    closeImportModal();
     return true;
   }
   else {
@@ -160,7 +161,7 @@ function closeFolderAddModal() {
 function closeImportModal() {
 
       document.getElementById("importBookmark").style.visibility = "hidden";
-      document.forms["importForm"]["myFile"].value = ''; 
+      document.forms["importForm"]["myFile"].value = '';
 
 
 }
