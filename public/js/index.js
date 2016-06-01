@@ -50,9 +50,9 @@ window.onload = function() {
     activeForm.addEventListener('submit', function(ev) { // When the form is submitted...
       // save all the input datas into json format
       var oData = new FormData(activeForm);
-
+      console.log(JSON.stringify(oData));
       // Send the data as a POST to the update route
-      ajax("/bookmarks/update", "POST", oData, function(){
+      ajaxPost("/bookmarks/update", oData, function(){
         // Finally when this callback is called reload the list of bookmarks on the homepage
         loadBookmarksList();
       });
@@ -99,13 +99,24 @@ window.onload = function() {
         callback(response);
       }
     };
-
     if (data) {
       request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
       request.send(data);
     } else {
       request.send();
     }
+  }
+
+  function ajaxPost(url,data,callback){
+    var oReq = new XMLHttpRequest();
+    oReq.open("POST", url, true);
+    oReq.onreadystatechange = function () {
+      if(oReq.readyState == 4 && oReq.status == 200) {
+        callback();
+      }
+    };
+
+    oReq.send(data);
   }
 
   function displayTemplate(name, data) {
@@ -143,7 +154,7 @@ window.onload = function() {
 
   addBookForm.addEventListener('submit', function(ev) {
     var oData = new FormData(addBookForm);
-    ajax("/bookmarks/insert", "POST", oData, function(){
+    ajaxPost("/bookmarks/insert",oData, function(){
 
       loadBookmarksList();
     });
@@ -154,7 +165,7 @@ window.onload = function() {
   var importBookForm = document.getElementById("import");
   importBookForm.addEventListener('submit', function(ev) {
     var oData = new FormData(importBookForm);
-    ajax("/bookmarks/import", "POST", oData, function(){
+    ajaxPost("/bookmarks/import",oData, function(){
 
       loadBookmarksList();
     });
