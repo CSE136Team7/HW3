@@ -429,6 +429,10 @@ module.exports.import = function (req, res) {
               },
               function(err,results){
                 debug.print("info: Finished processing import request");
+                fs.unlink(req.file.path, function(err) {
+                  if(err) throw err;
+                  debug.print("info: Successfully deleted: " + req.file.path);
+                });
                 res.json();
               }
             );
