@@ -84,6 +84,7 @@ var checkJS = function (req, res, next) {
 
     if (typeof req.session.user_ID === 'undefined') {
       // throw err
+
       // go to login
       debug.print('redirecting to login...');
       req.session.destroy();
@@ -148,7 +149,7 @@ app.post('/bookmarks/import', bookmarks.import);
 app.get('/bookmarks/export', bookmarks.export);
 
 
-app.get('/folders', bookmarks.folders);
+app.get('/folders/:fid', bookmarks.folders);
 app.get('/find', bookmarks.find);
 
 app.listen(config.PORT, function () {
@@ -176,6 +177,10 @@ app.get('/robot', function (req, res, next) {
 app.get('/root', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6ed92c4ba3eb1291cf253cbf5c1eebbf1614d37a
     user = 'unsub';
   debug.print('user '+user+' tried to access root');
   req.session.destroy();
@@ -186,6 +191,10 @@ app.get('/*', function (req, res, next) {
   var user = req.session.user_ID;
   if (user === 'undefined')
     user = 'unsub';
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6ed92c4ba3eb1291cf253cbf5c1eebbf1614d37a
   //debug.print('Info: user '+user+' tried to access unknown path');
   res.send('<h1>404 Not Found</h1><br><p>Please use the browser\'s back button.</p>');
 
