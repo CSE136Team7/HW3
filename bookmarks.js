@@ -150,7 +150,6 @@ var getStarred = function(callback,user_ID){
 * clicked
 * When a bookmark is clicked, the user is redirected to the stored url
 * */
-
 module.exports.clicked = function(req, res){
 
   debug.print("info: Received click bookmark request.\n" + JSON.stringify(req.body));
@@ -334,7 +333,7 @@ module.exports.update = function(req, res) {
 	debug.print(queryString);
 	db.query(queryString, function(err) {
 		if (err) {throw err;}
-		res.redirect('/home');
+		res.json({});
 	});
 }
 else{
@@ -430,7 +429,11 @@ module.exports.import = function (req, res) {
               },
               function(err,results){
                 debug.print("info: Finished processing import request");
-                res.redirect('/home');
+                fs.unlink(req.file.path, function(err) {
+                  if(err) throw err;
+                  debug.print("info: Successfully deleted: " + req.file.path);
+                });
+                res.json();
               }
             );
           }
@@ -510,6 +513,10 @@ module.exports.export = function(req, res){
 }
 
 
+
+/**
+ * getbooks
+ * */
 module.exports.getbooks = function(req,res){
   var user;
   if (typeof req.session.user_ID === 'undefined') {
@@ -549,7 +556,6 @@ module.exports.getfolders = function(req,res){
  * Function getFolders
  * retrieves the folders associated with that user
  * */
-
 var getFolders = function(callback, user) {
     debug.print("info: Received getFolders request: 31");
   var sql = "SELECT * FROM folders WHERE user_ID=" + user + ";";

@@ -31,6 +31,8 @@
           if(results.length>0){
 
 
+
+
             // debug.print('retrieved username:'+results[0].username+' and hash:'+results[0].passhash+' from db');
             // debug.print('matching with username:'+userInput+' and hash:'+pwdInputCrypted+' from user');
 
