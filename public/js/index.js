@@ -6,16 +6,24 @@ var debug = function(s) {
 }
 
 function validate(textbox) {
-  if(textbox.value === '') {
-    textbox.setCustomValidity('Please fill out this field.');
-  }
-  else if(textbox.validity.typeMismatch) {
-    textbox.setCustomValidity('Please type a valid entry.');
+  console.log('Textbox: ' + textbox);
+  if(textbox === '') {
+    return false;
   }
   else{
-    textbox.setCustomValidity('');
+    return true;
   }
-  return true;
+}
+
+function validateURL(url) {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+  '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+  '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+  '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+  '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+
+  return pattern.test(url);
 }
 
 
@@ -25,7 +33,7 @@ function validateFile() {
   var fileExtension = file.split('.').pop();
 
   if(allowedExtension === fileExtension){
-    alert('import successful!');
+    console.log('import successful!');
     return true;
   }
   else {
@@ -109,14 +117,47 @@ function ajax(url, method, data, callback){
 
 function showAddModal() {
     document.getElementById("addModal").style.visibility = "visible";
-    document.getElementById("folderModal").style.visibility = "visible";
     document.getElementById("add-bookmark-form").reset();
-    document.getElementById("add-folder-form").reset();
+}
+
+function showAddFolderModal() {
+  document.getElementById("folderModal").style.visibility = "visible";
+  document.getElementById("add-folder-form").reset();
+}
+
+function showImportModal() {
+  document.getElementById("importBookmark").style.visibility = "visible";
 }
 
 function closeAddModal() {
+  var title = document.getElementById("bookTitle").value;
+  var url = document.getElementById("bookURL").value;
+  var description = document.getElementById("bookDescription").value;
+
+  console.log('Title: ' + title);
+  console.log('URL: ' + url);
+  console.log('Description: ' + description);
+
+  console.log(validate(title));
+  console.log(validate(description));
+
+  if(validate(title) && validateURL(url) && validate(description)){
     document.getElementById("addModal").style.visibility = "hidden";
+  }
+}
+
+function closeFolderAddModal() {
+  var folderName = document.getElementById("Folder_input").value;
+
+  if(validate(folderName)){
     document.getElementById("folderModal").style.visibility = "hidden";
+  }
+}
+
+function closeImportModal() {
+  if(validateFile()){
+      document.getElementById("importBookmark").style.visibility = "hidden";
+  }
 }
 
 function folderModaledit(id,name){
@@ -240,6 +281,7 @@ window.onload = function() {
     var oReq = new XMLHttpRequest();
     oReq.open("POST", "/bookmarks/import", true);
     oReq.onload = function(oEvent) {
+      loadBookmarksList();
       console.log(oReq.status);
   };
   if(validateFile()) {

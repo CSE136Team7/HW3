@@ -19,41 +19,14 @@ var fs = require("fs");
 
 module.exports.homePage = function(req, res) {
 
-<<<<<<< HEAD
-    var user;
-    debug.print('Received request for home page user id is: ');
-    if (typeof req.session === 'undefined' || typeof req.session.user_ID === 'undefined'){
-
-=======
     debug.print('Received request for home page user id is: '+req.session.user_ID);
     var user;
     if (typeof req.session.user_ID === 'undefined') {
->>>>>>> 6ed92c4ba3eb1291cf253cbf5c1eebbf1614d37a
         //throw err
         // go to login
         debug.print('Warning: user went to homePage without a user_ID');
         req.session.destroy();
         res.redirect('/login');
-<<<<<<< HEAD
-
-        return;
-    }
-    else {
-        user = req.session.user_ID;
-    }
-  debug.print(user);
-
-  if(req.query.error){
-    var error = req.query.error;
-    renderHomePage(getBookmarks,getFolders,"Most Visited",error,user,function(obj){
-        res.render('index',obj);
-    })
-  } else {
-    renderHomePage(getBookmarks,getFolders,"Most Visited", "",user,function(obj){
-        res.render('index',obj);
-    })
-
-=======
     }
     else {
         user = req.session.user_ID;
@@ -67,7 +40,6 @@ module.exports.homePage = function(req, res) {
                 res.render('index', obj);
             })
         }
->>>>>>> 6ed92c4ba3eb1291cf253cbf5c1eebbf1614d37a
   }
 };
 
@@ -123,10 +95,6 @@ var getStarred = function(callback,user_ID){
  var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_ID, done, searchstring){
 
    debug.print("info: Rendering Homepage");
-<<<<<<< HEAD
-
-=======
->>>>>>> 6ed92c4ba3eb1291cf253cbf5c1eebbf1614d37a
    async.parallel([function(callback){bookmarkFunc(callback,user_ID,searchstring)},function(callback){folderFunc(callback,user_ID)}],
       function(err, results){
         if(err){
@@ -461,7 +429,7 @@ module.exports.import = function (req, res) {
               },
               function(err,results){
                 debug.print("info: Finished processing import request");
-                res.redirect('/home');
+                res.json();
               }
             );
           }
@@ -541,12 +509,10 @@ module.exports.export = function(req, res){
 }
 
 
-<<<<<<< HEAD
+
 /**
  * getbooks
  * */
-=======
->>>>>>> 6ed92c4ba3eb1291cf253cbf5c1eebbf1614d37a
 module.exports.getbooks = function(req,res){
   var user;
   if (typeof req.session.user_ID === 'undefined') {
@@ -582,18 +548,10 @@ module.exports.getfolders = function(req,res){
 }
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 6ed92c4ba3eb1291cf253cbf5c1eebbf1614d37a
 /**
  * Function getFolders
  * retrieves the folders associated with that user
  * */
-<<<<<<< HEAD
-=======
-
->>>>>>> 6ed92c4ba3eb1291cf253cbf5c1eebbf1614d37a
 var getFolders = function(callback, user) {
     debug.print("info: Received getFolders request: 31");
   var sql = "SELECT * FROM folders WHERE user_ID=" + user + ";";
