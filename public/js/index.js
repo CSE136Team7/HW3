@@ -90,8 +90,6 @@ function ajax(url, method, data, callback){
    */
   function loadTemplate(name, data){
       addToHistory(name, data);
->>>>>>> c3d556b86f9f9ad25bd6c4625927905175766a45
-
       if (templatesCache[name]){
           displayTemplate(name, data);
       }
@@ -160,9 +158,11 @@ function closeFolderAddModal() {
 }
 
 function closeImportModal() {
-  if(validateFile()){
+
       document.getElementById("importBookmark").style.visibility = "hidden";
-  }
+      document.forms["importForm"]["myFile"].value = ''; 
+
+
 }
 
 function folderModaledit(id,name){
