@@ -19,33 +19,27 @@ var fs = require("fs");
 
 module.exports.homePage = function(req, res) {
 
+    debug.print('Received request for home page user id is: '+req.session.user_ID);
     var user;
-    debug.print('Received request for home page user id is: ');
-    if (typeof req.session === 'undefined' || typeof req.session.user_ID === 'undefined'){
-
+    if (typeof req.session.user_ID === 'undefined') {
         //throw err
         // go to login
         debug.print('Warning: user went to homePage without a user_ID');
         req.session.destroy();
         res.redirect('/login');
-
-        return;
     }
     else {
         user = req.session.user_ID;
-    }
-  debug.print(user);
-
-  if(req.query.error){
-    var error = req.query.error;
-    renderHomePage(getBookmarks,getFolders,"Most Visited",error,user,function(obj){
-        res.render('index',obj);
-    })
-  } else {
-    renderHomePage(getBookmarks,getFolders,"Most Visited", "",user,function(obj){
-        res.render('index',obj);
-    })
-
+        if (req.query.error) {
+            var error = req.query.error;
+            renderHomePage(getBookmarks, getFolders, "Most Visited", error, user, function (obj) {
+                res.render('index', obj);
+            })
+        } else {
+            renderHomePage(getBookmarks, getFolders, "Most Visited", "", user, function (obj) {
+                res.render('index', obj);
+            })
+        }
   }
 };
 
@@ -101,7 +95,6 @@ var getStarred = function(callback,user_ID){
  var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_ID, done, searchstring){
 
    debug.print("info: Rendering Homepage");
-
    async.parallel([function(callback){bookmarkFunc(callback,user_ID,searchstring)},function(callback){folderFunc(callback,user_ID)}],
       function(err, results){
         if(err){
@@ -125,8 +118,8 @@ var getStarred = function(callback,user_ID){
 * users can associate their books into folders if so desired
 * */
  module.exports.folders = function(req, res){
-   var folder_ID = req.query.folder_ID;
-   var folderName = req.query.folderName;
+   var folder_ID = req.params.fid;
+
    var user;
    if (typeof req.session.user_ID === 'undefined') {
      debug.print('Warning: user went to homePage without a user_ID');
@@ -135,22 +128,20 @@ var getStarred = function(callback,user_ID){
    }
      else {
        user = req.session.user_ID;
-       debug.print("info: folder_ID: " + folder_ID + "  folderName: " + folderName);
+       debug.print("info: folder_ID: " + folder_ID );
 
-       var getFoldersBookmarks = function (callback) {
-           db.query("SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID =" + folder_ID + " AND folder_has_books.book_ID = books.book_ID",
-               function (err, results) {
-                   if (err) {
-                       throw err;
-                   }
-                   callback(err, results);
-               })
-       };
-
-       renderHomePage(getFoldersBookmarks, getFolders, folderName, "", user, function (obj) {
-           debug.print("info: obj: " + JSON.stringify(obj, null, 4));
-           res.render('index', obj);
+       var sql = "SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID =" + folder_ID + " AND folder_has_books.book_ID = books.book_ID;";
+       db.query(sql, function(err,bookmarks) {
+         if (err) {
+           res.status(500).send(err);
+          //  res.redirect('/home?error=Could not delete folder.');
+         } else {
+           console.log("results: "+JSON.stringify(bookmarks,null,4));
+           res.json({books: bookmarks});
+           // res.redirect('/home');
+         }
        });
+
    }
  }
 
@@ -438,7 +429,7 @@ module.exports.import = function (req, res) {
               },
               function(err,results){
                 debug.print("info: Finished processing import request");
-                res.redirect('/home');
+                res.json();
               }
             );
           }
@@ -518,6 +509,7 @@ module.exports.export = function(req, res){
 }
 
 
+
 /**
  * getbooks
  * */
@@ -554,7 +546,6 @@ module.exports.getfolders = function(req,res){
     res.json({folders: folders});
   }, user);
 }
-
 
 
 /**
@@ -638,9 +629,9 @@ var matchBookmarks = function(callback, user_ID, searchstring){
  * createFolder
  * allows the user to create a new folder
  * */
-module.exports.createFolder=function(req, res) {
-  // debug.print("req.body: "+JSON.stringify(req.body,null,4));
-}
+// module.exports.createFolder=function(req, res) {
+//   // debug.print("req.body: "+JSON.stringify(req.body,null,4));
+// }
 
 var compareTitle = function (a,b){
   return a.Title.localeCompare(b.Title);
