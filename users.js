@@ -166,10 +166,12 @@ module.exports.newAccount = function(req, res){
                                 }
                                 else{
                                     res.redirect('/login?error=Your username or password are incorrect. Please try again!');
+                                    debug.print('log: error on account creation and autolog, incorrect input');
                                 }
                             }
                             else{
                                 res.redirect('/login?error=The query has an empty result!');
+                                debug.print('log: error on account creation and autolog, empty input');
                             }
                         }
                     });
