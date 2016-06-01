@@ -5,6 +5,42 @@ var debug = function(s) {
   }
 }
 
+function validate(textbox) {
+  console.log('Textbox: ' + textbox);
+  if(textbox === '') {
+    return false;
+  }
+  else{
+    return true;
+  }
+}
+
+function validateURL(url) {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
+  '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+  '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+  '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+  '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+
+  return pattern.test(url);
+}
+
+
+function validateFile() {
+  var file = document.forms["importForm"]["myFile"].value;
+  var allowedExtension = "csv";
+  var fileExtension = file.split('.').pop();
+
+  if(allowedExtension === fileExtension){
+    console.log('import successful!');
+    return true;
+  }
+  else {
+    alert('not a valid csv file!');
+    return false;
+  }
+}
 
 /*  variable used to store templates in a cache to prevent multiple requests on static file */
   var templatesCache = [];
@@ -81,14 +117,47 @@ function ajax(url, method, data, callback){
 
 function showAddModal() {
     document.getElementById("addModal").style.visibility = "visible";
-    document.getElementById("folderModal").style.visibility = "visible";
     document.getElementById("add-bookmark-form").reset();
-    document.getElementById("add-folder-form").reset();
+}
+
+function showAddFolderModal() {
+  document.getElementById("folderModal").style.visibility = "visible";
+  document.getElementById("add-folder-form").reset();
+}
+
+function showImportModal() {
+  document.getElementById("importBookmark").style.visibility = "visible";
 }
 
 function closeAddModal() {
+  var title = document.getElementById("bookTitle").value;
+  var url = document.getElementById("bookURL").value;
+  var description = document.getElementById("bookDescription").value;
+
+  console.log('Title: ' + title);
+  console.log('URL: ' + url);
+  console.log('Description: ' + description);
+
+  console.log(validate(title));
+  console.log(validate(description));
+
+  if(validate(title) && validateURL(url) && validate(description)){
     document.getElementById("addModal").style.visibility = "hidden";
+  }
+}
+
+function closeFolderAddModal() {
+  var folderName = document.getElementById("Folder_input").value;
+
+  if(validate(folderName)){
     document.getElementById("folderModal").style.visibility = "hidden";
+  }
+}
+
+function closeImportModal() {
+  if(validateFile()){
+      document.getElementById("importBookmark").style.visibility = "hidden";
+  }
 }
 
 function folderModaledit(id,name){
@@ -206,14 +275,18 @@ window.onload = function() {
 
 
   var importBookForm = document.getElementById("import");
+
   importBookForm.addEventListener('submit', function(ev) {
     var oData = new FormData(importBookForm);
     var oReq = new XMLHttpRequest();
     oReq.open("POST", "/bookmarks/import", true);
     oReq.onload = function(oEvent) {
+      loadBookmarksList();
       console.log(oReq.status);
   };
-  oReq.send(oData);
+  if(validateFile()) {
+    oReq.send(oData);
+  }
     ev.preventDefault();
   }, false);
 
