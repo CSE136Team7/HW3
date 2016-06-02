@@ -22,7 +22,7 @@ var sessionStore = new MySQLStore ({
       createDatabaseTable: true,
       schema: {
         tableName: 'sessions',
-        columNames: {
+        columnNames: {
           session_id: 'session_id',
           expires: 'expires',
           data: 'data'
@@ -55,8 +55,7 @@ function customHeaders( req, res, next ){
   // Switch off the default 'X-Powered-By: Express' header
   app.disable( 'x-powered-by' );
   // OR set your own header here
-  res.setHeader( 'App-Powered-By', 'Blood, sweat, and tears' );
-  // .. other headers here
+  //res.setHeader( 'App-Powered-By', 'Blood, sweat, and tears' );
   next()
 }
 app.use( customHeaders );
@@ -83,7 +82,6 @@ var checkJS = function (req, res, next) {
     debug.print('Warning: User has JavaScript disabled.');
 
     if (typeof req.session.user_ID === 'undefined') {
-      // throw err
       // go to login
       debug.print('redirecting to login...');
       req.session.destroy();

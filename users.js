@@ -25,7 +25,7 @@
     var sql = 'SELECT username, passhash, user_ID FROM users WHERE username = ' + db.escape(userInput);
     db.query(sql, function(err, results) {
       if(err){
-        throw(err);
+          res.redirect('/login?error=There was a problem logging in. Please try again.');
       }
       else{
           if(results.length>0){
@@ -54,7 +54,6 @@
           }
         }
       });
-
 }
 else{
     //Alert message : all the fields have not been filled
@@ -118,59 +117,48 @@ module.exports.signup = function(req, res){
 module.exports.newAccount = function(req, res){
 
   if (req.body.username != "" && req.body.password != "" ){
-    var user = req.body.username;
-    var pwd = req.body.password;
+    var user = db.escape(req.body.username);
+    var pwd = db.escape(req.body.password);
 
 
-    var sql = 'SELECT username FROM users WHERE username = ' + db.escape(user);
+    var sql = 'SELECT username FROM users WHERE username = ' + user;
     db.query(sql, function(err, results) {
       if(err){
-        throw(err);
+          res.redirect('/login?error=Account creation is temporarily down. Please try again later');
       }
       else{
-        if (results.length==0){
-            //no existing username --> insert into the table
-               //hashing of the password
-                debug.print('user and pw entered: '+user+pwd);
-               var pwdCrypted = md5(pwd, user);
-               var queryString = "INSERT INTO users(username, passhash) VALUES ("+ db.escape(user) + "," + db.escape(pwdCrypted) +")";
-               db.query(queryString, function(err, result){
-                if (err){
-                   throw err;
-                }
+          if (results.length==0){
+              //no existing username --> insert into the table
+              //hashing of the password
+              debug.print('user and pw entered: '+user+pwd);
+              var pwdCrypted = db.escape(md5(pwd, user));
+              var queryString = "INSERT INTO users(username, passhash) VALUES ("+ user + "," + pwdCrypted +")";
+              db.query(queryString, function(err, result){
+                  if (err){
+                      debug.print('error: new account: could not insert new account');
+                      res.redirect('/signup?error=There was a problem with the account creation. Try again.');
+                    }
                 else{
                     //render an alert message : the account have been created
                     //res.render('users/login');
-                    debug.print("redirect to: views?");
-                    //if (typeof req.session.user_ID === 'undefined') {
-                    //    req.session.user_ID = user;
-                    //}
-                    //res.redirect('/home');
-                    //Look into the data base if there is a login matching the input
-                    var sql = 'SELECT username, passhash, user_ID FROM users WHERE username = ' + db.escape(user);
+                    //Look into the data base to get the user_ID needed for sessioning
+                    var sql = 'SELECT user_ID FROM users WHERE username = ' + user;
                     db.query(sql, function(err, results) {
                         if(err){
-                            throw(err);
+                            debug.print('error: new account: could not retrieve user_ID of new account');
+                            res.redirect('/signup?error=There was a problem with the account creation. Try again.');
                         }
                         else{
                             if(results.length>0){
-
-                                // debug.print('retrieved username:'+results[0].username+' and hash:'+results[0].passhash+' from db');
-                                // debug.print('matching with username:'+userInput+' and hash:'+pwdInputCrypted+' from user');
-
-                                if (user===results[0].username && pwdCrypted===results[0].passhash) {
-                                    if (typeof req.session.user_ID === 'undefined') {
-                                        req.session.user_ID = results[0].user_ID;
-                                        res.redirect('/views');
-                                    }
-                                }
-                                else{
-                                    res.redirect('/login?error=Your username or password are incorrect. Please try again!');
-                                    debug.print('log: error on account creation and autolog, incorrect input');
+                                debug.print("info: account creation: redirect to: views");
+                                if (typeof req.session.user_ID === 'undefined') {
+                                    debug.print('attempting to set session');
+                                    req.session.user_ID = results[0].user_ID;
+                                    res.redirect('/views');
                                 }
                             }
                             else{
-                                res.redirect('/login?error=The query has an empty result!');
+                                res.redirect('/login?error=Your account was unable to be automatically added to our records!');
                                 debug.print('log: error on account creation and autolog, empty input');
                             }
                         }
@@ -202,34 +190,51 @@ module.exports.resetpw = function(req, res){
 }
 
 module.exports.doReset = function(req, res) {
-    if (typeof req.body.user === 'undefined')
-        debug.print('Warning: user undefined in resetpw');
-    if (req.body.username != "" && req.body.pwd != "") {
-        var user = req.body.username;
-        var pwd = req.body.password;
-        debug.print('info: user and pwd entered were: ' + user + pwd);
-        var sql = 'SELECT username FROM users WHERE username = ' + db.escape(user);
+    if (req.body.username != "" && req.body.passwordOld != "" && req.body.passwordNew != "") {
+        var user = db.escape(req.body.username);
+        var pwdoldhash = db.escape(md5(req.body.passwordOld, user));
+        var pwdnewhash = db.escape(md5(req.body.passwordNew, user));
+
+        if (req.body.passwordOld == req.body.passwordNew) {
+            debug.print('info: resetpw: user tried to enter the same data for old and new password');
+            res.redirect('/resetpw?error=Old and new password must not match');
+            return;
+        }
+
+        var sql = 'SELECT username, passhash, user_ID FROM users WHERE username=' + user + ' AND passhash=' + pwdoldhash;
         db.query(sql, function (err, results) {
             if (err) {
                 debug.print('ERROR: db query failed on retrieve username');
-                throw(err);
+                res.redirect('/resetpw?error=Please enter the correct username and password with a unique new password');
             }
             else {
-                //debug.print('info: query result:'+results[0].username+' and '+results[0].passhash)
                 if (results.length == 0) {
                     //no user name exists --> error message
                     //render an alert : the account does not exist
-                    res.redirect('/resetpw?error=There is no user by this name. Try again!');
+                    res.redirect('/resetpw?error=The username and password did not match our records. Try again!');
                 }
                 else {
-                    var pwdCrypted = md5(pwd, user);
-                    var queryString = 'UPDATE users SET passhash=' + db.escape(pwdCrypted) + ' WHERE username = ' + db.escape(user);
+                    if (typeof req.session.user_ID === 'undefined') {
+                        debug.print('info: reset pw: init session for user');
+                        req.session.user_ID = results[0].user_ID;
+                    }
+                    //var resUser = results[0].username, resPwd = results[0].passhash, resID = results[0].user_ID;
+                    var queryString = 'UPDATE users SET passhash=' + pwdnewhash + ' WHERE username=' + user;
                     db.query(queryString, function (err, results) {
                         if (err) {
-                            debug.print('info: update passhash failed');
+                            debug.print('info: resetpw query: '+queryString);
+                            debug.print('info: update passhash failed:'+req.body.passwordNew+'::'+pwdnewhash);
+                            res.redirect('/resetpw?error=Unable to save new password');
                         }
                         else {
-                            res.redirect('/login');
+                            if  (typeof req.session.user_ID != 'undefined') {
+                                debug.print('info: reset pw: able to cache user earlier and redirect to home');
+                                res.redirect('/views');
+                            }
+                            else {
+                                debug.print('info: resetpw: worked but redirect and cookie session failed');
+                                res.redirect('/login?error=Unable to automatically log in after reset password. Please log in.');
+                            }
                         }
                     })
 
