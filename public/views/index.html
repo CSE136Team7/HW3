@@ -22,7 +22,7 @@
         <a class="button" id="menu" href="/home"><i id="menu-icon" class="fa fa-bookmark-o fa-lg"></i> Bookmarx</a>
       </li>
       <li class="navbar-left search">
-        <form action="/find" method="get">
+        <form action="/find" method="get" id="search-form">
           <input type="text" name="searchbox" placeholder="Search Bookmarks" />
           <button><i class="fa fa-search fa-lg"></i></button>
         </form>
@@ -122,7 +122,7 @@
         <a href="#folderModal" class="button" style="background-color:#474448" onclick="showAddFolderModal();"><i class="fa fa-plus-circle fa-lg"></i> Folder</a>
       </div>
       <div>
-        <a href="/bookmarks/export" style="background-color:#474448" download><i class="fa fa-download fa-lg"></i> Export</a>
+        <a href="/bookmarks/export" class="button" style="background-color:#474448" download><i class="fa fa-download fa-lg"></i> Export</a>
       </div>
     </div>
   </div>
