@@ -131,7 +131,6 @@ app.get('/resetpw', users.resetpw);
 app.use(users.auth);
 
 app.get('/home', bookmarks.homePage);
-app.get('/showAll', bookmarks.homePage);
 
 app.get('/bookmarks/getbooks', bookmarks.getbooks);
 app.get('/bookmarks/getfolders', bookmarks.getfolders);
