@@ -25,7 +25,7 @@
 
             <div onclick=<%="showEdit("+books[i].book_ID+")"%> class="fa fa-edit fa-lg" ></div>
 
-            <form action="/bookmarks/delete" method="post" class="card__button">
+            <form action="/bookmarks/delete" method="post" class="card__button" id=<%="deleteBookmarkForm"+books[i].books_ID%>>
               <input type="hidden" name="user_ID" value=<%=books[i].user_ID %>>
               <input type="hidden" name="book_ID" value=<%=books[i].book_ID %>>
               <button class="card__button" id="trigger-submit"><i class="fa fa-trash-o fa-lg"></i></button>

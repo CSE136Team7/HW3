@@ -5,11 +5,14 @@ var debug = function(s) {
   }
 }
 
+var currBooks = [];
+
 // If you are just reloading a users bookmarks dont pass a custom list
 // of bookmarks
 function loadBookmarksList(custom) {
-    if(!custom){
+  if (!custom) {
     ajax('/bookmarks/getbooks/', 'GET', null, function(books) {
+      currBooks = books.books;
       debug(JSON.stringify(books));
       loadTemplate('booklist', {
         books: books.books
@@ -19,14 +22,23 @@ function loadBookmarksList(custom) {
       });
     });
   } else {
+    currBooks = custom;
     loadTemplate('booklist', {
       books: custom
     });
 
     loadTemplate('bookmodals', {
-      books: custom.books
+      books: custom
     });
   }
+}
+var compareTitle = function (a,b){
+  return a.Title.localeCompare(b.Title);
+}
+
+function sortBooks(){
+  currBooks.sort(compareTitle);
+  loadBookmarksList(currBooks);
 }
 
 var showEdit = function(id) {
@@ -35,21 +47,20 @@ var showEdit = function(id) {
 
 function validate(textbox) {
   console.log('Textbox: ' + textbox);
-  if(textbox === '') {
+  if (textbox === '') {
     return false;
-  }
-  else{
+  } else {
     return true;
   }
 }
 
 function validateURL(url) {
-  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-  '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|'+ // domain name
-  '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-  '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-  '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-  '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+    '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
   return pattern.test(url);
 }
 
@@ -58,12 +69,11 @@ function validateFile() {
   var allowedExtension = "csv";
   var fileExtension = file.split('.').pop();
 
-  if(allowedExtension === fileExtension){
+  if (allowedExtension === fileExtension) {
     console.log('import successful!');
     closeImportModal();
     return true;
-  }
-  else {
+  } else {
     alert('not a valid csv file!');
     return false;
   }
@@ -71,80 +81,77 @@ function validateFile() {
 
 function loadFoldersList() {
   ajax('/bookmarks/getfolders/', 'GET', null, function(folders) {
-      loadTemplate('folderlist', folders);
+    loadTemplate('folderlist', folders);
   });
 }
 
-function ajax(url, method, data, callback){
-    var request = new XMLHttpRequest();
-    request.open(method, url, true);
-    request.onload = function() {
-        if (request.status >= 200 && request.status < 400) {
+function ajax(url, method, data, callback) {
+  var request = new XMLHttpRequest();
+  request.open(method, url, true);
+  request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
 
-            var contentType = request.getResponseHeader('content-type') || '';
-            var response;
-            if (contentType.indexOf('json') >= 0){
-                response = JSON.parse(request.responseText)
-              }
-            else{
-                response = request.responseText;
-            }
-            // console.log("response:--> "+JSON.stringify(response,null,4));
-            callback(response);
-        }
-    };
+      var contentType = request.getResponseHeader('content-type') || '';
+      var response;
+      if (contentType.indexOf('json') >= 0) {
+        response = JSON.parse(request.responseText)
+      } else {
+        response = request.responseText;
+      }
+      // console.log("response:--> "+JSON.stringify(response,null,4));
+      callback(response);
+    }
+  };
 
-    if (data){
-        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-        request.send(data);
-    }
-    else {
-        request.send();
-    }
+  if (data) {
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.send(data);
+  } else {
+    request.send();
+  }
 }
 /*  variable used to store templates in a cache to prevent multiple requests on static file */
-  var templatesCache = [];
+var templatesCache = [];
 
 
 
 /**
-   *   Adds Request to History
-   *   Checks if template exists in the cache.  If so, calls displayTemplate.
-   *   If not, first loads template and adds it to cache before calling displayTemplate.
-   */
-  function loadTemplate(name, data){
-      addToHistory(name, data);
-      if (templatesCache[name]){
-          displayTemplate(name, data);
-      }
-      else{
-          ajax('/views/' + name + '.ejs', 'GET', null, function (template) {
-            // console.log(template);
-              templatesCache[name] = template;
-              displayTemplate(name, data);
-          });
-      }
+ *   Adds Request to History
+ *   Checks if template exists in the cache.  If so, calls displayTemplate.
+ *   If not, first loads template and adds it to cache before calling displayTemplate.
+ */
+function loadTemplate(name, data) {
+  addToHistory(name, data);
+  if (templatesCache[name]) {
+    displayTemplate(name, data);
+  } else {
+    ajax('/views/' + name + '.ejs', 'GET', null, function(template) {
+      // console.log(template);
+      templatesCache[name] = template;
+      displayTemplate(name, data);
+    });
   }
+}
 
-  function addToHistory(name, data){
-        data = data || {};
-        data.pageName = name;
-        history.pushState(data, null, "/views/index.html#" + name);
-  }
-  /**
-     * Short, generic Ajax function to avoid jquery usage
-     */
+function addToHistory(name, data) {
+  data = data || {};
+  data.pageName = name;
+  history.pushState(data, null, "/views/index.html#" + name);
+}
+/**
+ * Short, generic Ajax function to avoid jquery usage
+ */
 
 
-  function displayTemplate(name, data) {
-    //console.log(JSON.stringify(data));
-      var snippet = ejs.render(templatesCache[name], data);
-      document.getElementById(name).innerHTML = snippet;
-  }
+function displayTemplate(name, data) {
+  //console.log(JSON.stringify(data));
+  var snippet = ejs.render(templatesCache[name], data);
+  document.getElementById(name).innerHTML = snippet;
+}
 
 function showAddModal() {
-    document.getElementById("addModal").style.visibility = "visible";
-    document.getElementById("add-bookmark-form").reset();
+  document.getElementById("addModal").style.visibility = "visible";
+  document.getElementById("add-bookmark-form").reset();
 }
 
 function showAddFolderModal() {
@@ -168,7 +175,7 @@ function closeAddModal() {
   console.log(validate(title));
   console.log(validate(description));
 
-  if(validate(title) && validateURL(url) && validate(description)){
+  if (validate(title) && validateURL(url) && validate(description)) {
     document.getElementById("addModal").style.visibility = "hidden";
   }
 }
@@ -176,33 +183,37 @@ function closeAddModal() {
 function closeFolderAddModal() {
   var folderName = document.getElementById("Folder_input").value;
 
-  if(validate(folderName)){
+  if (validate(folderName)) {
     document.getElementById("folderModal").style.visibility = "hidden";
   }
 }
 
 function closeImportModal() {
 
-      document.getElementById("importBookmark").style.visibility = "hidden";
-      document.forms["importForm"]["myFile"].value = '';
+  document.getElementById("importBookmark").style.visibility = "hidden";
+  document.forms["importForm"]["myFile"].value = '';
 
 
 }
 
-function folderModaledit(id,name){
-  ajax('/bookmarks/getbooks/', 'GET', null, function(books){
-    loadTemplate('foldermodallist', {books : books.books,id,name});
+function folderModaledit(id, name) {
+  ajax('/bookmarks/getbooks/', 'GET', null, function(books) {
+    loadTemplate('foldermodallist', {
+      books: books.books,
+      id,
+      name
+    });
   });
   document.getElementById("folderModaledit").style.visibility = "visible";
 }
 
-function addbookstoFolder(){
+function addbookstoFolder() {
   var updateFolder = document.getElementById("update-folder-form");
   updateFolder.addEventListener('submit', function(ev) {
     var oData = new FormData(updateFolder);
     var oReq = new XMLHttpRequest();
-    oReq.onreadystatechange = function () {
-      if(oReq.readyState == 4 && oReq.status == 200) {
+    oReq.onreadystatechange = function() {
+      if (oReq.readyState == 4 && oReq.status == 200) {
         loadFoldersList();
       }
     };
@@ -213,25 +224,27 @@ function addbookstoFolder(){
   document.getElementById("folderModaledit").style.visibility = "hidden";
 }
 
-function deleteFolders(id){
-  var deleteFolderform= document.getElementById('delete-folder-form-'+id);
-  if(deleteFolderform){
-      var oData = new FormData(deleteFolderform);
-      var oReq = new XMLHttpRequest();
-      oReq.onreadystatechange = function () {
-        if(oReq.readyState == 4 && oReq.status == 200) {
-          loadFoldersList();
-        }
-      };
-      oReq.open("POST", "/deleteFolder", true);
-      oReq.send(oData);
+function deleteFolders(id) {
+  var deleteFolderform = document.getElementById('delete-folder-form-' + id);
+  if (deleteFolderform) {
+    var oData = new FormData(deleteFolderform);
+    var oReq = new XMLHttpRequest();
+    oReq.onreadystatechange = function() {
+      if (oReq.readyState == 4 && oReq.status == 200) {
+        loadFoldersList();
+      }
+    };
+    oReq.open("POST", "/deleteFolder", true);
+    oReq.send(oData);
   }
 }
 
-function getFolders(id){
+function getFolders(id) {
   console.log("i am inside folder");
-  ajax('/folders/'+id, 'GET', null, function(books) {
-      loadTemplate('booklist', {books : books.books});
+  ajax('/folders/' + id, 'GET', null, function(books) {
+    loadTemplate('booklist', {
+      books: books.books
+    });
   });
 }
 
@@ -247,11 +260,11 @@ window.addEventListener('popstate', function(e) {
 /*  variable used to store templates in a cache to prevent multiple requests on static file */
 var templatesCache = [];
 
-function ajaxPost(url,data,callback){
+function ajaxPost(url, data, callback) {
   var oReq = new XMLHttpRequest();
   oReq.open("POST", url, true);
-  oReq.onreadystatechange = function () {
-    if(oReq.readyState == 4 && oReq.status == 200) {
+  oReq.onreadystatechange = function() {
+    if (oReq.readyState == 4 && oReq.status == 200) {
       callback();
     }
   };
@@ -297,7 +310,7 @@ window.onload = function() {
       var oData = new FormData(activeForm);
       console.log(JSON.stringify(oData));
       // Send the data as a POST to the update route
-      ajaxPost("/bookmarks/update", oData, function(){
+      ajaxPost("/bookmarks/update", oData, function() {
         // Finally when this callback is called reload the list of bookmarks on the homepage
         loadBookmarksList();
       });
@@ -317,10 +330,10 @@ window.onload = function() {
   var createFolder = document.getElementById("add-folder-form");
   var searchForm = document.getElementById("search-form");
 
-  searchForm.addEventListener('submit', function(ev){
+  searchForm.addEventListener('submit', function(ev) {
     var query = document.forms['search-form']['searchbox'].value;
     console.log('hello');
-    ajax('/find?searchbox=' + query ,'GET',null, function(results){
+    ajax('/find?searchbox=' + query, 'GET', null, function(results) {
       console.log('hello');
       console.log(results);
       loadBookmarksList(results);
@@ -330,7 +343,7 @@ window.onload = function() {
 
   addBookForm.addEventListener('submit', function(ev) {
     var oData = new FormData(addBookForm);
-    ajaxPost("/bookmarks/insert",oData, function(){
+    ajaxPost("/bookmarks/insert", oData, function() {
 
       loadBookmarksList();
     });
@@ -343,8 +356,8 @@ window.onload = function() {
   createFolder.addEventListener('submit', function(ev) {
     var oData = new FormData(createFolder);
     var oReq = new XMLHttpRequest();
-    oReq.onreadystatechange = function () {
-      if(oReq.readyState == 4 && oReq.status == 200) {
+    oReq.onreadystatechange = function() {
+      if (oReq.readyState == 4 && oReq.status == 200) {
         loadFoldersList();
       }
     };
@@ -357,8 +370,8 @@ window.onload = function() {
 
   importBookForm.addEventListener('submit', function(ev) {
     var oData = new FormData(importBookForm);
-    if(validateFile()) {
-      ajaxPost("/bookmarks/import",oData, function(){
+    if (validateFile()) {
+      ajaxPost("/bookmarks/import", oData, function() {
 
         loadBookmarksList();
       });
@@ -373,17 +386,16 @@ window.onload = function() {
   var triggerSubmit = document.getElementById("trigger-submit");
 
   menuButton.onclick = function() {
-  	var right = document.getElementById("right");
-  	if(sidebar.style.display !== 'none'){
-  		sidebar.style.display = 'none';
-  		right.style.width = '100%';
-  		menuButton.style.color = "#FFF";
-  	}
-  	else {
-  		sidebar.style.display = 'block';
-  		right.style.width = '82%';
-  		menuButton.style.color = "#FF9EAE";
-  	}
+    var right = document.getElementById("right");
+    if (sidebar.style.display !== 'none') {
+      sidebar.style.display = 'none';
+      right.style.width = '100%';
+      menuButton.style.color = "#FFF";
+    } else {
+      sidebar.style.display = 'block';
+      right.style.width = '82%';
+      menuButton.style.color = "#FF9EAE";
+    }
   };
 
   // var addBookmark = document.getElementById("add-bookmark");
