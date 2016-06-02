@@ -386,11 +386,13 @@ module.exports.delete = function(req, res) {
       " AND book_ID=" + book_ID + ";";
 
     db.query(sql, function(err) {
-      if (err) {
-        res.redirect('/home?error=Could not delete bookmark.');
-      } else {
-        res.redirect('/home');
-      }
+      // if (err) {
+      //   res.redirect('/home?error=Could not delete bookmark.');
+      // } else {
+      //   res.redirect('/home');
+      // }
+      if(err) throw err;
+      res.json({});
     });
   }
 
