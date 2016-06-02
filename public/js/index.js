@@ -215,13 +215,10 @@ function closeImportModal() {
 
 }
 
-function folderModaledit(id, name) {
-  ajax('/bookmarks/getbooks/', 'GET', null, function(books) {
-    loadTemplate('foldermodallist', {
-      books: books.books,
-      id,
-      name
-    });
+
+function folderModaledit(id,name){
+  ajax('/bookmarks/getbooks/', 'GET', null, function(books){
+    loadTemplate('foldermodallist', {books : books.books,id:id,name:name});
   });
   document.getElementById("folderModaledit").style.visibility = "visible";
 }

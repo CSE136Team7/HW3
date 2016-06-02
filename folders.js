@@ -7,11 +7,8 @@ var utility = require('./utility');
 
 
 module.exports.createFolder=function(req, res) {
-  //  console.log("req.body.folder: "+JSON.stringify(req.body,null,4));
   var user;
   if (typeof req.session.user_ID === 'undefined') {
-      //throw err
-    // go to login
     debug.print('Warning: user went to homePage without a user_ID');
     req.session.destroy();
     res.redirect('/login?error=You are not logged in');
@@ -40,15 +37,12 @@ module.exports.createFolder=function(req, res) {
 module.exports.deleteFolder = function(req, res) {
     var user_ID;
     if (typeof req.session.user_ID === 'undefined') {
-      //throw err
-      // go to login
       req.session.destroy();
       res.redirect('/login?error=You are not logged in');
     }
-    //else
+
     user_ID = db.escape(req.session.user_ID);
 
-    // Do validation on book_ID && user_ID
     if (req.body.folder_ID && user_ID) {
       // get userid and book_ID
       console.log("req.body.folder_ID: ======>"+req.body.folder_ID);
@@ -57,7 +51,6 @@ module.exports.deleteFolder = function(req, res) {
     } else {
       throw new Error('book_ID or user_ID is null/invalid.');
     }
-    // console.log("folder_ID: "+ JSON.stringify(req.body,null,4)+ " ");
     var sql = "DELETE FROM folders WHERE user_ID=" + user_ID +
       " AND folder_ID=" + folder_ID + ";";
 
@@ -77,8 +70,7 @@ module.exports.deleteFolder = function(req, res) {
   module.exports.addBookToFolder = function(req, res) {
     var user_ID;
     if (typeof req.session.user_ID === 'undefined') {
-      //throw err
-      // go to login
+
       debug.print('Warning: user tried to insert a bookmark without a user_ID');
       req.session.destroy();
       res.redirect('/login?error=You are not logged in');
