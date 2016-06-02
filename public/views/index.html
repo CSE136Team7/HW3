@@ -33,63 +33,60 @@
       </li>
       <li class="navbar-right">
         <div id="bookmodals"></div>
-              <a href="#addModal" class="button"><i class="fa fa-plus fa-lg" onclick="showAddModal();"></i></a>
-              <div id="addModal" class="modalDialog">
-                <div class="grid grid-pad">
-                  <a href="#close" title="Close" class="close x-button">x</a>
-                  <div class="tabs is-centered">
-                    <ul>
-                      <li id="add-bookmark" class="is-active"><a>Add Bookmark</a></li>
-                      <li id="import-bookmark"><a href="#importBookmark">Import Bookmarks</a></li>
-                    </ul>
-                  </div>
+        <a href="#addModal" class="button"><i class="fa fa-plus fa-lg" onclick="showAddModal();"></i></a>
+        <div id="addModal" class="modalDialog">
+          <div class="grid grid-pad">
+            <a href="#close" title="Close" class="close x-button">x</a>
+            <div class="tabs is-centered">
+              <ul>
+                <li id="add-bookmark" class="is-active"><a>Add Bookmark</a></li>
+                <li id="import-bookmark"><a href="#importBookmark">Import Bookmarks</a></li>
+              </ul>
+            </div>
 
-                  <form method='post' action='/bookmarks/insert' id="add-bookmark-form">
-                    <div class="form">
-                      <input type="text" id="bookTitle" name="title" placeholder="Title" required>
-                      <div class="textFieldWrapper">
-                        <input type="url" id="bookURL" name="url" required pattern="https?://.+" placeholder="http://www.example.com">
-                      </div>
-                      <div class="textFieldWrapper">
-                        <input type="text" id="bookDescription" name="description" placeholder="Description" required>
-                      </div>
-                      <noscript>
-                        <input type="hidden" name="javascript" value="0">
-                      </noscript>
-                      <div class="buttonWrapper" style="margin-bottom:15px">
-                        <!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
-                        <button onclick="closeAddModal();"><i class="fa fa-check-circle fa-lg" id="trigger-submit">Save</i></button>
-                      </div>
-                    </div>
-                  </form>
+            <form method='post' action='/bookmarks/insert' id="add-bookmark-form">
+              <div class="form">
+                <input type="text" id="bookTitle" name="title" placeholder="Title" required>
+                <div class="textFieldWrapper">
+                  <input type="url" id="bookURL" name="url" required pattern="https?://.+" placeholder="http://www.example.com">
                 </div>
-              </div>
-              <a href="#importBookmark" class="button" onclick="showImportModal();">Import Bookmark</i></a>
-              <div id="importBookmark" class="modalDialog">
-                <div class="grid grid-pad">
-                  <a href="#close" title="Close" class="close x-button">x</a>
-                  <div class="tabs is-centered">
-                    <ul>
-                      <li id="add-bookmark"><a href="#addModal">Add Bookmark</a></li>
-                      <li id="import-bookmark" class="is-active"><a href="#import-bookmark-form">Import Bookmarks</a></li>
-                    </ul>
-                  </div>
-                  <form method='post' action='/bookmarks/import' id="import" name="importForm" enctype="multipart/form-data">
-                    <p>Please select a .csv file.</p>
-                    <input type="file" id="myFileId" name="myFile" accept=".csv" style="margin-bottom:15px; width:100%" required>
-                    <div class="buttonWrapper" style="margin-bottom:15px">
-                      <!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
-                    <button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Import</i></button>
-                    </div>
-                  </form>
+                <div class="textFieldWrapper">
+                  <input type="text" id="bookDescription" name="description" placeholder="Description" required>
                 </div>
                 <noscript>
                   <input type="hidden" name="javascript" value="0">
                 </noscript>
+                <div class="buttonWrapper" style="margin-bottom:15px">
+                  <!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
+                  <button onclick="closeAddModal();"><i class="fa fa-check-circle fa-lg" id="trigger-submit">Save</i></button>
+                </div>
               </div>
+            </form>
           </div>
         </div>
-
+        <a href="#importBookmark" class="button" onclick="showImportModal();">Import Bookmark</a>
+        <div id="importBookmark" class="modalDialog">
+          <div class="grid grid-pad">
+            <a href="#close" title="Close" class="close x-button">x</a>
+            <div class="tabs is-centered">
+              <ul>
+                <li id="add-bookmark"><a href="#addModal">Add Bookmark</a></li>
+                <li id="import-bookmark" class="is-active"><a href="#import-bookmark-form">Import Bookmarks</a></li>
+              </ul>
+            </div>
+            <form method='post' action='/bookmarks/import' id="import" name="importForm" enctype="multipart/form-data">
+              <p>Please select a .csv file.</p>
+              <input type="file" id="myFileId" name="myFile" accept=".csv" style="margin-bottom:15px; width:100%" required>
+              <div class="buttonWrapper" style="margin-bottom:15px">
+                <!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
+                <button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Import</i></button>
+              </div>
+            </form>
+          </div>
+          <noscript>
+            <input type="hidden" name="javascript" value="0">
+          </noscript>
+        </div>
         <div class="form" id="import-bookmark-form">
           <div class="textFieldWrapper">
             <input type="url" name="url" placeholder="File Path">
@@ -165,10 +162,6 @@
       <div id="foldermodallist"></div>
     </div>
   </div>
-
-
-
-
 
   <div id="right">
     <div class="main grid grid-pad">
