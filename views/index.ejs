@@ -30,8 +30,9 @@
 				</form>
 			</li>
 			<li class="navbar-right">
-				<a class="button" href="#"><i class="fa fa-sort-alpha-asc fa-lg"></i></a>
-				<a href="/logout"><i class="fa fa-sign-out"></i></a>
+				<a class="button" href="#" id="navbar-sort-btn" title="Toggle Sort Ascending/Descending"><i class="fa fa-sort-alpha-asc fa-lg"></i></a>
+				<a class="button" href="/resetpw" title="Reset Password?"><i class="fa fa-key"></i></a>
+				<a class="button" href="/logout" title="Logout"><i class="fa fa-sign-out"></i></a>
 			</li>
 			<li class="navbar-right">
 				<!-- Update bookmark modal -->
@@ -43,7 +44,9 @@
 					<%= deleteBookmarkModal(bookmarks[i]) %>
 				<% }} %>
 
-				<a href="#addModal" class="button"><i class="fa fa-plus fa-lg"></i></a>
+				<div class="tooltip">
+					<a href="#addModal" class="button" title="Add Bookmark"><i class="fa fa-plus fa-lg"></i></a>
+					<div class="tooltiptext">Add Bookmark</div></div>
 				<div id="addModal" class="modalDialog">
 					<div class="grid grid-pad">
 						<a href="#close" title="Close" class="close x-button">x</a>
@@ -226,7 +229,7 @@
 														<button id="star-btn" class="card__button" ><i class="fa fa-star fa-lg"></i></button>
 													</form>
 
-													<a href=<%= '#updateModal'+bookmarks[i].book_ID %>  class="fa fa-edit fa-lg" ></a>
+													<a class="button fa fa-edit fa-lg" href=<%= '#updateModal'+bookmarks[i].book_ID %> ></a>
 
 													<!-- umm TODO: fix spacing in a better way -->
 													&nbsp&nbsp&nbsp&nbsp&nbsp

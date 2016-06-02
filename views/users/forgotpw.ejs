@@ -86,17 +86,20 @@
             <h3 style="color:#AEC6CF"><%= errormsg %></h3>
         </div>
 
-        <div id="resetpw">
+        <div id="forgotpw">
 
             <div class="grid grid-pad">
+                <div class="tabs is-centered">
+                    <ul>
+                        <li id="signin"><a href="/login">Sign in</a></li>
+                        <li id="newuser"><a href="/signup">New User</a></li>
+                    </ul>
+                </div>
 
-                <form method='post' action='/doReset' id="sign-in-form">
+                <form method='post' action='/doForgot' id="sign-in-form">
 
                     <div class="form">
-
-                        <div class="textFieldWrapper">
-                            <input type="password" name="passwordOld" placeholder="Old Password">
-                        </div>
+                        <input type="text" name="username" placeholder="Your Username">
                         <p></p>
                         <div class="textFieldWrapper">
                             <input type="password" name="passwordNew" placeholder="New Password">
@@ -111,14 +114,14 @@
                 </form>
 
                 <br>
-                <div class="buttonWrapper">
-                    <a id="resetpw" href="/views?error=Did not change the password.">Back?</a>
+                <div class="tabs is-active">
+                    <a id="forgotpw" href="/forgotpw">Forgot Password?</a>
 
                 </div> <!-- mini grid for pw link-->
 
             </div><!-- big grid for btns and forms -->
 
-        </div> <!-- resetpw -->
+        </div> <!-- forgotpw -->
 
     </div><!-- middle -->
 

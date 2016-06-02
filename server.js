@@ -120,9 +120,11 @@ app.get('/logout', users.logout);
 
 app.post('/newAccount', users.newAccount);
 app.post('/doReset', users.doReset);
+app.post('/doForgot', users.doForgot);
 
 app.get('/signup', users.signup);
 app.get('/resetpw', users.resetpw);
+app.get('/forgotpw', users.forgotpw);
 
 /*  This must go between the users routes and the bookmarks routes */
 app.use(users.auth);

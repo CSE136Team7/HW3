@@ -15,7 +15,6 @@
  module.exports.login = function(req, res) {
   if (req.body.username!="" && req.body.password!=""){
       if (typeof req.session.user_ID === 'undefined') {
-
       }
     //Fetch the login fields
     var userInput = req.body.username;
@@ -190,8 +189,25 @@ module.exports.resetpw = function(req, res){
 }
 
 module.exports.doReset = function(req, res) {
-    if (req.body.username != "" && req.body.passwordOld != "" && req.body.passwordNew != "") {
-        var user = db.escape(req.body.username);
+    if (req.body.passwordOld != "" && req.body.passwordNew != "") {
+        var user_ID = db.escape(req.session.user_ID);
+        var sqlname = 'SELECT username FROM users WHERE user_ID=' + user_ID;
+        var user = "";
+        db.query(sqlname, function (err, results) {
+            if (err) {
+                debug.print('ERROR: db query failed on retrieve username');
+                res.redirect('/resetpw?error=Please enter the correct password with a unique new password');
+            }
+            else {
+                if (results.length == 0) {
+                    res.redirect('/resetpw?error=Please enter your password with a unique new password');
+                }
+                else {
+                    user = results[0].username;
+                    debug.print('user: ' + user + ' retrieved by user_ID: '+user_ID);
+                }
+            }
+        });
         var pwdoldhash = db.escape(md5(req.body.passwordOld, user));
         var pwdnewhash = db.escape(md5(req.body.passwordNew, user));
 
@@ -201,34 +217,33 @@ module.exports.doReset = function(req, res) {
             return;
         }
 
-        var sql = 'SELECT username, passhash, user_ID FROM users WHERE username=' + user + ' AND passhash=' + pwdoldhash;
+        var sql = 'SELECT username, passhash, user_ID FROM users WHERE user_ID=' + user_ID + ' AND passhash=' + pwdoldhash;
         db.query(sql, function (err, results) {
             if (err) {
-                debug.print('ERROR: db query failed on retrieve username');
+                debug.print('ERROR: db query failed on retrieve tuples for reset');
                 res.redirect('/resetpw?error=Please enter the correct username and password with a unique new password');
             }
             else {
                 if (results.length == 0) {
                     //no user name exists --> error message
                     //render an alert : the account does not exist
-                    res.redirect('/resetpw?error=The username and password did not match our records. Try again!');
+                    res.redirect('/resetpw?error=The existing password did not match our records. Try again!');
                 }
                 else {
                     if (typeof req.session.user_ID === 'undefined') {
-                        debug.print('info: reset pw: init session for user');
-                        req.session.user_ID = results[0].user_ID;
+                        debug.print('info: reset pw: user is trying to reset pass without a session. terminate');
+                        req.session.destroy();
+                        res.redirect('/login?error=You need to be logged in to do that.');
                     }
-                    //var resUser = results[0].username, resPwd = results[0].passhash, resID = results[0].user_ID;
-                    var queryString = 'UPDATE users SET passhash=' + pwdnewhash + ' WHERE username=' + user;
+                    var queryString = 'UPDATE users SET passhash=' + pwdnewhash + ' WHERE user_ID=' + user_ID;
                     db.query(queryString, function (err, results) {
                         if (err) {
-                            debug.print('info: resetpw query: '+queryString);
+                            debug.print('info: resetpw query: ' + queryString);
                             debug.print('info: update passhash failed:'+req.body.passwordNew+'::'+pwdnewhash);
                             res.redirect('/resetpw?error=Unable to save new password');
                         }
                         else {
                             if  (typeof req.session.user_ID != 'undefined') {
-                                debug.print('info: reset pw: able to cache user earlier and redirect to home');
                                 res.redirect('/views');
                             }
                             else {
@@ -236,11 +251,74 @@ module.exports.doReset = function(req, res) {
                                 res.redirect('/login?error=Unable to automatically log in after reset password. Please log in.');
                             }
                         }
-                    })
+                    });
+                }
+            }
+        });
+    }
+    else {
+        res.redirect('/resetpw?error=The form was not filled up properly! Please try again!');
+    }
+};
+
+/**
+ * Forgot password link on landing page
+ *
+ * */
+module.exports.forgotpw = function(req, res){
+    if(req.query.error) {
+        var error = req.query.error;
+        res.render('users/forgotpw', {errormsg : error});
+    }
+    else {
+        res.render('users/forgotpw', { errormsg : "" });
+    }
+}
+module.exports.doForgot = function(req, res) {
+    if (req.body.username != "" && req.body.passwordNew != "") {
+        var user = db.escape(req.body.username);
+        var pwdnewhash = db.escape(md5(req.body.passwordNew, user));
+
+        var sql = 'SELECT username, user_ID FROM users WHERE username=' + user;
+        db.query(sql, function (err, results) {
+            if (err) {
+                debug.print('ERROR: db query failed on retrieve username');
+                res.redirect('/forgotpw?error=Please enter the correct username and password with a unique new password');
+            }
+            else {
+                if (results.length == 0) {
+                    //no user name exists --> error message
+                    //render an alert : the account does not exist
+                    res.redirect('/forgotpw?error=The username and password did not match our records. Try again!');
+                }
+                else {
+                    if (typeof req.session.user_ID === 'undefined') {
+                        debug.print('info: forgotpw: init session for user');
+                        req.session.user_ID = results[0].user_ID;
+                    }
+                    //var resUser = results[0].username, resPwd = results[0].passhash, resID = results[0].user_ID;
+                    var queryString = 'UPDATE users SET passhash=' + pwdnewhash + ' WHERE username=' + user;
+                    db.query(queryString, function (err, results) {
+                        if (err) {
+                            debug.print('info: forgotpw query: '+queryString);
+                            debug.print('info: update passhash failed:'+req.body.passwordNew+'::'+pwdnewhash);
+                            res.redirect('/forgotpw?error=Unable to save new password');
+                        }
+                        else {
+                            if  (typeof req.session.user_ID != 'undefined') {
+                                debug.print('info: forgotpw: able to cache user earlier and redirect to home');
+                                res.redirect('/views?error=Your password was successfully changed.');
+                            }
+                            else {
+                                debug.print('info: forgotpw: worked but redirect and cookie session failed');
+                                res.redirect('/login?error=Unable to automatically log in after reset password. Please log in.');
+                            }
+                        }
+                    });
 
                 }
             }
-        })
+        });
     }
     else {
         res.redirect('/resetpw?error=The form was not filled up properly! Please try again!');
