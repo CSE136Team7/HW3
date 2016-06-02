@@ -600,12 +600,16 @@ module.exports.find = function (req, res) {
     return res.redirect('/home');
   }
   searchstring = searchstring.toLowerCase();
-
-  renderHomePage(matchBookmarks,getFolders,"Search Results","",user,
-    function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
-      res.render('index',obj);
-    }, searchstring
-  );
+  matchBookmarks(function(err,results){
+    if(err) throw err;
+    console.log(results);
+    res.json(results);
+  }, user, searchstring);
+  // renderHomePage(matchBookmarks,getFolders,"Search Results","",user,
+  //   function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
+  //     res.render('index',obj);
+  //   }, searchstring
+  // );
 }
 
 /**
