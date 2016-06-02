@@ -4,7 +4,30 @@ var debug = function(s) {
     console.log(s);
   }
 }
-var loadBookmarksList = function() {};
+
+// If you are just reloading a users bookmarks dont pass a custom list
+// of bookmarks
+function loadBookmarksList(custom) {
+    if(!custom){
+    ajax('/bookmarks/getbooks/', 'GET', null, function(books) {
+      debug(JSON.stringify(books));
+      loadTemplate('booklist', {
+        books: books.books
+      });
+      loadTemplate('bookmodals', {
+        books: books.books
+      });
+    });
+  } else {
+    loadTemplate('booklist', {
+      books: custom
+    });
+
+    loadTemplate('bookmodals', {
+      books: custom.books
+    });
+  }
+}
 
 var showEdit = function(id) {
   console.log("Doesent work"); // This is not the showEdit function that will be called
@@ -224,35 +247,6 @@ window.addEventListener('popstate', function(e) {
 /*  variable used to store templates in a cache to prevent multiple requests on static file */
 var templatesCache = [];
 
-/**
- * Short, generic Ajax function to avoid jquery usage
- */
-function ajax(url, method, data, callback) {
-  var request = new XMLHttpRequest();
-  request.open(method, url, true);
-
-  request.onload = function() {
-    if (request.status >= 200 && request.status < 400) {
-      var contentType = request.getResponseHeader('content-type') || '';
-      var response;
-
-      if (contentType.indexOf('json') >= 0) {
-        response = JSON.parse(request.responseText);
-      } else {
-        response = request.responseText;
-      }
-
-      callback(response);
-    }
-  };
-  if (data) {
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-    request.send(data);
-  } else {
-    request.send();
-  }
-}
-
 function ajaxPost(url,data,callback){
   var oReq = new XMLHttpRequest();
   oReq.open("POST", url, true);
@@ -285,18 +279,6 @@ window.onload = function() {
    *  Uses Ajax to get the book list data from the server.
    */
 
-  function loadBookmarksList() {
-
-    ajax('/bookmarks/getbooks/', 'GET', null, function(books) {
-      debug(JSON.stringify(books));
-      loadTemplate('booklist', {
-        books: books.books
-      });
-      loadTemplate('bookmodals', {
-        books: books.books
-      });
-    });
-  }
 
   // This function is initialized above, before the window loads.
   // It shows the update bookmarkform and adds a form submit listener
@@ -333,7 +315,18 @@ window.onload = function() {
 
   var addBookForm = document.getElementById("add-bookmark-form");
   var createFolder = document.getElementById("add-folder-form");
+  var searchForm = document.getElementById("search-form");
 
+  searchForm.addEventListener('submit', function(ev){
+    var query = document.forms['search-form']['searchbox'].value;
+    console.log('hello');
+    ajax('/find?searchbox=' + query ,'GET',null, function(results){
+      console.log('hello');
+      console.log(results);
+      loadBookmarksList(results);
+    });
+    ev.preventDefault();
+  }, false);
 
   addBookForm.addEventListener('submit', function(ev) {
     var oData = new FormData(addBookForm);
