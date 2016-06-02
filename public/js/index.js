@@ -7,6 +7,23 @@ var debug = function(s) {
 
 var currBooks = [];
 
+function showDelete(id){
+  window.location = '#deleteModal' + id;
+
+  var activeForm = document.getElementById('delete-bookmark-form' + id);
+  activeForm.addEventListener('submit', function(ev) { // When the form is submitted...
+    // save all the input datas into json format
+    var oData = new FormData(activeForm);
+    console.log(JSON.stringify(oData));
+    // Send the data as a POST to the update route
+    ajaxPost("/bookmarks/delete", oData, function() {
+      // Finally when this callback is called reload the list of bookmarks on the homepage
+      loadBookmarksList();
+    });
+    // Prevent the HTML form natural submission
+    ev.preventDefault();
+  }, false);
+}
 // If you are just reloading a users bookmarks dont pass a custom list
 // of bookmarks
 function loadBookmarksList(custom) {
@@ -40,6 +57,8 @@ function sortBooks(){
   currBooks.sort(compareTitle);
   loadBookmarksList(currBooks);
 }
+
+
 
 var showEdit = function(id) {
   console.log("Doesent work"); // This is not the showEdit function that will be called
@@ -224,6 +243,15 @@ function addbookstoFolder() {
   document.getElementById("folderModaledit").style.visibility = "hidden";
 }
 
+function deleteBookmark(id){
+  var deleteBookmarkForm = document.getElementById('delete-bookmark-form' + id);
+  var oData = new FormData(deleteBookmarkForm);
+  ajaxPost('/bookmarks/delete', oData, function(){
+    loadBookmarksList();
+  });
+
+}
+
 function deleteFolders(id) {
   var deleteFolderform = document.getElementById('delete-folder-form-' + id);
   if (deleteFolderform) {
@@ -319,6 +347,8 @@ window.onload = function() {
     }, false);
   }
 
+
+
   // When the window loads, reload bookmarks and folders list
   loadBookmarksList();
   loadFoldersList();
@@ -334,8 +364,6 @@ window.onload = function() {
     var query = document.forms['search-form']['searchbox'].value;
     console.log('hello');
     ajax('/find?searchbox=' + query, 'GET', null, function(results) {
-      console.log('hello');
-      console.log(results);
       loadBookmarksList(results);
     });
     ev.preventDefault();
