@@ -58,12 +58,19 @@ module.exports.starredPage = function(req, res) {
   }
   user = req.session.user_ID;
 
-  renderHomePage(getStarred, getFolders, "Starred", "", user,
-
-    function(obj) { // This is called when render home page is done obj is the vars for index.ejs file
-      res.render('index', obj);
-    }, null
-  );
+  if(!req.session.js){ // server render
+    renderHomePage(getStarred, getFolders, "Starred", "", user,
+      function(obj) { // This is called when render home page is done obj is the vars for index.ejs file
+        res.render('index', obj);
+      }, null
+    );
+  } else { // client render
+    getStarred(function(err, results) {
+      if(err) throw err;
+      console.log(results);
+      res.json({books: results});
+    }, user);
+  }
 }
 
 /*
@@ -120,8 +127,8 @@ var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_I
  * users can associate their books into folders if so desired
  * */
 module.exports.folders = function(req, res) {
-  var folder_ID = req.params.fid;
-
+  var folder_ID = req.query.fid;
+  var folderName = req.query.folderName;
   var user;
   if (typeof req.session.user_ID === 'undefined') {
     debug.print('Warning: user went to homePage without a user_ID');
@@ -131,15 +138,35 @@ module.exports.folders = function(req, res) {
     user = req.session.user_ID;
     debug.print("info: folder_ID: " + folder_ID);
 
+    var getFoldersBookmarks = function (callback) {
+           db.query("SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID =" + folder_ID + " AND folder_has_books.book_ID = books.book_ID",
+               function (err, results) {
+                   if (err) {
+                       throw err;
+                   }
+                   callback(err, results);
+               })
+       };
+
     var sql = "SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID =" + folder_ID + " AND folder_has_books.book_ID = books.book_ID;";
     db.query(sql, function(err, bookmarks) {
       if (err) {
         res.status(500).send(err);
         //  res.redirect('/home?error=Could not delete folder.');
       } else {
-        res.json({
-          books: bookmarks
-        });
+        if(!req.session.js){ // server render
+          console.log('server');
+          renderHomePage(getFoldersBookmarks, getFolders, folderName, "", user, function (obj) {
+           debug.print("info: obj: " + JSON.stringify(obj, null, 4));
+           res.render('index', obj);
+       });
+        } else{ // client render
+          console.log('client');
+          res.json({
+            books: bookmarks
+          });
+        }
+
         // res.redirect('/home');
       }
     });
@@ -223,19 +250,19 @@ module.exports.star = function(req, res) {
 
   db.query(sql, function(err) {
     if (err) {
-      if(req.session.js){ // server render
-          res.redirect('/home?error=Added ' + title + ' to your starred bookmarks!');
+      if(!req.session.js){ // server render
+          res.redirect('/home?error=Added bookmark to your starred bookmarks!');
       } else{ // client render
         res.json({"error":'Invalid form entry'});
       }
       throw err;
     } else {
       //debug.print('not an err');
-    }
-    if(req.session.js){ // server render
-        res.redirect('/home?error=Added ' + title + ' to your starred bookmarks!');
-    } else{ // client render
-      res.json({});
+      if(!req.session.js){ // server render
+        res.redirect('/home?error=Added bookmark to your starred bookmarks!');
+      } else{ // client render
+        res.json({});
+      }
     }
 
   });
@@ -278,7 +305,7 @@ module.exports.insert = function(req, res) {
         debug.print("ERROR: Query failed err:" + err);
         throw (err);
       } else {
-        if(req.session.js){ // server render
+        if(!req.session.js){ // server render
             res.redirect('/home?error=Added ' + title + ' to your bookmarks!');
         } else{ // client render
           res.json({});
@@ -397,7 +424,7 @@ module.exports.delete = function(req, res) {
     // }
     if (err) throw err;
     if(!req.session.js){ // server render
-        res.redirect('/home?error=Deleted ' + title + ' from your bookmarks!');
+        res.redirect('/home?error=Deleted bookmark from your bookmarks!');
     } else{ // client render
       res.json({});
     }
@@ -635,7 +662,6 @@ module.exports.find = function(req, res) {
   }
   searchstring = searchstring.toLowerCase();
 
-    if (err) throw err;
     if(!req.session.js){ // server render
       renderHomePage(matchBookmarks,getFolders,"Search Results","",user,
         function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
@@ -644,6 +670,7 @@ module.exports.find = function(req, res) {
       );
     } else{ // client render
       matchBookmarks(function(err, results) {
+        if (err) throw err;
         res.json(results);
       }, user, searchstring);
     }
@@ -737,7 +764,7 @@ module.exports.sortBooks = function(req, res) {
   //console.log("getbookmarks "+ JSON.stringify(getBookmarks.Title);
 
   user = req.session.user_ID;
-  if(req.session.js){ // server render
+  if(!req.session.js){ // server render
     renderHomePage(pullTitle, getFolders, "Sort", "", user,
       function(obj) { // This is called when render home page is done obj is the vars for index.ejs file
         res.render('index', obj);

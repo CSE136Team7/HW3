@@ -21,7 +21,7 @@
   <nav class="navbar">
     <ul>
       <li class="navbar-left menu-button">
-        <a class="button" id="menu" href="/home"><i id="menu-icon" class="fa fa-bookmark-o fa-lg"></i> Bookmarx</a>
+        <a class="button" id="menu" onclick="getMostVisited(); return false;"><i id="menu-icon" class="fa fa-bookmark-o fa-lg"></i> Bookmarx</a>
       </li>
       <li class="navbar-left search">
         <form action="/find" method="get" id="search-form" class="form">
@@ -137,17 +137,17 @@
     <ul>
       <li class="pinned">
         <form class="resetme" action="/home" method="get">
-          <button class="pad-trash-icon button" style="background-color:#474448; width:100%; padding-right: 50px;"><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
+          <button class="pad-trash-icon button" style="background-color:#474448; width:100%; padding-right: 50px;" onclick="getMostVisited(); return false;"><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
         </form>
       </li>
       <li class="pinned">
         <form class="resetme" action="/folder/starred" method="get">
-          <button class="pad-trash-icon button" style="background-color:#474448; width:100%; padding-right: 95px;"><i class="fa fa-star fa-lg"></i> Starred</button>
+          <button class="pad-trash-icon button" style="background-color:#474448; width:100%; padding-right: 95px;"onclick="getStarred(); return false;"><i class="fa fa-star fa-lg"></i> Starred</button>
         </form>
       </li>
       <li class="pinned">
         <form class="resetme" action="/home" method="get">
-        <button style="background-color:#474448; width:100%; padding-right: 50px;"><i class="fa fa-th fa-lg"></i> All
+        <button style="background-color:#474448; width:100%; padding-right: 50px;" onclick="getMostVisited(); return false;"><i class="fa fa-th fa-lg"></i> All
           </button>
         </form>
       </li>
