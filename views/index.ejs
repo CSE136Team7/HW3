@@ -33,7 +33,10 @@
 				</form>
 			</li>
 			<li class="navbar-right">
-				<a class="button" href="/logout"><i class="fa fa-sign-out"></i></a>
+				<a class="button" href="/resetpw" title="Reset Password?"><i class="fa fa-key"></i></a>
+			</li>
+			<li class="navbar-right">
+				<a class="button" title="Logout" href="/logout"><i class="fa fa-sign-out"></i></a>
 			</li>
 			<li class="navbar-right">
 				<form action="/bookmarks/sortBooks" method="get">
@@ -42,6 +45,7 @@
 					</noscript>
 					<button class="button" type="submit" name="sort"><i class="fa fa-sort-alpha-asc fa-lg"></i></a>
 				</form>
+
 			</li>
 			<li class="navbar-right">
 				<!-- Update bookmark modal -->
@@ -90,7 +94,6 @@
 								<div class="form" id="add-folder-form">
 									<input type="text" name="folder" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" value=<%= folders[j].Name%>>
 									<input type="hidden" name="folder_ID" style="display:none" value=<%= folders[j].folder_ID%>>
-
 									<select name="book_ID"style="width:100%;margin-bottom: 15px;height: 32px;border: 2px solid #FFF;background-color: #6C7A89; font-size: 15px;color:#fff">
 											<option></option>
 										<% if(bookmarks){ bookmarks.forEach(function(book) { %>
@@ -104,6 +107,10 @@
 						</div>
 						<%}}%>
 				<a href="#addModal" class="button"><i class="fa fa-plus fa-lg"></i></a>
+				<div class="tooltip">
+					<a href="#addModal" class="button" title="Add Bookmark"><i class="fa fa-plus fa-lg"></i></a>
+					<div class="tooltiptext">Add Bookmark</div>
+				</div>
 				<div id="addModal" class="modalDialog">
 					<div class="grid grid-pad">
 						<a href="#close" title="Close" class="close x-button">x</a>

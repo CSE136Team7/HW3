@@ -31,10 +31,22 @@
         </form>
       </li>
       <li class="navbar-right">
-        <a href="/logout"><i class="fa fa-sign-out" style="color:#fff"></i></a>
+        <div class="tooltip">
+          <a href="/logout"><i class="fa fa-sign-out" style="color:#fff"></i></a>
+          <div class="tooltiptext">Logout</div>
+        </div>
       </li>
       <li class="navbar-right">
-        <div class="button" onclick="sortBooks()"><i class="fa fa-sort-alpha-asc fa-lg"></i></div>
+        <div class="tooltip">
+          <a class="button" href="/resetpw" title="Reset Password?"><i class="fa fa-key"></i></a>
+          <div class="tooltiptext">Reset Password</div>
+        </div>
+      </li>
+      <li class="navbar-right">
+        <div class="tooltip">
+          <div class="button" onclick="sortBooks()"><i class="fa fa-sort-alpha-asc fa-lg"></i></div>
+          <div class="tooltiptext">Sort Bookmarks</div>
+        </div>
       </li>
       <li class="navbar-right">
         <div id="bookmodals"></div>
@@ -47,7 +59,6 @@
                 <li id="add-folder" class="is-active"><a>Add Folder</a></li>
               </ul>
             </div>
-
             <form action="/createFolder" method="post" id="add-folder-form">
               <div class="form">
                 <input type="text" name="folder" placeholder="Folder Name" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" required>
