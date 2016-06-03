@@ -76,7 +76,7 @@ set up project 1,2,3, set up digital ocean(automatic deployment), set up heroku,
 Brian:
 client side/server side validation, getting bookmarks to go to their respective URL, various html/css changes, starred/most visited on ajax, worked with Bhavik on ajax functionality, various bug fixes
 
-Constance:
+Constance:login, password hashing, working with sachi on sessioning, fixed html and css throughout the project, manage team.
 
 Max:
 
