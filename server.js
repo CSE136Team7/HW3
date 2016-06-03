@@ -8,6 +8,7 @@ var debug = require('./debug');
 var folders = require('./folders');
 
 db.init();
+debug.print("Server starting");
 
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -36,7 +37,7 @@ var sessionStore = new MySQLStore ({
 var mySession = session({
   secret: config.SECRET,
   resave: true,
-  sessionStore: MySQLStore, //uses above store object
+  sessionStore: sessionStore, //uses above store object
   saveUninitialized: true,
   cookie: { secure: false },
   name: 'BookmarxTeam7',

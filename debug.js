@@ -2,21 +2,28 @@
 var debug = 1;
 
 var fs = require('fs');
-var count = 0;
+
+var now = (function () {
+  var year = new Date(new Date().getFullYear().toString()).getTime();
+  return function () {
+    return Date.now() - year
+  }
+})();
 
 module.exports.print = function(stmt){
   if(debug){
     console.log(stmt);
   }
-  count = count + 1;
-  fs.writeFile("/tmp/test", ("Hey there!"+count), function(err) {
-    if(err) {
-      return console.log(err);
-    }
 
-    console.log("The file was saved!");
+  var logstmt = '\n[' + stmt + ']@time[' + now() + ']@ver[Hw5 submission heroku live]';
 
+  fs.appendFile('log.txt', (logstmt), function (err) {
+      if(err) {
+        return console.log(err);
+      }
   });
+
+
 }
 
 module.exports.print2 = function(stmt, unpack){
