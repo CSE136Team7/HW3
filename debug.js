@@ -1,5 +1,6 @@
 // Debug Module for printing debug statements
 var debug = 1;
+var version = 'Hw5 submission heroku live';
 
 var fs = require('fs');
 
@@ -15,7 +16,7 @@ module.exports.print = function(stmt){
     console.log(stmt);
   }
 
-  var logstmt = '\n[' + stmt + ']@time[' + now() + ']@ver[Hw5 submission heroku live]';
+  var logstmt = '\n[' + stmt + ']@time[' + now() + ']@ver['+ version +']';
 
   fs.appendFile('log.txt', (logstmt), function (err) {
       if(err) {
