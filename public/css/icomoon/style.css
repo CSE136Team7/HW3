@@ -66,6 +66,7 @@
 }
 .icon-bookmark:before {
     content: "\e910";
+    font-size: 70px;
 }
 .icon-th:before {
     content: "\e911";
