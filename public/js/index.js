@@ -273,6 +273,34 @@ function getFolders(id) {
   });
 }
 
+function addListeners() {
+  console.log('starring using Ajax');
+  var star = document.getElementsByName('star');
+  console.log(star.length);
+  for(var i = 0; i < star.length; ++i) {
+    star[i].addEventListener('submit', function(ev) {
+      var oData = new FormData(this);//{book: {starred: star[i].starred.value, book_ID: star[i].book_ID.value}};
+      console.log(JSON.stringify(oData));
+      ajaxPost("/bookmarks/star", oData, function() {
+        loadBookmarksList(currBooks);
+      });
+      ev.preventDefault();
+    }, false);
+  }
+}
+
+function getStarred() {
+  ajax('/folder/starred', 'GET', null, function(books) {
+    loadTemplate('booklist', {
+      books: books.books
+    });
+  });
+}
+
+function getMostVisited() {
+  loadBookmarksList();
+}
+
 /**
  * Capture back/forward button.
  * When the button is pressed, load the appropriate page and data based on the e.state
@@ -301,6 +329,9 @@ function displayTemplate(name, data) {
   //console.log(JSON.stringify(data));
   var snippet = ejs.render(templatesCache[name], data);
   document.getElementById(name).innerHTML = snippet;
+  if(name === 'booklist'){
+    addListeners();
+  }
 }
 
 

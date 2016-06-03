@@ -58,12 +58,20 @@ module.exports.starredPage = function(req, res) {
   }
   user = req.session.user_ID;
 
-  renderHomePage(getStarred, getFolders, "Starred", "", user,
+  if(req.session.js){ // server render
+    renderHomePage(getStarred, getFolders, "Starred", "", user,
 
-    function(obj) { // This is called when render home page is done obj is the vars for index.ejs file
-      res.render('index', obj);
-    }, null
-  );
+      function(obj) { // This is called when render home page is done obj is the vars for index.ejs file
+        res.render('index', obj);
+      }, null
+    );
+  } else { // client render
+    getStarred(function(err, results) {
+      if(err) throw err;
+      console.log(results);
+      res.json({books: results});
+    }, user);
+  }
 }
 
 /*
@@ -224,18 +232,18 @@ module.exports.star = function(req, res) {
   db.query(sql, function(err) {
     if (err) {
       if(req.session.js){ // server render
-          res.redirect('/home?error=Added ' + title + ' to your starred bookmarks!');
+          res.redirect('/home?error=Added bookmark to your starred bookmarks!');
       } else{ // client render
         res.json({"error":'Invalid form entry'});
       }
       throw err;
     } else {
       //debug.print('not an err');
-    }
-    if(req.session.js){ // server render
-        res.redirect('/home?error=Added ' + title + ' to your starred bookmarks!');
-    } else{ // client render
-      res.json({});
+      if(req.session.js){ // server render
+          res.json({});
+      } else{ // client render
+        res.redirect('/home?error=Added bookmark to your starred bookmarks!');
+      }
     }
 
   });
