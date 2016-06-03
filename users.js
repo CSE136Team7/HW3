@@ -158,7 +158,7 @@ module.exports.newAccount = function(req, res){
                                 if (typeof req.session.user_ID === 'undefined') {
                                     debug.print('attempting to set session');
                                     req.session.user_ID = results[0].user_ID;
-                                    res.redirect('/views');
+                                    res.redirect('/home');
                                 }
                             }
                             else{
