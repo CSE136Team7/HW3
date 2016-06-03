@@ -18,6 +18,7 @@
     font-variant: normal;
     text-transform: none;
     line-height: 1;
+    font-size: 20px;
 
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
@@ -75,4 +76,3 @@
 .icon-folder-plus:before {
     content: "\e931";
 }
-

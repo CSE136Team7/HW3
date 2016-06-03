@@ -8,7 +8,7 @@
     <meta http-equiv="refresh" content="0; url=http://localhost:8000/home" />
   </noscript>
   <title>Bookmarx</title>
-  <link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+  <!-- <link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css"> -->
   <link rel="stylesheet" type="text/css" href="/css/simplegrid.css" />
   <link rel="stylesheet" type="text/css" href="/css/style.css">
   <link rel="stylesheet" type="text/css" href="/css/icomoon/style.css">
@@ -22,20 +22,20 @@
   <nav class="navbar">
     <ul>
       <li class="navbar-left menu-button">
-        <a class="button" id="menu" href="/home"><i id="menu-icon" class="fa fa-bookmark-o fa-lg"></i> Bookmarx</a>
+        <a class="button" id="menu" href="/home"><i id="menu-icon" class="fa icon-bookmark-o fa-lg"></i> Bookmarx</a>
       </li>
       <li class="navbar-left search">
         <form action="/find" method="get" id="search-form" class="form">
-          <button><i class="fa fa-search fa-lg"></i></button>
-          <input type="text" name="searchbox" placeholder="Search Bookmarks" />
 
+          <input type="text" name="searchbox" placeholder="Search Bookmarks" />
+          <button ><i class="fa icon-search fa-lg"></i></button>
         </form>
       </li>
       <li class="navbar-right">
-        <a href="/logout"><i class="fa fa-sign-out" style="color:#fff"></i></a>
+        <a href="/logout"><i class=" fa icon-sign-out" style="color:#fff"></i></a>
       </li>
       <li class="navbar-right">
-        <div class="button" onclick="sortBooks()"><i class="fa fa-sort-alpha-asc fa-lg"></i></div>
+        <div class="button" onclick="sortBooks()"><i class="fa icon-sort-alpha-asc fa-lg"></i></div>
       </li>
       <li class="navbar-right">
         <div id="bookmodals"></div>
@@ -53,7 +53,7 @@
               <div class="form">
                 <input type="text" name="folder" placeholder="Folder Name" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" required>
                 <div class="buttonWrapper" style="margin-bottom:20px; ">
-                  <button onclick="closeFolderAddModal();"><i class="fa fa-check-circle fa-lg"></i> Save</button>
+                  <button onclick="closeFolderAddModal();"><i class="fa icon-check-circle fa-lg"></i> Save</button>
                 </div>
               </div>
             </form>
@@ -71,7 +71,7 @@
             <div id="foldermodallist"></div>
           </div>
         </div>
-        <a href="#addModal" class="button"><i class="fa fa-plus fa-lg" onclick="showAddModal();"></i></a>
+        <a href="#addModal" class="button"><i class="fa icon-plus fa-lg" onclick="showAddModal();"></i></a>
         <div id="addModal" class="modalDialog">
           <div class="grid grid-pad">
             <a href="#close" title="Close" class="close x-button">x</a>
@@ -93,7 +93,7 @@
 
                 <div class="buttonWrapper" style="margin-bottom:15px">
                   <!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
-                  <button onclick="closeAddModal();"><i class="fa fa-check-circle fa-lg" id="trigger-submit">Save</i></button>
+                  <button onclick="closeAddModal();"><i class="fa icon-check-circle fa-lg" id="trigger-submit">Save</i></button>
                 </div>
               </div>
             </form>
@@ -117,7 +117,7 @@
               <input type="file" id="myFileId" name="myFile" accept=".csv" style="margin-bottom:15px; width:100%" required>
               <div class="buttonWrapper" style="margin-bottom:15px">
                 <!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
-                <button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Import</i></button>
+                <button><i class="fa icon-check-circle fa-lg" id="trigger-submit">Import</i></button>
               </div>
             </form>
           </div>
@@ -127,8 +127,8 @@
             <input type="url" name="url" placeholder="File Path">
           </div>
           <div class="buttonWrapper">
-            <div><i class="fa fa-folder-open fa-lg"></i> Browse</div>
-            <div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
+            <div><i class="fa icon-folder-open fa-lg"></i> Browse</div>
+            <div><a href="#close" title="Close" class="close"><i class="fa icon-times-circle fa-lg"></i> Cancel</a></div>
           </div>
         </div>
       </li>
@@ -138,17 +138,17 @@
     <ul>
       <li class="pinned">
         <form class="resetme" action="/home" method="get">
-          <button class="pad-trash-icon button" style="background-color:#474448; width:100%; padding-right: 50px;"><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
+          <button class="pad-trash-icon button" style="background-color:#474448; width:100%; padding-right: 50px;"><i class="fa icon-bar-chart fa-lg"></i> Most Visited</button>
         </form>
       </li>
       <li class="pinned">
         <form class="resetme" action="/folder/starred" method="get">
-          <button class="pad-trash-icon button" style="background-color:#474448; width:100%; padding-right: 95px;"><i class="fa fa-star fa-lg"></i> Starred</button>
+          <button class="pad-trash-icon button" style="background-color:#474448; width:100%; padding-right: 95px;"><i class="fa icon-star fa-lg"></i> Starred</button>
         </form>
       </li>
       <li class="pinned">
         <form class="resetme" action="/home" method="get">
-        <button style="background-color:#474448; width:100%; padding-right: 50px;"><i class="fa fa-th fa-lg"></i> All
+        <button style="background-color:#474448; width:100%; padding-right: 50px;"><i class="fa icon-th fa-lg"></i> All
           </button>
         </form>
       </li>
@@ -159,10 +159,10 @@
 
     <div class="buttonWrapper">
       <div>
-        <a href="#folderModal" class="button" style="background-color:#474448" onclick="showAddFolderModal();"><i class="fa fa-plus-circle fa-lg"></i> Folder</a>
+        <a href="#folderModal" class="button" style="background-color:#474448" onclick="showAddFolderModal();"><i class="fa icon-folder-plus fa-lg"></i> Folder</a>
       </div>
       <div>
-        <a href="/bookmarks/export" class="button" style="background-color:#474448" download><i class="fa fa-download fa-lg"></i> Export</a>
+        <a href="/bookmarks/export" class="button" style="background-color:#474448" download><i class="fa icon-download fa-lg"></i> Export</a>
       </div>
     </div>
   </div>
