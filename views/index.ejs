@@ -8,8 +8,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<title>Bookmarx</title>
-	<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
-	<link rel="stylesheet" type="text/css" href="/css/simplegrid.css" />
+<!-- 	<link rel="stylesheet" href="/css/font-awesome/css/font-awesome.min.css">
+ -->	<link rel="stylesheet" type="text/css" href="/css/simplegrid.css" />
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
 	<link rel="stylesheet" type="text/css" href="/css/icomoon/style.css">
 
@@ -22,7 +22,7 @@
 	<nav class="navbar">
 		<ul>
 			<li class="navbar-left menu-button">
-				<a class="button" id="menu" href="/home"><i id="menu-icon" class="fa fa-bookmark-o fa-lg"></i> Bookmarx</a>
+				<a class="button" id="menu" href="/home"><i id="menu-icon" class="fa icon-bookmark-o fa-lg"></i> Bookmarx</a>
 			</li>
 			<li class="navbar-left search">
 				<form action="/find" method="get">
@@ -30,18 +30,18 @@
 						<input type="hidden" name="javascript" value="0">
 					</noscript>
 					<input type="text" name = "searchbox" placeholder="Search Bookmarks" />
-					<button><i class="fa fa-search fa-lg"></i></button>
+					<button><i class="fa icon-search fa-lg"></i></button>
 				</form>
 			</li>
 			<li class="navbar-right">
-				<a class="button" href="/logout"><i class="fa fa-sign-out"></i></a>
+				<a class="button" href="/logout"><i class="fa icon-sign-out"></i></a>
 			</li>
 			<li class="navbar-right">
 				<form action="/bookmarks/sortBooks" method="get">
 					<noscript>
 						<input type="hidden" name="javascript" value="0">
 					</noscript>
-					<a class="button" name="sort"><i class="fa fa-sort-alpha-asc fa-lg"></i></a>
+					<a class="button" name="sort"><i class="fa icon-sort-alpha-asc fa-lg"></i></a>
 				</form>
 			</li>
 			<li class="navbar-right">
@@ -69,7 +69,7 @@
 							<div class="form" id="add-folder-form">
 								<input type="text" name="folder" placeholder="Folder Name" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px">
 								<div class="buttonWrapper" style="margin-bottom:20px; ">
-									<button><i class="fa fa-check-circle fa-lg" ></i> Save</button>
+									<button><i class="fa icon-check-circle fa-lg" ></i> Save</button>
 								</div>
 							</div>
 						</form>
@@ -98,13 +98,13 @@
 											<option name="book_ID" value=<%= book.book_ID%> > <%=book.Title %></option>
 											<% }); }%>
 										</select>
-										<button ><i class="fa fa-check-circle fa-lg" ></i> Save</button>
+										<button ><i class="fa icon-check-circle fa-lg" ></i> Save</button>
 									</div>
 								</form>
 							</div>
 						</div>
 						<%}}%>
-				<a href="#addModal" class="button"><i class="fa fa-plus fa-lg"></i></a>
+				<a href="#addModal" class="button"><i class="fa icon-plus fa-lg"></i></a>
 				<div id="addModal" class="modalDialog">
 					<div class="grid grid-pad">
 						<a href="#close" title="Close" class="close x-button">x</a>
@@ -128,7 +128,7 @@
 								</div>
 								<div class="buttonWrapper" style="margin-bottom:15px">
 									<!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
-									<button type="submit" ><i class="fa fa-check-circle fa-lg" id="trigger-submit"></i></button>
+									<button type="submit" ><i class="fa icon-check-circle fa-lg" id="trigger-submit"></i></button>
 								</div>
 							</div>
 						</form>
@@ -151,7 +151,7 @@
 								<input type="file" name="myFile" accept=".csv" style="margin-bottom:15px; width:100%">
 								<div class="buttonWrapper"  style="margin-bottom:15px">
 									<!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
-									<button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Import</i></button>
+									<button><i class="fa icon-check-circle fa-lg" id="trigger-submit">Import</i></button>
 								</div>
 							</form>
 						</div>
@@ -161,7 +161,7 @@
 							<input type="url" name="url" placeholder="File Path">
 						</div>
 						<div class="buttonWrapper">
-							<div><i class="fa fa-folder-open fa-lg"></i> Browse</div>
+							<div><i class="fa icon-folder-open fa-lg"></i> Browse</div>
 							<div><a href="#close" title="Close" class="close"><i class="fa fa-times-circle fa-lg"></i> Cancel</a></div>
 						</div>
 					</div>
@@ -175,7 +175,7 @@
 						<noscript>
 							<input type="hidden" name="javascript" value="0">
 						</noscript>
-						<button class="button" style="background-color:#474448; width:100%"><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
+						<button class="button" style="background-color:#474448; width:100%"><i class="fa icon-bar-chart fa-lg"></i> Most Visited</button>
 					</form>
 				</li>
 				<li class="pinned">
@@ -183,7 +183,7 @@
 						<noscript>
 							<input type="hidden" name="javascript" value="0">
 						</noscript>
-						<button style="background-color:#474448;width:100%;"><i class="fa fa-star fa-lg"></i> Starred</button>
+						<button style="background-color:#474448;width:100%;"><i class="fa icon-star fa-lg"></i> Starred</button>
 					</form>
 				</li>
 			<!-- <li class="pinned">
@@ -191,7 +191,7 @@
 					<noscript>
 						<input type="hidden" name="javascript" value="0">
 					</noscript>
-				<a href="/showAll"><i class="fa fa-th fa-lg"></i> All</a>
+				<a href="/showAll"><i class="fa icon-th fa-lg"></i> All</a>
 			</form>
 			</li>	-->
 			<%if(folders){ for(var j = 0; j < folders.length; j++) {%>
@@ -204,24 +204,24 @@
 								<button style="background-color:#474448;"name="folder_ID"value=<%= folders[j].folder_ID%> ><%= folders[j].Name%> </button>
 							</form>
 
-							<a href=<%= '#folderModaledit'+folders[j].folder_ID %> class="pad-trash-icon button" style="background-color:#474448;margin-left:55px;"><i class="fa fa-edit fa-lg" ></i></a>
+							<a href=<%= '#folderModaledit'+folders[j].folder_ID %> class="pad-trash-icon button" style="background-color:#474448;margin-left:55px;"><i class="fa icon-edit fa-lg" ></i></a>
 							<form action="/deleteFolder" method="post" style="display:inline-block">
 								<noscript>
 									<input type="hidden" name="javascript" value="0">
 								</noscript>
 								<input type="hidden" name="folder_ID" value=<%= folders[j].folder_ID%> >
-								<button class="pad-trash-icon button" style="background-color:#474448;"><i class="fa fa-trash-o fa-lg"></i></button>
+								<button class="pad-trash-icon button" style="background-color:#474448;"><i class="fa icon-trash-o fa-lg"></i></button>
 							</form>
 						</li>
 					<%}}%>
 				</ul>
 							<div class="buttonWrapper">
 								<div>
-									<!-- <div><i class="fa fa-plus-circle fa-lg"></i> Folder</div> -->
-									<a href="#folderModal" class="button" style="background-color:#474448"><i class="fa fa-plus-circle fa-lg"></i> Folder</a>
+									<!-- <div><i class="fa icon-plus-circle fa-lg"></i> Folder</div> -->
+									<a href="#folderModal" class="button" style="background-color:#474448"><i class="fa icon-plus-circle fa-lg"></i> Folder</a>
 								</div>
 								<div>
-					        <a href="/bookmarks/export" class="button" style="background-color:#474448" download><i class="fa fa-download fa-lg"></i> Export</a>
+					        <a href="/bookmarks/export" class="button" style="background-color:#474448" download><i class="fa icon-download fa-lg"></i> Export</a>
 					      </div>
 							</div>
 						</div>
@@ -265,14 +265,14 @@
 														<input type="hidden" name="starred" value=<%=bookmarks[i].Star %>>
 														<input type="hidden" name="user_ID" value=<%=bookmarks[i].user_ID %>>
 														<input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
-														<button id="star-btn" class="card__button" ><i class="fa fa-star fa-lg"></i></button>
+														<button id="star-btn" class="card__button" ><i class="fa icon-star fa-lg"></i></button>
 													</form>
-													<a href=<%= '#updateModal'+bookmarks[i].book_ID %>  class="fa fa-edit fa-lg" ></a>
+													<a href=<%= '#updateModal'+bookmarks[i].book_ID %>  class="fa icon-edit fa-lg" ></a>
 
 													<!-- umm TODO: fix spacing in a better way -->
 													&nbsp&nbsp&nbsp&nbsp&nbsp
 
-													<a href=<%= '#deleteModal'+bookmarks[i].book_ID %> class="fa fa-trash fa-lg"></a>
+													<a href=<%= '#deleteModal'+bookmarks[i].book_ID %> class="fa icon-trash fa-lg"></a>
 
 												</div>
 											</div>
