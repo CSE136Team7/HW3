@@ -76,7 +76,8 @@ set up project 1,2,3, set up digital ocean(automatic deployment), set up heroku,
 Brian:
 client side/server side validation, getting bookmarks to go to their respective URL, various html/css changes, starred/most visited on ajax, worked with Bhavik on ajax functionality, various bug fixes
 
-Constance:
+Constance: 
+client side. HTML/CSS of login and sign up page, implemented the method to login with a new user and create a new user, changed some of the html and css of the homepage, logout button and destroying session, fixed issues with Heroku, logo button and redirecting to homepage
 
 Max:
 
