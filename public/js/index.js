@@ -29,6 +29,9 @@ function showDelete(id){
 function loadBookmarksList(custom) {
   if (!custom) {
     ajax('/bookmarks/getbooks/', 'GET', null, function(books) {
+      if(books.error){
+        window.location = '/login';
+      }
       currBooks = books.books;
       debug(JSON.stringify(books));
       loadTemplate('booklist', {
@@ -100,6 +103,9 @@ function validateFile() {
 
 function loadFoldersList() {
   ajax('/bookmarks/getfolders/', 'GET', null, function(folders) {
+    if(folders.error){
+      window.location = '/login';
+    }
     loadTemplate('folderlist', folders);
   });
 }
@@ -266,11 +272,40 @@ function deleteFolders(id) {
 
 function getFolders(id) {
   console.log("i am inside folder");
-  ajax('/folders/' + id, 'GET', null, function(books) {
+  ajax('/folders?fid=' + id, 'GET', null, function(books) {
+    console.log(books);
     loadTemplate('booklist', {
       books: books.books
     });
   });
+}
+
+function addListeners() {
+  console.log('starring using Ajax');
+  var star = document.getElementsByName('star');
+  console.log(star.length);
+  for(var i = 0; i < star.length; ++i) {
+    star[i].addEventListener('submit', function(ev) {
+      var oData = new FormData(this);//{book: {starred: star[i].starred.value, book_ID: star[i].book_ID.value}};
+      console.log(JSON.stringify(oData));
+      ajaxPost("/bookmarks/star", oData, function() {
+        loadBookmarksList(currBooks);
+      });
+      ev.preventDefault();
+    }, false);
+  }
+}
+
+function getStarred() {
+  ajax('/folder/starred', 'GET', null, function(books) {
+    loadTemplate('booklist', {
+      books: books.books
+    });
+  });
+}
+
+function getMostVisited() {
+  loadBookmarksList();
 }
 
 /**
@@ -301,6 +336,9 @@ function displayTemplate(name, data) {
   //console.log(JSON.stringify(data));
   var snippet = ejs.render(templatesCache[name], data);
   document.getElementById(name).innerHTML = snippet;
+  if(name === 'booklist'){
+    addListeners();
+  }
 }
 
 

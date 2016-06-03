@@ -8,6 +8,7 @@ var debug = require('./debug');
 var folders = require('./folders');
 
 db.init();
+debug.print("Server starting");
 
 var express = require('express');
 var bodyParser = require('body-parser');
@@ -22,7 +23,7 @@ var sessionStore = new MySQLStore ({
       createDatabaseTable: true,
       schema: {
         tableName: 'sessions',
-        columNames: {
+        columnNames: {
           session_id: 'session_id',
           expires: 'expires',
           data: 'data'
@@ -36,7 +37,7 @@ var sessionStore = new MySQLStore ({
 var mySession = session({
   secret: config.SECRET,
   resave: true,
-  sessionStore: MySQLStore, //uses above store object
+  sessionStore: sessionStore, //uses above store object
   saveUninitialized: true,
   cookie: { secure: false },
   name: 'BookmarxTeam7',
@@ -55,8 +56,7 @@ function customHeaders( req, res, next ){
   // Switch off the default 'X-Powered-By: Express' header
   app.disable( 'x-powered-by' );
   // OR set your own header here
-  res.setHeader( 'App-Powered-By', 'Blood, sweat, and tears' );
-  // .. other headers here
+  //res.setHeader( 'App-Powered-By', 'Blood, sweat, and tears' );
   next()
 }
 app.use( customHeaders );
@@ -80,6 +80,7 @@ app.use(function printSession(req, res, next) {
 var checkJS = function (req, res, next) {
 
   if(req.body.javascript && req.body.javascript === "0" || req.query.js === "0") {
+    debug.print('Warning: User has JavaScript disabled.');
     req.session.js = false;
   }
   else if(req.body.javascript && req.body.javascript === "1" || req.query.js === "1"){
@@ -117,9 +118,11 @@ app.get('/logout', users.logout);
 
 app.post('/newAccount', users.newAccount);
 app.post('/doReset', users.doReset);
+app.post('/doForgot', users.doForgot);
 
 app.get('/signup', users.signup);
 app.get('/resetpw', users.resetpw);
+app.get('/forgotpw', users.forgotpw);
 
 /*  This must go between the users routes and the bookmarks routes */
 app.use(users.auth);
@@ -145,7 +148,7 @@ app.post('/bookmarks/import', bookmarks.import);
 app.get('/bookmarks/export', bookmarks.export);
 
 
-app.get('/folders/:fid', bookmarks.folders);
+app.get('/folders', bookmarks.folders);
 app.get('/find', bookmarks.find);
 
 app.listen(config.PORT, function () {

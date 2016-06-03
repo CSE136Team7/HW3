@@ -34,14 +34,29 @@
 				</form>
 			</li>
 			<li class="navbar-right">
-				<a class="button" href="/logout"><i class="fa icon-sign-out"></i></a>
+
+				<div class="tooltip">
+					<a class="button" title="Logout" href="/logout"><i class="fa icon-sign-out"></i></a>
+					<div class="tooltiptext">Logout</div>
+				</div>
+			</li>
+			<li class="navbar-right">
+				<div class="tooltip">
+					<a class="button" href="/resetpw" title="Reset Password?"><i class="fa icon-key"></i></a>
+					<div class="tooltiptext">Reset Password</div>
+				</div>
+
 			</li>
 			<li class="navbar-right">
 				<form action="/bookmarks/sortBooks" method="get">
 					<noscript>
 						<input type="hidden" name="javascript" value="0">
 					</noscript>
-					<a class="button" name="sort"><i class="fa icon-sort-alpha-asc fa-lg"></i></a>
+
+					<div class="tooltip">
+						<button class="button" type="submit" name="sort"><i class="fa icon-sort-alpha-asc fa-lg"></i></a>
+						<div class="tooltiptext">Sort</div>
+					</div>
 				</form>
 			</li>
 			<li class="navbar-right">
@@ -91,7 +106,6 @@
 								<div class="form" id="add-folder-form">
 									<input type="text" name="folder" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" value=<%= folders[j].Name%>>
 									<input type="hidden" name="folder_ID" style="display:none" value=<%= folders[j].folder_ID%>>
-
 									<select name="book_ID"style="width:100%;margin-bottom: 15px;height: 32px;border: 2px solid #FFF;background-color: #6C7A89; font-size: 15px;color:#fff">
 											<option></option>
 										<% if(bookmarks){ bookmarks.forEach(function(book) { %>
@@ -104,7 +118,10 @@
 							</div>
 						</div>
 						<%}}%>
-				<a href="#addModal" class="button"><i class="fa icon-plus fa-lg"></i></a>
+				<div class="tooltip">
+					<a href="#addModal" class="button" title="Add Bookmark"><i class="fa icon-plus fa-lg"></i></a>
+					<div class="tooltiptext">Add Bookmark</div>
+				</div>
 				<div id="addModal" class="modalDialog">
 					<div class="grid grid-pad">
 						<a href="#close" title="Close" class="close x-button">x</a>
@@ -198,11 +215,12 @@
 			<%if(folders){ for(var j = 0; j < folders.length; j++) {%>
 						<li>
 							<form action="/folders" method="get" style="display:inline-block">
+								<button style="background-color:#474448;"name="fid"value=<%= folders[j].folder_ID%> ><%= folders[j].Name%> </button>
 								<noscript>
 									<input type="hidden" name="javascript" value="0">
 								</noscript>
 								<input type="hidden" name="folderName" value=<%= folders[j].Name%> >
-								<button style="background-color:#474448;"name="folder_ID"value=<%= folders[j].folder_ID%> ><%= folders[j].Name%> </button>
+
 							</form>
 
 							<a href=<%= '#folderModaledit'+folders[j].folder_ID %> class="pad-trash-icon button" style="background-color:#474448;margin-left:55px;"><i class="fa icon-edit fa-lg" ></i></a>

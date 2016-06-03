@@ -17,13 +17,12 @@ var fs = require("fs");
  * */
 
 module.exports.homePage = function(req, res) {
-
   debug.print('Received request for home page user id is: ' + req.session.user_ID);
   var user;
   if (typeof req.session.user_ID === 'undefined') {
     //throw err
     // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
+    debug.print('Warning in homePage: user went to homePage without a user_ID');
     req.session.destroy();
     res.redirect('/login');
   } else {
@@ -49,21 +48,27 @@ module.exports.starredPage = function(req, res) {
   debug.print('info: Received request for starred page on user: ' + req.session.user_ID);
   var user;
   if (typeof req.session.user_ID === 'undefined') {
-    //throw err
     // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
+    debug.print('02 Warning: user went to homePage without a user_ID');
     req.session.destroy();
     res.redirect('/login');
     return;
   }
   user = req.session.user_ID;
 
-  renderHomePage(getStarred, getFolders, "Starred", "", user,
-
-    function(obj) { // This is called when render home page is done obj is the vars for index.ejs file
-      res.render('index', obj);
-    }, null
-  );
+  if(!req.session.js){ // server render
+    renderHomePage(getStarred, getFolders, "Starred", "", user,
+      function(obj) { // This is called when render home page is done obj is the vars for index.ejs file
+        res.render('index', obj);
+      }, null
+    );
+  } else { // client render
+    getStarred(function(err, results) {
+      if(err) throw err;
+      console.log(results);
+      res.json({books: results});
+    }, user);
+  }
 }
 
 /*
@@ -87,29 +92,26 @@ var getStarred = function(callback, user_ID) {
 }
 
 /*
- * Function renderHomePage
- * retrieves all the books data needed to populate the home page
- * */
-var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_ID, done, searchstring) {
+* Function renderHomePage
+* retrieves all the books data needed to populate the home page
+* */
+ var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_ID, done, searchstring){
 
-  debug.print("info: Rendering Homepage");
-  async.parallel([function(callback) {
-      bookmarkFunc(callback, user_ID, searchstring)
-    }, function(callback) {
-      folderFunc(callback, user_ID)
-    }],
-    function(err, results) {
-      if (err) {
-        throw err;
-      }
-      var bookmarks = results[0];
-      var folders = results[1];
-      done({
-        bookmarks: bookmarks,
-        folders: folders,
-        filter: filter,
-        errormsg: errormsg
-      });
+   debug.print("info: Rendering Homepage");
+
+   async.parallel([function(callback){bookmarkFunc(callback,user_ID,searchstring)},function(callback){folderFunc(callback,user_ID)}],
+      function(err, results){
+        if(err){
+          res.redirect('/views?error=Could not display home page');
+        }
+        var bookmarks = results[0];
+        var folders = results[1];
+        done({
+                 bookmarks : bookmarks,
+                 folders   : folders,
+                 filter    : filter,
+                 errormsg  : errormsg
+               });
     }
   )
 
@@ -120,16 +122,26 @@ var renderHomePage = function(bookmarkFunc, folderFunc, filter, errormsg, user_I
  * users can associate their books into folders if so desired
  * */
 module.exports.folders = function(req, res) {
-  var folder_ID = req.params.fid;
-
+  var folder_ID = req.query.fid;
+  var folderName = req.query.folderName;
   var user;
   if (typeof req.session.user_ID === 'undefined') {
-    debug.print('Warning: user went to homePage without a user_ID');
+    debug.print('Warning in folders: user went to homePage without a user_ID');
     req.session.destroy();
     res.redirect('/login');
   } else {
     user = req.session.user_ID;
     debug.print("info: folder_ID: " + folder_ID);
+
+    var getFoldersBookmarks = function (callback) {
+           db.query("SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID =" + folder_ID + " AND folder_has_books.book_ID = books.book_ID",
+               function (err, results) {
+                   if (err) {
+                       res.redirect('/views?error=Could not display folder contents');
+                   }
+                   callback(err, results);
+               })
+       };
 
     var sql = "SELECT * FROM folder_has_books, books WHERE folder_has_books.folder_ID =" + folder_ID + " AND folder_has_books.book_ID = books.book_ID;";
     db.query(sql, function(err, bookmarks) {
@@ -137,9 +149,19 @@ module.exports.folders = function(req, res) {
         res.status(500).send(err);
         //  res.redirect('/home?error=Could not delete folder.');
       } else {
-        res.json({
-          books: bookmarks
-        });
+        if(!req.session.js){ // server render
+          console.log('server');
+          renderHomePage(getFoldersBookmarks, getFolders, folderName, "", user, function (obj) {
+           debug.print("info: obj: " + JSON.stringify(obj, null, 4));
+           res.render('index', obj);
+       });
+        } else{ // client render
+          console.log('client');
+          res.json({
+            books: bookmarks
+          });
+        }
+
         // res.redirect('/home');
       }
     });
@@ -158,8 +180,7 @@ module.exports.clicked = function(req, res) {
 
   var user_ID;
   if (typeof req.session.user_ID === 'undefined') {
-    //throw err
-    debug.print('Warning: user tried to click a bookmark without a user_ID');
+    debug.print('04 Warning: user tried to click a bookmark without a user_ID');
     req.session.destroy();
     // go to login
     res.redirect('/login?error=You are not logged in');
@@ -176,7 +197,9 @@ module.exports.clicked = function(req, res) {
   }
 
   db.query(sql, function(err) {
-    if (err) throw err;
+    if (err) {
+        res.redirect('/views?error=Could not view external bookmark link.');
+    }
     res.redirect(url);
     res.end();
   });
@@ -206,8 +229,7 @@ module.exports.star = function(req, res) {
 
   var user_ID;
   if (typeof req.session.user_ID === 'undefined') {
-    //throw err
-    debug.print('Warning: user tried to star a bookmark without a user_ID');
+    debug.print('05 Warning: user tried to star a bookmark without a user_ID');
     req.session.destroy();
     // go to login
     res.redirect('/login?error=You are not logged in');
@@ -223,19 +245,18 @@ module.exports.star = function(req, res) {
 
   db.query(sql, function(err) {
     if (err) {
-      if(req.session.js){ // server render
-          res.redirect('/home?error=Added ' + title + ' to your starred bookmarks!');
+      if(!req.session.js){ // server render
+          res.redirect('/home?error=Invalid form entry');
       } else{ // client render
         res.json({"error":'Invalid form entry'});
       }
-      throw err;
     } else {
       //debug.print('not an err');
-    }
-    if(req.session.js){ // server render
-        res.redirect('/home?error=Added ' + title + ' to your starred bookmarks!');
-    } else{ // client render
-      res.json({});
+      if(!req.session.js){ // server render
+        res.redirect('/home?error=Added bookmark to your starred bookmarks!');
+      } else{ // client render
+        res.json({});
+      }
     }
 
   });
@@ -252,9 +273,8 @@ module.exports.insert = function(req, res) {
 
   var user_ID;
   if (typeof req.session.user_ID === 'undefined') {
-    //throw err
     // go to login
-    debug.print('Warning: user tried to insert a bookmark without a user_ID');
+    debug.print('06 Warning: user tried to insert a bookmark without a user_ID');
     req.session.destroy();
     res.redirect('/login?error=You are not logged in');
   }
@@ -271,14 +291,12 @@ module.exports.insert = function(req, res) {
     var book_ID = db.escape(req.body.book_ID);
 
     var queryString = 'INSERT INTO books (Title, Star, Description, URL, user_ID, book_ID) VALUES (' + title + ',' + 0 + ', ' + description + ', ' + url + ', ' + user_ID + ', ' + book_ID + ')';
-
-
     db.query(queryString, function(err) {
       if (err) {
         debug.print("ERROR: Query failed err:" + err);
         throw (err);
       } else {
-        if(req.session.js){ // server render
+        if(!req.session.js){ // server render
             res.redirect('/home?error=Added ' + title + ' to your bookmarks!');
         } else{ // client render
           res.json({});
@@ -309,6 +327,7 @@ module.exports.insert = function(req, res) {
 module.exports.update = function(req, res) {
   debug.print("info: Received update bookmark request.\n" + JSON.stringify(req.body));
 
+
   var user_ID;
   if (typeof req.session.user_ID === 'undefined') {
     //throw err
@@ -319,8 +338,6 @@ module.exports.update = function(req, res) {
   }
   //else
   user_ID = db.escape(req.session.user_ID);
-
-
   if (req.body.title != "" && req.body.url != "" && req.body.description != "" && req.body.user_ID != "" && req.body.book_ID != "") {
 
     var book_ID = db.escape(req.body.book_ID);
@@ -376,7 +393,6 @@ module.exports.delete = function(req, res) {
   }
   //else
   user_ID = db.escape(req.session.user_ID);
-
   // Do validation on book_ID && user_ID
   if (req.body.book_ID && req.body.user_ID) {
     // get userid and book_ID
@@ -397,7 +413,7 @@ module.exports.delete = function(req, res) {
     // }
     if (err) throw err;
     if(!req.session.js){ // server render
-        res.redirect('/home?error=Deleted ' + title + ' from your bookmarks!');
+        res.redirect('/home?error=Deleted bookmark from your bookmarks!');
     } else{ // client render
       res.json({});
     }
@@ -413,9 +429,8 @@ module.exports.import = function(req, res) {
 
   var user_ID;
   if (typeof req.session.user_ID === 'undefined') {
-    //throw err
     // go to login
-    debug.print('Warning: user tried to insert a bookmark without a user_ID');
+    debug.print('09 Warning: user tried to insert a bookmark without a user_ID');
     req.session.destroy();
     res.redirect('/login?error=You are not logged in');
     return;
@@ -496,7 +511,7 @@ var getBookmarks = function(callback, user) {
 
   db.query(sql, function(err, bookmarks) {
     if (err) {
-      throw err;
+      res.redirect('/views?error=Could not retrieve your bookmarks');
     }
     callback(err, bookmarks);
   });
@@ -510,7 +525,6 @@ var getBookmarks = function(callback, user) {
 module.exports.export = function(req, res) {
   var user;
   if (typeof req.session.user_ID === 'undefined') {
-    //throw err
     // go to login
     debug.print('Warning 025: user went to homePage without a user_ID');
     req.session.destroy();
@@ -542,11 +556,19 @@ module.exports.export = function(req, res) {
 module.exports.getbooks = function(req, res) {
   var user;
   if (typeof req.session.user_ID === 'undefined') {
+
     //throw err
     // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
-    req.session.destroy();
-    res.redirect('/login');
+    if(req.session.js) {
+      debug.print('Warning in getbooks: user went to homePage without a user_ID');
+      req.session.destroy();
+      res.redirect('/login');
+    }
+    else {
+      debug.print('Warning in getbooks: user went to homePage without a user_ID');
+      req.session.destroy();
+      res.json({'error' : 'you are not logged in.' });
+    }
     return;
   }
   user = req.session.user_ID;
@@ -565,11 +587,19 @@ module.exports.getbooks = function(req, res) {
 module.exports.getfolders = function(req, res) {
   var user;
   if (typeof req.session.user_ID === 'undefined') {
+
     //throw err
     // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
-    req.session.destroy();
-    res.redirect('/login');
+    if(req.session.js) {
+      debug.print('Warning in getfolders: user went to homePage without a user_ID');
+      req.session.destroy();
+      res.redirect('/login');
+    }
+    else {
+      debug.print('Warning in getfolders: user went to homePage without a user_ID');
+      req.session.destroy();
+      res.json({'error' : 'you are not logged in.' });
+    }
     return;
   }
   user = req.session.user_ID;
@@ -595,9 +625,9 @@ var getFolders = function(callback, user) {
   var sql = "SELECT * FROM folders WHERE user_ID=" + user + ";";
 
   db.query(sql, function(err, folders) {
-    debug.print("ERROR in getFolders: 32");
     if (err) {
-      throw err;
+        debug.print("ERROR in getFolders: 32");
+        res.redirect('/views?error=Could not retrieve folders');
     }
     callback(err, folders);
   });
@@ -621,9 +651,10 @@ module.exports.find = function(req, res) {
 
   var user;
   if (typeof req.session.user_ID === 'undefined') {
+
     //throw err
     // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
+    debug.print('Warning in find: user went to homePage without a user_ID');
     req.session.destroy();
     res.redirect('/login');
   }
@@ -635,7 +666,6 @@ module.exports.find = function(req, res) {
   }
   searchstring = searchstring.toLowerCase();
 
-    if (err) throw err;
     if(!req.session.js){ // server render
       renderHomePage(matchBookmarks,getFolders,"Search Results","",user,
         function(obj){ // This is called when render home page is done obj is the vars for index.ejs file
@@ -644,6 +674,7 @@ module.exports.find = function(req, res) {
       );
     } else{ // client render
       matchBookmarks(function(err, results) {
+        if (err) throw err;
         res.json(results);
       }, user, searchstring);
     }
@@ -704,7 +735,7 @@ module.exports.showAll = function(req, res) {
   if (typeof req.session.user_ID === 'undefined') {
     //throw err
     // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
+    debug.print('Warning in showAll: user went to homePage without a user_ID');
     req.session.destroy();
     res.redirect('/login');
   }
@@ -729,15 +760,15 @@ module.exports.sortBooks = function(req, res) {
   if (typeof req.session.user_ID === 'undefined') {
     //throw err
     // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
-    req.session.destroy();
+    debug.print('Warning in sortBooks: user went to homePage without a user_ID');
+    req.sefdadadasdssion.destroy();
     res.redirect('/login');
   }
   //console.log("getbookmarks "+ JSON.stringify(getBookmarks));
   //console.log("getbookmarks "+ JSON.stringify(getBookmarks.Title);
 
   user = req.session.user_ID;
-  if(req.session.js){ // server render
+  if(!req.session.js){ // server render
     renderHomePage(pullTitle, getFolders, "Sort", "", user,
       function(obj) { // This is called when render home page is done obj is the vars for index.ejs file
         res.render('index', obj);

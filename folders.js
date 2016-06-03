@@ -23,11 +23,19 @@ module.exports.createFolder=function(req, res) {
           debug.print("ERROR: Query failed err:" + err);
           throw(err);
       }else {
-          res.json({});
+          if(!req.session.js){ // server render
+              res.redirect('/home?error=Added ' + folderName + ' to your folders!');
+          } else{ // client render
+            res.json({});
+          }
       }
     });
   } else{
-    res.redirect('/home?error=The form was not filled properly');
+    if(!req.session.js){ // server render
+        res.redirect('/home?error=The form was not filled properly');
+    } else{ // client render
+      res.json({"error": "The form was not filled properly."});
+    }
   }
 }
 
@@ -56,9 +64,18 @@ module.exports.deleteFolder = function(req, res) {
 
     db.query(sql, function(err) {
       if (err) {
-        res.redirect('/home?error=Could not delete folder.');
+        if(!req.session.js){ // server render
+            res.redirect('/home?error=Could not delete folder.');
+        } else{ // client render
+          res.json({"error": "Could not delete folder."});
+        }
       } else {
-        res.json({});
+        if(!req.session.js){ // server render
+          res.redirect('/home?error=Deleted folder from your folders!');
+        } else{ // client render
+          res.json({});
+        }
+
         // res.redirect('/home');
       }
     });
@@ -101,11 +118,19 @@ module.exports.deleteFolder = function(req, res) {
             db.query(queryString, function(err) {
                 if (err) {
                     debug.print("Query failed err:" + err);
-                    throw(err);
+                    if(!req.session.js){ // server render
+                      res.redirect('/home?error=Could not add bookmark to ' + folderName + '!');
+                    } else{ // client render
+                      res.json({});
+                    }
+                    throw err;
                 }
                 else {
-                  res.json({});
-                    // res.redirect('/home');
+                  if(!req.session.js){ // server render
+                    res.redirect('/home?error=Added bookmark to ' + folderName + '!');
+                  } else{ // client render
+                    res.json({});
+                  }
                 }
             });
           }
