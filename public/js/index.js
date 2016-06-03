@@ -29,6 +29,9 @@ function showDelete(id){
 function loadBookmarksList(custom) {
   if (!custom) {
     ajax('/bookmarks/getbooks/', 'GET', null, function(books) {
+      if(books.error){
+        window.location = '/login';
+      }
       currBooks = books.books;
       debug(JSON.stringify(books));
       loadTemplate('booklist', {
@@ -100,6 +103,9 @@ function validateFile() {
 
 function loadFoldersList() {
   ajax('/bookmarks/getfolders/', 'GET', null, function(folders) {
+    if(folders.error){
+      window.location = '/login';
+    }
     loadTemplate('folderlist', folders);
   });
 }

@@ -23,7 +23,7 @@ module.exports.homePage = function(req, res) {
   if (typeof req.session.user_ID === 'undefined') {
     //throw err
     // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
+    debug.print('Warning in homePage: user went to homePage without a user_ID');
     req.session.destroy();
     res.redirect('/login');
   } else {
@@ -51,7 +51,7 @@ module.exports.starredPage = function(req, res) {
   if (typeof req.session.user_ID === 'undefined') {
     //throw err
     // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
+    debug.print('Warning in starredPage: user went to homePage without a user_ID');
     req.session.destroy();
     res.redirect('/login');
     return;
@@ -132,7 +132,7 @@ module.exports.folders = function(req, res) {
 
   var user;
   if (typeof req.session.user_ID === 'undefined') {
-    debug.print('Warning: user went to homePage without a user_ID');
+    debug.print('Warning in folders: user went to homePage without a user_ID');
     req.session.destroy();
     res.redirect('/login');
   } else {
@@ -552,9 +552,16 @@ module.exports.getbooks = function(req, res) {
   if (typeof req.session.user_ID === 'undefined') {
     //throw err
     // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
-    req.session.destroy();
-    res.redirect('/login');
+    if(req.session.js) {
+      debug.print('Warning in getbooks: user went to homePage without a user_ID');
+      req.session.destroy();
+      res.redirect('/login');
+    }
+    else {
+      debug.print('Warning in getbooks: user went to homePage without a user_ID');
+      req.session.destroy();
+      res.json({'error' : 'you are not logged in.' });
+    }
     return;
   }
   user = req.session.user_ID;
@@ -575,9 +582,16 @@ module.exports.getfolders = function(req, res) {
   if (typeof req.session.user_ID === 'undefined') {
     //throw err
     // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
-    req.session.destroy();
-    res.redirect('/login');
+    if(req.session.js) {
+      debug.print('Warning in getfolders: user went to homePage without a user_ID');
+      req.session.destroy();
+      res.redirect('/login');
+    }
+    else {
+      debug.print('Warning in getfolders: user went to homePage without a user_ID');
+      req.session.destroy();
+      res.json({'error' : 'you are not logged in.' });
+    }
     return;
   }
   user = req.session.user_ID;
@@ -631,7 +645,7 @@ module.exports.find = function(req, res) {
   if (typeof req.session.user_ID === 'undefined') {
     //throw err
     // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
+    debug.print('Warning in find: user went to homePage without a user_ID');
     req.session.destroy();
     res.redirect('/login');
   }
@@ -712,7 +726,7 @@ module.exports.showAll = function(req, res) {
   if (typeof req.session.user_ID === 'undefined') {
     //throw err
     // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
+    debug.print('Warning in showAll: user went to homePage without a user_ID');
     req.session.destroy();
     res.redirect('/login');
   }
@@ -737,7 +751,7 @@ module.exports.sortBooks = function(req, res) {
   if (typeof req.session.user_ID === 'undefined') {
     //throw err
     // go to login
-    debug.print('Warning: user went to homePage without a user_ID');
+    debug.print('Warning in sortBooks: user went to homePage without a user_ID');
     req.session.destroy();
     res.redirect('/login');
   }
