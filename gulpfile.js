@@ -29,12 +29,16 @@ gulp.task('min-ejs-html', function () {
     gulp.src('public/views/*.ejs')
         .pipe(rename({suffix:'.min'}))
         .pipe(minifyejs({removeComment: true}))
-        .pipe(gulp.dest('./bundle/views'));
-    gulp.src('public/views/*.html')
+        .pipe(gulp.dest('./bundle'));
+    gulp.src('views/users/*.ejs')
         .pipe(rename({suffix:'.min'}))
-        .pipe(minifyhtml({collapseWhitespace: true}))
-        .pipe(gulp.dest('./bundle/views'));
+        .pipe(minifyejs({removeComment: true}))
+        .pipe(gulp.dest('./bundle/views/users'));
+    gulp.src('views/*.ejs')
+        .pipe(rename({suffix:'.min'}))
+        .pipe(minifyejs({removeComment: true}))
+        .pipe(gulp.dest('./bundle/views/'));
 });
 
 //default task
-gulp.task('default',['min-js','min-css','min-ejs-html']);
+gulp.task('default',['min-ejs-html']);
