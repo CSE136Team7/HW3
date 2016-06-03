@@ -85,12 +85,14 @@ module.exports.deleteFolder = function(req, res) {
 
 
   module.exports.addBookToFolder = function(req, res) {
+    debug.print('Received request for addBookToFolder.');
     var user_ID;
     if (typeof req.session.user_ID === 'undefined') {
 
       debug.print('Warning: user tried to insert a bookmark without a user_ID');
       req.session.destroy();
       res.redirect('/login?error=You are not logged in');
+      return;
     }
     //else
     user_ID = db.escape(req.session.user_ID);
@@ -154,7 +156,11 @@ module.exports.deleteFolder = function(req, res) {
            throw err;
          }
          else {
-           res.json({});
+           if(!req.session.js){ // server render
+             res.redirect('/home?error=Updated folder name to ' + folderName + '!');
+           } else{ // client render
+             res.json({});
+           }
           //  res.redirect('/home');
          }
        });
