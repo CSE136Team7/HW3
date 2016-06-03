@@ -9,6 +9,9 @@
         </div>
         <form method='post' action='/bookmarks/delete' id="delete-bookmark-form">
             <div class="form" id="delete-bookmark-form">
+                <noscript>
+                  <input type="hidden" name="javascript" value="0">
+                </noscript>
                 <input type="hidden" name="user_ID" value=<%= bookmarks[i].user_ID %>>
                 <input type="hidden" name="book_ID" value=<%= bookmarks[i].book_ID %>>
                 <input type="text" name="title" placeholder="Title" value=<%= bookmark.Title %> readonly>

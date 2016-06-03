@@ -8,11 +8,20 @@
             <input type="hidden" name="user_ID" value=<%=bookmarks[i].user_ID %>>
             <input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
             <input type="hidden" name="url" value=<%=bookmarks[i].URL %>>
+            <noscript>
+              <input type="hidden" name="javascript" value="0">
+            </noscript>
             <input type="submit" class="card__title" value=<%=bookmarks[i].Title %>>
           </form>
-          <div style=<%= randomBackgroundColor() %> class="card__image"></div>
+          <div style=<%= 'background-color:#'+function(){var x; while(1){
+            x = Math.floor(Math.random()*900 + 100).toString();
+            return x;
+          }}();%> class="card__image"></div>
           <div class="card__action-bar" >
             <form action="/bookmarks/star" method="post" class="card__button">
+              <noscript>
+                <input type="hidden" name="javascript" value="0">
+              </noscript>
               <input type="hidden" name="starred" value=<%=bookmarks[i].Star %>>
               <input type="hidden" name="user_ID" value=<%=bookmarks[i].user_ID %>>
               <input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
@@ -22,6 +31,9 @@
             <a href=<%= '#updateModal'+bookmarks[i].book_ID %>  class="fa fa-edit fa-lg" ></a>
 
             <form action="/bookmarks/delete" method="post" class="card__button">
+              <noscript>
+                <input type="hidden" name="javascript" value="0">
+              </noscript>
               <input type="hidden" name="user_ID" value=<%=bookmarks[i].user_ID %>>
               <input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
               <button class="card__button"><i class="fa fa-trash-o fa-lg"></i></button>
