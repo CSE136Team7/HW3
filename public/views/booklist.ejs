@@ -13,10 +13,9 @@
           <div style=<%= 'background-color:#'+function(){var x; while(1){
             x = Math.floor(Math.random()*900 + 100).toString();
             return x;
-          }}();
-           %> class="card__image"></div>
+          }}();%> class="card__image"></div>
           <div class="card__action-bar" >
-            <form action="/bookmarks/star" method="post" class="card__button">
+            <form action="/bookmarks/star" method="post" name="star" class="card__button">
               <input type="hidden" name="starred" value=<%=books[i].Star %>>
               <input type="hidden" name="user_ID" value=<%=books[i].user_ID %>>
               <input type="hidden" name="book_ID" value=<%=books[i].book_ID %>>
@@ -24,12 +23,7 @@
             </form>
 
             <div onclick=<%="showEdit("+books[i].book_ID+")"%> class="fa fa-edit fa-lg" ></div>
-
-            <form action="/bookmarks/delete" method="post" class="card__button">
-              <input type="hidden" name="user_ID" value=<%=books[i].user_ID %>>
-              <input type="hidden" name="book_ID" value=<%=books[i].book_ID %>>
-              <button class="card__button" id="trigger-submit"><i class="fa fa-trash-o fa-lg"></i></button>
-            </form>
+            <div onclick=<%="showDelete(" + books[i].book_ID + ")"%> class="fa fa-trash-o fa-lg"></div>
           </div>
         </div>
       </div>

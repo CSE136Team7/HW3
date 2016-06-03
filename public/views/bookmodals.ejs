@@ -26,4 +26,32 @@
     </form>
   </div>
 </div>
+<div id= <%= "deleteModal"+book.book_ID %> class="modalDialog">
+    <div class="grid grid-pad">
+        <a href="#close" title="Close" class="close x-button">x</a>
+        <div class="tabs is-centered">
+            <ul>
+                <li id="del-bookmark" class="is-active"><a>Delete Bookmark</a></li>
+            </ul>
+        </div>
+        <form method='post' action='/bookmarks/delete' id=<%="delete-bookmark-form"+book.book_ID%>>
+            <div class="form" id="delete-bookmark-form">
+                <input type="hidden" name="user_ID" value=<%= book.user_ID %>>
+                <input type="hidden" name="book_ID" value=<%= book.book_ID %>>
+                <input type="text" name="title" placeholder="Title" value=<%= book.Title %> readonly>
+                <div class="textFieldWrapper">
+                    <input type="url" name="url" required pattern="https?://.+" placeholder="http://www.example.com" value=<%= book.URL %> readonly>
+                </div>
+                <div class="textFieldWrapper">
+                    <input type="text" name="description" placeholder="Description" value=<%= book.Description %> readonly>
+                </div>
+                <p style="color:white; text-align: center;">Are you sure you'd like to delete this bookmark?</p>
+                <div class="buttonWrapper" style="margin-bottom:15px">
+                    <!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
+                    <button><i class="fa fa-trash fa-lg" id="trigger-submit">DELETE</i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <% });}; %>

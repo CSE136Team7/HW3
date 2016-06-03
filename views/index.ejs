@@ -14,7 +14,7 @@
 
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300|Montserrat:400,700' rel='stylesheet' type='text/css'>
 
-	<script type="text/javascript" src="/js/index.js"></script>
+	<script type="text/javascript" src="/js/reload.js"></script>
 </head>
 
 <body>
@@ -25,15 +25,23 @@
 			</li>
 			<li class="navbar-left search">
 				<form action="/find" method="get">
+					<noscript>
+						<input type="hidden" name="javascript" value="0">
+					</noscript>
 					<input type="text" name = "searchbox" placeholder="Search Bookmarks" />
 					<button><i class="fa fa-search fa-lg"></i></button>
 				</form>
 			</li>
 			<li class="navbar-right">
-				<form action="/sortBooks" method="get">
-					<a class="button" href="/sortBooks" name="sort"><i class="fa fa-sort-alpha-asc fa-lg"></i></a>
+				<a class="button" href="/logout"><i class="fa fa-sign-out"></i></a>
+			</li>
+			<li class="navbar-right">
+				<form action="/bookmarks/sortBooks" method="get">
+					<noscript>
+						<input type="hidden" name="javascript" value="0">
+					</noscript>
+					<button class="button" type="submit" name="sort"><i class="fa fa-sort-alpha-asc fa-lg"></i></a>
 				</form>
-				<a href="/logout"><i class="fa fa-sign-out"></i></a>
 			</li>
 			<li class="navbar-right">
 				<!-- Update bookmark modal -->
@@ -44,7 +52,57 @@
 				<% if(bookmarks){for(var i = 0; i < bookmarks.length; i++) {%>
 					<%= deleteBookmarkModal(bookmarks[i]) %>
 				<% }} %>
+				<!--  Modal for folder create-->
+				<div id="folderModal" class="modalDialog">
+					<div class="grid grid-pad">
+						<a href="#close" title="Close" class="close x-button">x</a>
+						<div class="tabs is-centered">
+							<ul>
+								<li id="add-folder" class="is-active"><a>Add Folder</a></li>
+							</ul>
+						</div>
+						<form action="/createFolder" method="post">
+							<noscript>
+								<input type="hidden" name="javascript" value="0">
+							</noscript>
+							<div class="form" id="add-folder-form">
+								<input type="text" name="folder" placeholder="Folder Name" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px">
+								<div class="buttonWrapper" style="margin-bottom:20px; ">
+									<button><i class="fa fa-check-circle fa-lg" ></i> Save</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<%if(folders){ for(var j = 0; j < folders.length; j++) {%>
+					<div id=<%='folderModaledit'+folders[j].folder_ID %> class="modalDialog">
+						<div class="grid grid-pad">
+							<a href="#close" title="Close" class="close x-button">x</a>
+							<div class="tabs is-centered">
+								<ul>
+									<li id="add-folder" class="is-active"><a>Add Bookmarks in Folder</a></li>
+								</ul>
+							</div>
+							<form action="/addBookToFolder" method="post">
+								<noscript>
+									<input type="hidden" name="javascript" value="0">
+								</noscript>
+								<div class="form" id="add-folder-form">
+									<input type="text" name="folder" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" value=<%= folders[j].Name%>>
+									<input type="hidden" name="folder_ID" style="display:none" value=<%= folders[j].folder_ID%>>
 
+									<select name="book_ID"style="width:100%;margin-bottom: 15px;height: 32px;border: 2px solid #FFF;background-color: #6C7A89; font-size: 15px;color:#fff">
+											<option></option>
+										<% if(bookmarks){ bookmarks.forEach(function(book) { %>
+											<option name="book_ID" value=<%= book.book_ID%> > <%=book.Title %></option>
+											<% }); }%>
+										</select>
+										<button ><i class="fa fa-check-circle fa-lg" ></i> Save</button>
+									</div>
+								</form>
+							</div>
+						</div>
+						<%}}%>
 				<a href="#addModal" class="button"><i class="fa fa-plus fa-lg"></i></a>
 				<div id="addModal" class="modalDialog">
 					<div class="grid grid-pad">
@@ -55,9 +113,11 @@
 								<li id="import-bookmark"><a href="#importBookmark">Import Bookmarks</a></li>
 							</ul>
 						</div>
-
 						<form method='post' action='/bookmarks/insert' id="add-bookmark-form">
 							<div class="form" id="add-bookmark-form">
+								<noscript>
+									<input type="hidden" name="javascript" value="0">
+								</noscript>
 								<input type="text" name="title" placeholder="Title">
 								<div class="textFieldWrapper">
 									<input type="url" name="url" required pattern="https?://.+" placeholder="http://www.example.com">
@@ -67,13 +127,13 @@
 								</div>
 								<div class="buttonWrapper" style="margin-bottom:15px">
 									<!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
-									<button><i class="fa fa-check-circle fa-lg" id="trigger-submit">Save</i></button>
+									<button type="submit" ><i class="fa fa-check-circle fa-lg" id="trigger-submit"></i></button>
 								</div>
 							</div>
 						</form>
 					 </div>
 					</div>
-					<a href="#importBookmark" class="button">Import Bookmark</i></a>
+					<a class="button" href="#importBookmark">Import Bookmark</i></a>
 					<div id="importBookmark" class="modalDialog">
 						<div class="grid grid-pad">
 							<a href="#close" title="Close" class="close x-button">x</a>
@@ -84,6 +144,9 @@
 								</ul>
 							</div>
 							<form method='post' action='/bookmarks/import' id="import" enctype="multipart/form-data">
+								<noscript>
+									<input type="hidden" name="javascript" value="0">
+								</noscript>
 								<input type="file" name="myFile" accept=".csv" style="margin-bottom:15px; width:100%">
 								<div class="buttonWrapper"  style="margin-bottom:15px">
 									<!-- <input type="submit" id="hide-submit-btn" style="visibility:hidden" value="Save"> -->
@@ -108,94 +171,65 @@
 			<ul>
 				<li class="pinned">
 					<form class="resetme" action="/home" method="get">
-						<button style="background-color:#474448; width:100%"><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
+						<noscript>
+							<input type="hidden" name="javascript" value="0">
+						</noscript>
+						<button class="button" style="background-color:#474448; width:100%"><i class="fa fa-bar-chart fa-lg"></i> Most Visited</button>
 					</form>
 				</li>
 				<li class="pinned">
 					<form class="resetme" action="/folder/starred" method="get">
+						<noscript>
+							<input type="hidden" name="javascript" value="0">
+						</noscript>
 						<button style="background-color:#474448;width:100%;"><i class="fa fa-star fa-lg"></i> Starred</button>
 					</form>
 				</li>
-			<li class="pinned">
+			<!-- <li class="pinned">
 				<form action="/showAll" method="get">
+					<noscript>
+						<input type="hidden" name="javascript" value="0">
+					</noscript>
 				<a href="/showAll"><i class="fa fa-th fa-lg"></i> All</a>
 			</form>
-			</li>					<%if(folders){ for(var j = 0; j < folders.length; j++) {%>
+			</li>	-->
+			<%if(folders){ for(var j = 0; j < folders.length; j++) {%>
 						<li>
 							<form action="/folders" method="get" style="display:inline-block">
+								<button style="background-color:#474448;"name="fid"value=<%= folders[j].folder_ID%> ><%= folders[j].Name%> </button>
+								<noscript>
+									<input type="hidden" name="javascript" value="0">
+								</noscript>
 								<input type="hidden" name="folderName" value=<%= folders[j].Name%> >
-								<button style="background-color:#474448;"name="folder_ID"value=<%= folders[j].folder_ID%> ><%= folders[j].Name%> </button>
+
 							</form>
 
 							<a href=<%= '#folderModaledit'+folders[j].folder_ID %> class="pad-trash-icon button" style="background-color:#474448;margin-left:55px;"><i class="fa fa-edit fa-lg" ></i></a>
 							<form action="/deleteFolder" method="post" style="display:inline-block">
+								<noscript>
+									<input type="hidden" name="javascript" value="0">
+								</noscript>
 								<input type="hidden" name="folder_ID" value=<%= folders[j].folder_ID%> >
-								<button style="background-color:#474448;"><i class="fa fa-trash-o fa-lg"></i></button>
+								<button class="pad-trash-icon button" style="background-color:#474448;"><i class="fa fa-trash-o fa-lg"></i></button>
 							</form>
 						</li>
 					<%}}%>
 				</ul>
-
-				<%if(folders){ for(var j = 0; j < folders.length; j++) {%>
-					<div id=<%='folderModaledit'+folders[j].folder_ID %> class="modalDialog">
-						<div class="grid grid-pad">
-							<a href="#close" title="Close" class="close x-button">x</a>
-							<div class="tabs is-centered">
-								<ul>
-									<li id="add-folder" class="is-active"><a>Add Bookmarks in Folder</a></li>
-								</ul>
-							</div>
-							<form action="/addBookToFolder" method="post">
-								<div class="form" id="add-folder-form">
-									<input type="text" name="folder" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px" value=<%= folders[j].Name%>>
-									<input type="hidden" name="folder_ID" style="display:none" value=<%= folders[j].folder_ID%>>
-
-									<select name="book_ID"style="width:100%;margin-bottom: 15px;height: 32px;border: 2px solid #FFF;background-color: #6C7A89; font-size: 15px;color:#fff">
-											<option></option>
-										<% if(bookmarks){ bookmarks.forEach(function(book) { %>
-											<option name="book_ID" value=<%= book.book_ID%> > <%=book.Title %></option>
-											<% }); }%>
-										</select>
-										<button ><i class="fa fa-check-circle fa-lg" ></i> Save</button>
-									</div>
-								</form>
-							</div>
-						</div>
-						<%}}%>
-
 							<div class="buttonWrapper">
 								<div>
 									<!-- <div><i class="fa fa-plus-circle fa-lg"></i> Folder</div> -->
 									<a href="#folderModal" class="button" style="background-color:#474448"><i class="fa fa-plus-circle fa-lg"></i> Folder</a>
 								</div>
-								<form action="/bookmarks/export" method="get">
-									<button><i class="fa fa-download fa-lg"></i> Export</button>
-								</form>
+								<div>
+					        <a href="/bookmarks/export" class="button" style="background-color:#474448" download><i class="fa fa-download fa-lg"></i> Export</a>
+					      </div>
 							</div>
 						</div>
 
 
 
 
-						<!--  Modal for folder create-->
-						<div id="folderModal" class="modalDialog">
-							<div class="grid grid-pad">
-								<a href="#close" title="Close" class="close x-button">x</a>
-								<div class="tabs is-centered">
-									<ul>
-										<li id="add-folder" class="is-active"><a>Add Folder</a></li>
-									</ul>
-								</div>
-								<form action="/createFolder" method="post">
-									<div class="form" id="add-folder-form">
-										<input type="text" name="folder" placeholder="Folder Name" id="Folder_input" style="width:100%;margin-bottom: 15px;height:32px">
-										<div class="buttonWrapper" style="margin-bottom:20px; ">
-											<button><i class="fa fa-check-circle fa-lg" ></i> Save</button>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
+
 
 
 
@@ -204,7 +238,7 @@
 							<div class="main grid grid-pad">
 								<div id="title" class="col-1-1">
 									<div class="content">
-										<h3 style="color:red"><%= errormsg %></h3>
+										<h5 style="color:red"><%= errormsg %></h5>
 									</div>
 								</div>
 
@@ -214,6 +248,9 @@
 										<div class="content">
 											<div class="card card--small">
 												<form action="/bookmarks/clicked" method="post" class="card__title">
+													<noscript>
+		                        <input type="hidden" name="javascript" value="0">
+		                      </noscript>
 													<input type="hidden" name="user_ID" value=<%=bookmarks[i].user_ID %>>
 													<input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
 													<input type="hidden" name="url" value=<%=bookmarks[i].URL %>>
@@ -222,12 +259,14 @@
 												<div style=<%= randomBackgroundColor() %> class="card__image"></div>
 												<div class="card__action-bar" >
 													<form action="/bookmarks/star" method="post" class="card__button">
+														<noscript>
+			                        <input type="hidden" name="javascript" value="0">
+			                      </noscript>
 														<input type="hidden" name="starred" value=<%=bookmarks[i].Star %>>
 														<input type="hidden" name="user_ID" value=<%=bookmarks[i].user_ID %>>
 														<input type="hidden" name="book_ID" value=<%=bookmarks[i].book_ID %>>
 														<button id="star-btn" class="card__button" ><i class="fa fa-star fa-lg"></i></button>
 													</form>
-
 													<a href=<%= '#updateModal'+bookmarks[i].book_ID %>  class="fa fa-edit fa-lg" ></a>
 
 													<!-- umm TODO: fix spacing in a better way -->
