@@ -70,7 +70,7 @@ Bhavik:
   Creating EJS templates
   Implementing user analytics (Incomplete)
 
-Balkrishna:
+Bal krishna:
 set up project 1,2,3, set up digital ocean(automatic deployment), set up heroku, tested schema CRUD operation on folders on both client side with ajax and server side rendering, changed lot of css and html from original template, minify the app using gulp, fix errors related to database, deployment as well as app.
 
 Brian:
