@@ -58,7 +58,17 @@ Options would be included to allow the user to view more bookmarks at once but k
 #Member contributions
 
 Bhavik:
-
+  Server Side Rendering
+  Client side Rendering
+  ajax
+  Rendering based on availability of JS
+  Building routes
+  CRUD operations for bookmarks Client and Server
+  Import / Export Client and Server
+  Search / Sort Client and Server
+  Debugging errors
+  Creating EJS templates
+  Implementing user analytics (Incomplete)
 
 Balkrishna:
 set up project 1,2,3, set up digital ocean(automatic deployment), set up heroku, tested schema , edit, delete, get folders on both client side with ajax and server side rendering, changed lot of css and html from original template, minify the app using gulp, fix errors related to database, deployment as well as app.
