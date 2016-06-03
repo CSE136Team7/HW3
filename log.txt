@@ -285,3 +285,193 @@
 [Received request for home page user id is: 3]@time[13336740835]@ver[Hw5 submission heroku live]
 [info: Rendering Homepage]@time[13336740835]@ver[Hw5 submission heroku live]
 [info: Received getFolders request: 31]@time[13336740837]@ver[Hw5 submission heroku live]
+[Server starting]@time[13336889555]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: undefined]@time[13336894419]@ver[Hw5 submission heroku live]
+[Warning in homePage: user went to homePage without a user_ID]@time[13336894419]@ver[Hw5 submission heroku live]
+[Warning: User has JavaScript disabled.]@time[13336922249]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13336922340]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336922341]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336922345]@ver[Hw5 submission heroku live]
+[info: Received sort request: 
+{"javascript":"0","sort":""}]@time[13336924921]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336924921]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336924922]@ver[Hw5 submission heroku live]
+[info: Received sort request: 
+{"javascript":"0","sort":""}]@time[13336926956]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336926956]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336926957]@ver[Hw5 submission heroku live]
+[info: Received sort request: 
+{"javascript":"0","sort":""}]@time[13336928189]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336928189]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336928189]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13336930464]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336930465]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336930465]@ver[Hw5 submission heroku live]
+[info: Received request for starred page on user: 3]@time[13336936582]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336936582]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336936583]@ver[Hw5 submission heroku live]
+[info: getStarred 21]@time[13336936584]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13336937993]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336937993]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336937996]@ver[Hw5 submission heroku live]
+[Warning: User has JavaScript disabled.]@time[13336939439]@ver[Hw5 submission heroku live]
+[info: Received star bookmark request:
+{"javascript":"0","starred":"0","user_ID":"3","book_ID":"85"}]@time[13336939440]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13336939586]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336939586]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336939586]@ver[Hw5 submission heroku live]
+[Warning: User has JavaScript disabled.]@time[13336939961]@ver[Hw5 submission heroku live]
+[info: Received click bookmark request.
+{"javascript":"0","user_ID":"3","book_ID":"85","url":"http://www.facebook.com/"}]@time[13336939961]@ver[Hw5 submission heroku live]
+[Warning: User has JavaScript disabled.]@time[13336946551]@ver[Hw5 submission heroku live]
+[info: Received star bookmark request:
+{"javascript":"0","starred":"1","user_ID":"3","book_ID":"85"}]@time[13336946551]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13336946559]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336946559]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336946559]@ver[Hw5 submission heroku live]
+[info: Received request for starred page on user: 3]@time[13336948639]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336948639]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336948639]@ver[Hw5 submission heroku live]
+[info: getStarred 21]@time[13336948640]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13336950120]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336950120]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336950121]@ver[Hw5 submission heroku live]
+[Warning: User has JavaScript disabled.]@time[13336951491]@ver[Hw5 submission heroku live]
+[info: Received star bookmark request:
+{"javascript":"0","starred":"0","user_ID":"3","book_ID":"85"}]@time[13336951491]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13336951499]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336951499]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336951500]@ver[Hw5 submission heroku live]
+[info: Received request for starred page on user: 3]@time[13336952680]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336952680]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336952681]@ver[Hw5 submission heroku live]
+[info: getStarred 21]@time[13336952682]@ver[Hw5 submission heroku live]
+[Warning: User has JavaScript disabled.]@time[13336954506]@ver[Hw5 submission heroku live]
+[info: Received star bookmark request:
+{"javascript":"0","starred":"1","user_ID":"3","book_ID":"85"}]@time[13336954507]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13336954540]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336954540]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336954540]@ver[Hw5 submission heroku live]
+[info: Received request for starred page on user: 3]@time[13336955895]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336955895]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336955895]@ver[Hw5 submission heroku live]
+[info: getStarred 21]@time[13336955896]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13336956859]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336956859]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336956859]@ver[Hw5 submission heroku live]
+[info: folder_ID: 223]@time[13336958127]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336958129]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336958129]@ver[Hw5 submission heroku live]
+[info: obj: {
+    "bookmarks": [],
+    "folders": [
+        {
+            "Name": "social",
+            "user_ID": 3,
+            "folder_ID": 223
+        },
+        {
+            "Name": "hero",
+            "user_ID": 3,
+            "folder_ID": 229
+        }
+    ],
+    "filter": "social",
+    "errormsg": ""
+}]@time[13336958131]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13336964991]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336964991]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336964991]@ver[Hw5 submission heroku live]
+[info: folder_ID: 223]@time[13336966313]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336966338]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336966339]@ver[Hw5 submission heroku live]
+[info: obj: {
+    "bookmarks": [],
+    "folders": [
+        {
+            "Name": "social",
+            "user_ID": 3,
+            "folder_ID": 223
+        },
+        {
+            "Name": "hero",
+            "user_ID": 3,
+            "folder_ID": 229
+        }
+    ],
+    "filter": "social",
+    "errormsg": ""
+}]@time[13336966361]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13336967612]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336967612]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336967612]@ver[Hw5 submission heroku live]
+[Warning: User has JavaScript disabled.]@time[13336975882]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13336976039]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336976039]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336976040]@ver[Hw5 submission heroku live]
+[info: folder_ID: 223]@time[13336977537]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336977538]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336977538]@ver[Hw5 submission heroku live]
+[info: obj: {
+    "bookmarks": [
+        {
+            "folder_ID": 223,
+            "book_ID": 86,
+            "Title": "crunchbase",
+            "Star": 0,
+            "Description": "cloud your code",
+            "URL": "https://www.crunchbase.com/",
+            "Clicks": 1,
+            "user_ID": 3
+        }
+    ],
+    "folders": [
+        {
+            "Name": "social",
+            "user_ID": 3,
+            "folder_ID": 223
+        },
+        {
+            "Name": "hero",
+            "user_ID": 3,
+            "folder_ID": 229
+        }
+    ],
+    "filter": "social",
+    "errormsg": ""
+}]@time[13336977539]@ver[Hw5 submission heroku live]
+[info: folder_ID: 229]@time[13336980436]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336980437]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336980437]@ver[Hw5 submission heroku live]
+[info: obj: {
+    "bookmarks": [],
+    "folders": [
+        {
+            "Name": "social",
+            "user_ID": 3,
+            "folder_ID": 223
+        },
+        {
+            "Name": "hero",
+            "user_ID": 3,
+            "folder_ID": 229
+        }
+    ],
+    "filter": "hero",
+    "errormsg": ""
+}]@time[13336980439]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13336981720]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13336981721]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13336981721]@ver[Hw5 submission heroku live]
+[Warning in homePage: user went to homePage without a user_ID]@time[13337072197]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: undefined]@time[13337072197]@ver[Hw5 submission heroku live]
+[Warning: User has JavaScript disabled.]@time[13337076059]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13337076067]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13337076067]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13337076067]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13337107970]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13337107971]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13337107971]@ver[Hw5 submission heroku live]
+[Received request for home page user id is: 3]@time[13337134781]@ver[Hw5 submission heroku live]
+[info: Rendering Homepage]@time[13337134782]@ver[Hw5 submission heroku live]
+[info: Received getFolders request: 31]@time[13337134789]@ver[Hw5 submission heroku live]
