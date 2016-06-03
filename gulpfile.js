@@ -41,4 +41,4 @@ gulp.task('min-ejs-html', function () {
 });
 
 //default task
-gulp.task('default',['min-ejs-html']);
+gulp.task('default',['min-js']);
