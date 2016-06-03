@@ -1,0 +1,64 @@
+body {
+    background-color:#6C7A89;
+}
+
+a {
+    text-decoration: none;
+}
+.button {
+    left:0px;
+    border:2px solid #ECECEC;
+    border:none;
+    background-color:#6C7A89;
+    color:#FF9EAE;
+    width: 25%;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 100px;
+}
+.logbutton {
+    text-align: center;
+    border:2px solid #ECECEC;
+    background-color:#6C7A89;
+    color:#FF9EAE;
+    width: 15%;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+}
+#outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+#middle {
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+.button:hover {
+    color: #fff;
+}
+.logbutton:hover {
+    color: #fff;
+    border-color: #FF9EAE;
+}
+#resetpw {
+    color:#FF9EAE;
+}
+.FormField {
+    width: 50%;
+}
+.logbutton:hover {
+    color: #fff;
+    border-color: #FF9EAE;
+}
+footer {
+    display: block;
+    position: fixed;
+    text-align: center;
+    font-size: 12px;
+    bottom: 0;
+    margin-left: 20%;
+    margin-right: 20%;
+    color: #fff;
+}

@@ -177,6 +177,7 @@ button {
 
 .button:hover,
 button:hover  {
+    text-decoration: pointer;
     background-color:#6C7A89;
     color:#FF9EAE;
     border:2px solid #FF9EAE;
@@ -243,8 +244,9 @@ button#menu:hover .fa {
 .navbar input,
 .navbar button,
 .navbar a  {
+  text-decoration: none;
+    cursor: pointer;
     padding: 10px;
-    text-decoration: none;
 }
 
 .navbar .form input {
@@ -272,8 +274,11 @@ li.navbar-left {
   padding: 1em;
 }
 
+#search-form {
+  display: flex;
+}
+
 .navbar-left.search {
-  width: 50%;
   padding: 0;
 }
 
@@ -400,6 +405,13 @@ li.navbar-left {
   text-align: left;
   display: none;
 }
+
+.card a {
+  text-decoration: none;
+  color:#474448;
+
+}
+
 .card__button {
   color: #FFF;
   outline: none;
@@ -407,9 +419,13 @@ li.navbar-left {
   display: inline-block;
   line-height: 35px;
   padding: 0 4%;
-  padding-bottom: 8px;
+  padding-bottom: 0px;
   background-color: #FFF;
   vertical-align: middle;
+}
+
+.card__button:hover{
+  cursor: pointer;
 }
 
 button.card__button .fa {
@@ -440,8 +456,9 @@ button.card__button:hover {
 }
 .card--small .card__title {
   color: #474448;
-  left: 55px;
+  left: 5%;
   top: 12px;
+  width: 100%;
 }
 .card--small .card__subtitle {
   opacity: 1;

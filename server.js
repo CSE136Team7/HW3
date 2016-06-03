@@ -76,25 +76,23 @@ app.use(function printSession(req, res, next) {
   return next();
 });
 
+/**
+ * Try to track whether the user has javascript enabled
+ * */
 var checkJS = function (req, res, next) {
-  if(req.body.javascript) {
-
-    debug.print('Warning: User has JavaScript disabled.');
-
-    if (typeof req.session.user_ID === 'undefined') {
-      // go to login
-      debug.print('redirecting to login...');
-      req.session.destroy();
-      res.redirect('/login?error=You need to enable JavaScript.');
-    }
-    else {
-      debug.print('redirecting to home...');
-      res.redirect('/home?error=You need to enable JavaScript.');
-    }
+  if(req.body.javascript && req.body.javascript === "0" || req.query.js === "0") {
+    req.session.js = false;
   }
-  else {
-    next();
+  else if(req.body.javascript && req.body.javascript === "1" || req.query.js === "1"){
+    req.session.js = true;
   }
+
+  if(!req.session.js){
+    req.session.js = false;
+  }
+  console.log("info: javascript is " + (req.session.js ? 'On' : 'Off'));
+  //debug.print(req.body);
+  return next();
 }
 
 app.use( checkJS );
@@ -130,6 +128,7 @@ app.get('/forgotpw', users.forgotpw);
 app.use(users.auth);
 
 app.get('/home', bookmarks.homePage);
+app.get('/showAll', bookmarks.homePage);
 
 app.get('/bookmarks/getbooks', bookmarks.getbooks);
 app.get('/bookmarks/getfolders', bookmarks.getfolders);
@@ -140,6 +139,7 @@ app.post('/bookmarks/insert', bookmarks.insert);
 app.get('/bookmarks/edit', bookmarks.editPage);
 app.post('/bookmarks/update', bookmarks.update);
 app.post('/bookmarks/clicked', bookmarks.clicked);
+app.get('/bookmarks/sortBooks', bookmarks.sortBooks);
 app.get('/folder/starred', bookmarks.starredPage);
 app.post('/createFolder', folders.createFolder);
 app.post('/deleteFolder', folders.deleteFolder);
@@ -148,7 +148,7 @@ app.post('/bookmarks/import', bookmarks.import);
 app.get('/bookmarks/export', bookmarks.export);
 
 
-app.get('/folders', bookmarks.folders);
+app.get('/folders/:fid', bookmarks.folders);
 app.get('/find', bookmarks.find);
 
 app.listen(config.PORT, function () {

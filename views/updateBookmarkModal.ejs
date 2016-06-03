@@ -8,6 +8,9 @@
       </ul>
     </div>
     <form method='post' action='/bookmarks/update' id="update-bookmark-form">
+      <noscript>
+        <input type="hidden" name="javascript" value="0">
+      </noscript>
       <div class="form" id="update-bookmark-form">
         <input type="hidden" name="user_ID" value=<%= bookmarks[i].user_ID %>>
         <input type="hidden" name="book_ID" value=<%= bookmarks[i].book_ID %>>
