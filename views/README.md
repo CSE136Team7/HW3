@@ -1,27 +1,56 @@
-## HW3 Description
+## HW5 Description
 
 ## Description Button
-Please test the `Description Button` in the Most Visited tab in the Youtube bookmark.
-http://www.wolfpacksd.xyz/pa2/index.html
+stuff: 
+-cache/expiration headers etc 
+-validation on server side 
+-validation on client side 
+-logging events 
+-raising exceptions when errors occur and keep track 
+-nice error pages 
+-404, 500, pages etc 
+-don’t throw stack traces. How do you trap them? How do you only throw them during debug and not production? 
+-fetch new data and not all the old data and the new data. Could do change locally and sync without fetching the 
+data (ajax) 
+-minification (gulp) 
+-automation, pipelining (not having to ctrl c, node server.js whenever we make an edit) (heroku pipeline)
 
-## Edit Button
-Please test the `Edit Button` at http://www.wolfpacksd.xyz/pa2/index.html
+FINISHED:
+-remove x-powered-by header 
+-cookie should say BookmarxTeam7=something instead of connect.sid=something 
+-navigating to / instead of /login gives a nice redirect to login 
+--now navigating to any unknown (or /root /admin /robot) will log a message 
+-logging occurs in console via debug.js. will change to write to file soon 
+-cookie is used to lookup user id, which is only associated with a session id after logging in 
+--session is destroyed anytime a user attempts to access internal pages without a user id 
+-add bookmark works 
+-can star a bookmark and view all starred bookmarks 
+-link the bookmark to the stored URL 
+-list bookmarks in a specific folder 
+-export and import 
+-implement sorting 
+-all button 
+-confirm delete modal 
+-password reset/forgot password
+-uptime of Heroku deployed version of HW5(https://cse136hw5.herokuapp.com/login)
+ with status at pingdom(http://stats.pingdom.com/wj1nd7oq5yws)
+-fetch new data and not all the old data and the new data. Could do change locally and sync without fetching the 
+data (ajax) 
+-minification
+-bundling
+-some reduction of dependency size (reduce font awesome, etc)
 
-## Sort Button
-Please test the `Sort Button` at http://www.wolfpacksd.xyz/pa2/all.html
+To Do list: 
 
-## Sidebar Links
-To see a preview of our design, feel free to try any of these links:
- * **Starred** (http://www.wolfpacksd.xyz/pa2/starred.html)
- * **All** (http://www.wolfpacksd.xyz/pa2/all.html)
- * **Courses** (http://www.wolfpacksd.xyz/pa2/courses.html)
- * **Recipes**  (http://www.wolfpacksd.xyz/pa2/recipes.html)
- * **Beauty**  (http://www.wolfpacksd.xyz/pa2/beauty.html)
+-add and remove a bookmark to a folder 
+-make description take more than one space delimited token
 
+Notes for self: 
+Memory store: a default for express session (node dependency) to store cookies and data etc. Instead we are using 
+express-mysql-session. Make sure not to revert to default at any point 
+Reset password: a more secure way to reset passwords would be to store user emails and send them a code or link via 
+email that they must use to reset their passwords. Since there is no notion of admin users, we can leave this feature 
+as is without any real risk to the website, but user accounts could be fairly easily 'stolen'. If we wanted we could
+set up an automatic mail service and alter the db to require an email. We could generate unique codes that get sent
+in the email and have to be entered in with the new password.
 
-
- To Do list
-
- * export and import?
- * implement sorting 
- * error in login and signup on the page
