@@ -266,7 +266,8 @@ function deleteFolders(id) {
 
 function getFolders(id) {
   console.log("i am inside folder");
-  ajax('/folders/' + id, 'GET', null, function(books) {
+  ajax('/folders?fid=' + id, 'GET', null, function(books) {
+    console.log(books);
     loadTemplate('booklist', {
       books: books.books
     });
