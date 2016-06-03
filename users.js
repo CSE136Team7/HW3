@@ -6,6 +6,7 @@
  var db = require('./db');
  var md5 = require('js-md5');
  var debug = require('./debug');
+ var analytics = require('./analytics');
 
 /**
  *
@@ -36,6 +37,7 @@
                     } else {
                       res.redirect('/home');
                     }
+                    analytics.inc("LoggedIn",req.session.user_ID);
                 }
                 else {
                     debug.print('info: There was already a user field in cookie session, user was not logged out properly');
@@ -136,7 +138,8 @@ module.exports.newAccount = function(req, res){
               //hashing of the password
               debug.print('user and pw entered: '+user+pwd);
               var pwdCrypted = db.escape(md5(pwd, user));
-              var queryString = "INSERT INTO users(username, passhash) VALUES ("+ user + "," + pwdCrypted +")";
+              var queryString = "INSERT INTO users(username, passhash) VALUES ("+ user + "," + pwdCrypted +");";
+
               db.query(queryString, function(err, result){
                   if (err){
                       debug.print('error: new account: could not insert new account');
@@ -147,6 +150,7 @@ module.exports.newAccount = function(req, res){
                     //res.render('users/login');
                     //Look into the data base to get the user_ID needed for sessioning
                     var sql = 'SELECT user_ID FROM users WHERE username = ' + user;
+
                     db.query(sql, function(err, results) {
                         if(err){
                             debug.print('error: new account: could not retrieve user_ID of new account');
@@ -158,6 +162,11 @@ module.exports.newAccount = function(req, res){
                                 if (typeof req.session.user_ID === 'undefined') {
                                     debug.print('attempting to set session');
                                     req.session.user_ID = results[0].user_ID;
+                                    var qString = 'INSERT INTO analytics(Clicks,LoggedIn,BooksCreated,FoldersCreated,user_ID) VALUES(0,0,0,0,'+ results[0].user_ID +');';
+                                    console.log(qString);
+                                    db.query(qString, function(err, results) {
+                                      if(err){ throw err;}
+                                    });
                                     res.redirect('/views');
                                 }
                             }

@@ -4,6 +4,7 @@
 var config = require('./config');
 var db = require('./db');
 var debug = require('./debug');
+var analytics = require('./analytics');
 var async = require('async');
 var utility = require('./utility');
 var json2csv = require('json2csv');
@@ -195,7 +196,7 @@ module.exports.clicked = function(req, res) {
   if (!utility.isURL(url)) {
     throw new Error('invalid URL');
   }
-
+  analytics.inc("Clicks",req.session.user_ID);
   db.query(sql, function(err) {
     if (err) {
         res.redirect('/views?error=Could not view external bookmark link.');
@@ -296,11 +297,13 @@ module.exports.insert = function(req, res) {
         debug.print("ERROR: Query failed err:" + err);
         throw (err);
       } else {
+        analytics.inc("BooksCreated",req.session.user_ID);
         if(!req.session.js){ // server render
             res.redirect('/home?error=Added ' + title + ' to your bookmarks!');
         } else{ // client render
           res.json({});
         }
+
       }
     });
   } else {
@@ -406,11 +409,6 @@ module.exports.delete = function(req, res) {
     " AND book_ID=" + book_ID + ";";
 
   db.query(sql, function(err) {
-    // if (err) {
-    //   res.redirect('/home?error=Could not delete bookmark.');
-    // } else {
-    //   res.redirect('/home');
-    // }
     if (err) throw err;
     if(!req.session.js){ // server render
         res.redirect('/home?error=Deleted bookmark from your bookmarks!');

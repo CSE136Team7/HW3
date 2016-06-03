@@ -23,6 +23,7 @@ module.exports.createFolder=function(req, res) {
           debug.print("ERROR: Query failed err:" + err);
           throw(err);
       }else {
+          analytics.inc("FoldersCreated",req.session.user_ID);
           if(!req.session.js){ // server render
               res.redirect('/home?error=Added ' + folderName + ' to your folders!');
           } else{ // client render

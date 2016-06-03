@@ -7,41 +7,41 @@
 ## Description Button
 
 FINISHED:
--remove x-powered-by header 
--cookie should say BookmarxTeam7=something instead of connect.sid=something 
--navigating to / instead of /login gives a nice redirect to login 
---now navigating to any unknown (or /root /admin /robot) will log a message 
--logging occurs in console via debug.js. also writes to file with timestamp 
--cookie is used to lookup user id, which is only associated with a session id after logging in 
---session is destroyed anytime a user attempts to access internal pages without a user id 
+-remove x-powered-by header
+-cookie should say BookmarxTeam7=something instead of connect.sid=something
+-navigating to / instead of /login gives a nice redirect to login
+--now navigating to any unknown (or /root /admin /robot) will log a message
+-logging occurs in console via debug.js. also writes to file with timestamp
+-cookie is used to lookup user id, which is only associated with a session id after logging in
+--session is destroyed anytime a user attempts to access internal pages without a user id
 -add bookmark  
--can star a bookmark and view all starred bookmarks 
--link the bookmark to the stored URL 
--list bookmarks in a specific folder 
--export and import 
--implement sorting 
--all button 
--confirm delete modal 
+-can star a bookmark and view all starred bookmarks
+-link the bookmark to the stored URL
+-list bookmarks in a specific folder
+-export and import
+-implement sorting
+-all button
+-confirm delete modal
 -password reset/forgot password
 -uptime of Heroku deployed version of HW5(https://cse136hw5.herokuapp.com/login)
  with status at pingdom(http://stats.pingdom.com/wj1nd7oq5yws)
 -using google analytics as well
--fetch new data and not all the old data and the new data. Could do change locally and sync without fetching the 
-data (ajax) 
+-fetch new data and not all the old data and the new data. Could do change locally and sync without fetching the
+data (ajax)
 -minification
 -bundling
 -some reduction of dependency size (reduce font awesome, etc)
--add and remove a bookmark to a folder 
+-add and remove a bookmark to a folder
 -write to local file for debug purposes (can turn off debugging easily in debug.js)
--validation on server side 
--validation on client side 
+-validation on server side
+-validation on client side
 
-To Do list: 
+To Do list:
 -make description take more than one space delimited token
 
 #Notes for how to improve the site:
-Reset password: a more secure way to reset passwords would be to store user emails and send them a code or link via 
-email that they must use to reset their passwords. Since there is no notion of admin users, we can leave this feature 
+Reset password: a more secure way to reset passwords would be to store user emails and send them a code or link via
+email that they must use to reset their passwords. Since there is no notion of admin users, we can leave this feature
 as is without any real risk to the website, but user accounts could be fairly easily 'stolen'. If we wanted we could
 set up an automatic mail service and alter the db to require an email. We could generate unique codes that get sent
 in the email and have to be entered in with the new password.
@@ -58,6 +58,17 @@ Options would be included to allow the user to view more bookmarks at once but k
 #Member contributions
 
 Bhavik:
+  Server Side Rendering
+  Client side Rendering
+  ajax
+  Rendering based on availability of JS
+  Building routes
+  CRUD operations for bookmarks Client and Server
+  Import / Export Client and Server
+  Search / Sort Client and Server
+  Debugging errors
+  Creating EJS templates
+
 
 
 Balkrishna:

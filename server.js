@@ -6,7 +6,7 @@ var bookmarks = require('./bookmarks');
 var md5 = require('js-md5');
 var debug = require('./debug');
 var folders = require('./folders');
-
+var analytics = require('./analytics');
 db.init();
 debug.print("Server starting");
 
