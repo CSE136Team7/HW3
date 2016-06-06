@@ -78,6 +78,6 @@ client side/server side validation, getting bookmarks to go to their respective 
 
 Constance:login, password hashing, working with sachi on sessioning, fixed html and css throughout the project, manage team.
 
-Max:
+Max: minifying page, worked on css icons, help debug the html page and ejs. debug the login.ejs, index.html, index.ejs. implement sort and list all bookmarks. fix and add the style.css. fix the css on client side.
 
 Sachi: database backend - created database sql schema and some dummy data to test with, useful queries sessioning - got it up and running and changed headers/cookie names to be app specific some redirects and debug messages - site would display "please use back button" on unknown urls confirm delete - modal to confirm delete reset password/forgot password - functionality and html page to support reset/forgot password some styling - html/css some logging/user analytics - debug.js log to file, making error messages readable throughout code other various additions, debugging, merging, cleanup, version control tasks
